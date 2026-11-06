@@ -1,0 +1,321 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>HeatGuard supervisor dashboard</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700;800&amp;family=IBM+Plex+Mono:wght@500;600&amp;display=swap">
+<style>
+body{margin:0}
+a{color:#2F6FB0}a:hover{color:#1D4E80}
+</style>
+</helmet>
+<div style="min-height: 100vh; background: #EEF1F3; font-family: 'Public Sans', system-ui, sans-serif; color: #14181D">
+
+<header style="background: #14181D; color: #FFFFFF">
+<div style="max-width: 1360px; margin: 0 auto; padding: 14px 24px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px">
+<div style="display: flex; align-items: center; gap: 10px">
+<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#E8742A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 14.76V3.5a2.5 2.5 0 0 0-5 0v11.26a4.5 4.5 0 1 0 5 0z"></path><circle cx="11.5" cy="17.5" r="1.5"></circle></svg>
+<span style="font-size: 19px; font-weight: 800">HeatGuard</span>
+<span style="font-size: 15px; color: #D5DBE0; padding-left: 10px; border-left: 1px solid #4A5561">Supervisor</span>
+</div>
+<nav aria-label="Sections" style="display: flex; gap: 6px">
+<a href="Dashboard.dc.html" aria-current="page" style="padding: 10px 14px; border-radius: 10px; background: #2E3741; color: #FFFFFF; text-decoration: none; font-size: 15px; font-weight: 700">Today</a>
+<a href="Planner.dc.html" style="padding: 10px 14px; border-radius: 10px; color: #D5DBE0; text-decoration: none; font-size: 15px; font-weight: 600">Plan</a>
+<a href="Measures.dc.html" style="padding: 10px 14px; border-radius: 10px; color: #D5DBE0; text-decoration: none; font-size: 15px; font-weight: 600">Measures</a>
+</nav>
+<div style="display: flex; flex-wrap: wrap; align-items: center; gap: 16px">
+<span style="display: flex; align-items: center; gap: 8px; font-size: 14px; color: #D5DBE0"><span style="width: 8px; height: 8px; border-radius: 4px; background: #4FC38A"></span>Updated 10:32 · WBGT estimated from weather data</span>
+<button aria-label="Account" style="width: 40px; height: 40px; border-radius: 20px; border: 1px solid #4A5561; background: #222A33; color: #FFFFFF; font-family: inherit; font-size: 14px; font-weight: 700">SU</button>
+</div>
+</div>
+</header>
+
+<div style="max-width: 1360px; margin: 0 auto; padding: 24px; display: flex; flex-direction: column; gap: 20px">
+
+<div style="display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 16px">
+<div style="display: flex; flex-direction: column; gap: 4px">
+<h1 style="margin: 0; font-size: 28px; font-weight: 800; letter-spacing: -0.01em">[SITE NAME]</h1>
+<span style="font-size: 15px; color: #4A5561">Day shift · 07:00 to 17:00 · 29 workers on shift</span>
+</div>
+<div style="display: flex; flex-wrap: wrap; gap: 10px">
+<div style="display: flex; flex-direction: column; gap: 4px"><label for="f-crew" style="font-size: 12px; font-weight: 700; color: #4A5561">Crew</label><select id="f-crew" style="height: 40px; min-width: 140px; padding: 0 10px; border-radius: 10px; border: 1px solid #C7CFD6; background: #FFFFFF; font-family: inherit; font-size: 14px"><option>All crews</option><option>Crew A</option><option>Crew B</option><option>Crew C</option><option>Crew D</option></select></div>
+<div style="display: flex; flex-direction: column; gap: 4px"><label for="f-act" style="font-size: 12px; font-weight: 700; color: #4A5561">Activity</label><select id="f-act" style="height: 40px; min-width: 150px; padding: 0 10px; border-radius: 10px; border: 1px solid #C7CFD6; background: #FFFFFF; font-family: inherit; font-size: 14px"><option>All activities</option><option>Excavation</option><option>Concrete work</option><option>Welding</option><option>Logistics</option></select></div>
+<div style="display: flex; flex-direction: column; gap: 4px"><label for="f-shift" style="font-size: 12px; font-weight: 700; color: #4A5561">Shift</label><select id="f-shift" style="height: 40px; min-width: 120px; padding: 0 10px; border-radius: 10px; border: 1px solid #C7CFD6; background: #FFFFFF; font-family: inherit; font-size: 14px"><option>Day shift</option><option>Night shift</option></select></div>
+</div>
+</div>
+
+<div style="display: flex; flex-wrap: wrap; gap: 20px">
+
+<section aria-label="Site heat overview" style="flex: 2 1 560px; min-width: 0; background: #FFFFFF; border-radius: 18px; padding: 22px; display: flex; flex-direction: column; gap: 18px">
+<div style="display: flex; flex-wrap: wrap; justify-content: space-between; gap: 16px">
+<div style="display: flex; flex-direction: column; gap: 8px">
+<h2 style="margin: 0; font-size: 13px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #4A5561">Site heat now</h2>
+<div style="display: flex; align-items: center; gap: 14px">
+<span style="padding: 8px 16px; border-radius: 12px; background: #E8742A; color: #14181D; font-size: 26px; font-weight: 800">3 · High</span>
+<span style="display: flex; flex-direction: column"><span style="font-size: 26px; font-weight: 700; font-family: 'IBM Plex Mono', monospace">30.8°C</span><span style="font-size: 13px; color: #4A5561">WBGT, estimated</span></span>
+</div>
+</div>
+<div style="display: flex; flex-direction: column; gap: 6px; max-width: 360px; padding: 14px 16px; border-radius: 14px; background: #FBE9EA">
+<span style="font-size: 15px; font-weight: 800; color: #7A1219">Peak expected 13:00 to 15:00</span>
+<span style="font-size: 14px; line-height: 1.4">May reach Critical. Confidence moderate: forecast humidity is uncertain.</span>
+</div>
+</div>
+<div style="display: flex; flex-direction: column; gap: 8px">
+<span style="font-size: 14px; font-weight: 700">Today, hour by hour</span>
+<div style="overflow-x: auto">
+<div style="display: grid; grid-template-columns: repeat(11, minmax(52px, 1fr)); gap: 6px; min-width: 620px">
+<div style="display: flex; flex-direction: column; align-items: center; gap: 6px"><span style="width: 100%; height: 40px; border-radius: 8px; background: #2F6FB0; color: #FFFFFF; display: flex; align-items: center; justify-content: center; font-weight: 800">1</span><span style="font-size: 12px; color: #4A5561; font-family: 'IBM Plex Mono', monospace">07</span></div>
+<div style="display: flex; flex-direction: column; align-items: center; gap: 6px"><span style="width: 100%; height: 40px; border-radius: 8px; background: #2F6FB0; color: #FFFFFF; display: flex; align-items: center; justify-content: center; font-weight: 800">1</span><span style="font-size: 12px; color: #4A5561; font-family: 'IBM Plex Mono', monospace">08</span></div>
+<div style="display: flex; flex-direction: column; align-items: center; gap: 6px"><span style="width: 100%; height: 40px; border-radius: 8px; background: #F4C542; color: #14181D; display: flex; align-items: center; justify-content: center; font-weight: 800">2</span><span style="font-size: 12px; color: #4A5561; font-family: 'IBM Plex Mono', monospace">09</span></div>
+<div style="display: flex; flex-direction: column; align-items: center; gap: 6px"><span style="width: 100%; height: 40px; border-radius: 8px; background: #E8742A; color: #14181D; display: flex; align-items: center; justify-content: center; font-weight: 800; outline: 3px solid #14181D; outline-offset: 2px">3</span><span style="font-size: 12px; font-weight: 800; font-family: 'IBM Plex Mono', monospace">10 now</span></div>
+<div style="display: flex; flex-direction: column; align-items: center; gap: 6px"><span style="width: 100%; height: 40px; border-radius: 8px; background: #E8742A; color: #14181D; display: flex; align-items: center; justify-content: center; font-weight: 800">3</span><span style="font-size: 12px; color: #4A5561; font-family: 'IBM Plex Mono', monospace">11</span></div>
+<div style="display: flex; flex-direction: column; align-items: center; gap: 6px"><span style="width: 100%; height: 40px; border-radius: 8px; background: #E8742A; color: #14181D; display: flex; align-items: center; justify-content: center; font-weight: 800">3</span><span style="font-size: 12px; color: #4A5561; font-family: 'IBM Plex Mono', monospace">12</span></div>
+<div style="display: flex; flex-direction: column; align-items: center; gap: 6px"><span style="width: 100%; height: 40px; border-radius: 8px; background: #9E1B24; color: #FFFFFF; display: flex; align-items: center; justify-content: center; font-weight: 800">4?</span><span style="font-size: 12px; color: #4A5561; font-family: 'IBM Plex Mono', monospace">13</span></div>
+<div style="display: flex; flex-direction: column; align-items: center; gap: 6px"><span style="width: 100%; height: 40px; border-radius: 8px; background: #9E1B24; color: #FFFFFF; display: flex; align-items: center; justify-content: center; font-weight: 800">4?</span><span style="font-size: 12px; color: #4A5561; font-family: 'IBM Plex Mono', monospace">14</span></div>
+<div style="display: flex; flex-direction: column; align-items: center; gap: 6px"><span style="width: 100%; height: 40px; border-radius: 8px; background: #E8742A; color: #14181D; display: flex; align-items: center; justify-content: center; font-weight: 800">3</span><span style="font-size: 12px; color: #4A5561; font-family: 'IBM Plex Mono', monospace">15</span></div>
+<div style="display: flex; flex-direction: column; align-items: center; gap: 6px"><span style="width: 100%; height: 40px; border-radius: 8px; background: #F4C542; color: #14181D; display: flex; align-items: center; justify-content: center; font-weight: 800">2</span><span style="font-size: 12px; color: #4A5561; font-family: 'IBM Plex Mono', monospace">16</span></div>
+<div style="display: flex; flex-direction: column; align-items: center; gap: 6px"><span style="width: 100%; height: 40px; border-radius: 8px; background: #F4C542; color: #14181D; display: flex; align-items: center; justify-content: center; font-weight: 800">2</span><span style="font-size: 12px; color: #4A5561; font-family: 'IBM Plex Mono', monospace">17</span></div>
+</div>
+</div>
+<span style="font-size: 13px; color: #4A5561">"4?" means Critical is possible but not certain. Levels shown are for moderate work in standard clothing.</span>
+</div>
+</section>
+
+<section aria-label="Workforce risk distribution" style="flex: 1 1 320px; min-width: 0; background: #FFFFFF; border-radius: 18px; padding: 22px; display: flex; flex-direction: column; gap: 16px">
+<h2 style="margin: 0; font-size: 13px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #4A5561">Workers by risk level</h2>
+<div style="display: flex; height: 18px; border-radius: 9px; overflow: hidden" role="img" aria-label="6 low, 12 elevated, 9 high, 0 critical, 2 with no recent data">
+<span style="flex: 6; background: #2F6FB0"></span><span style="flex: 12; background: #F4C542"></span><span style="flex: 9; background: #E8742A"></span><span style="flex: 2; background: #C7CFD6"></span>
+</div>
+<div style="display: flex; flex-direction: column">
+<div style="display: flex; align-items: center; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #E3E7EB"><span style="display: flex; align-items: center; gap: 10px; font-size: 15px"><span style="width: 14px; height: 14px; border-radius: 4px; background: #9E1B24"></span>4 · Critical</span><span style="font-size: 18px; font-weight: 700; font-family: 'IBM Plex Mono', monospace">0</span></div>
+<div style="display: flex; align-items: center; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #E3E7EB"><span style="display: flex; align-items: center; gap: 10px; font-size: 15px"><span style="width: 14px; height: 14px; border-radius: 4px; background: #E8742A"></span>3 · High</span><span style="font-size: 18px; font-weight: 700; font-family: 'IBM Plex Mono', monospace">9</span></div>
+<div style="display: flex; align-items: center; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #E3E7EB"><span style="display: flex; align-items: center; gap: 10px; font-size: 15px"><span style="width: 14px; height: 14px; border-radius: 4px; background: #F4C542"></span>2 · Elevated</span><span style="font-size: 18px; font-weight: 700; font-family: 'IBM Plex Mono', monospace">12</span></div>
+<div style="display: flex; align-items: center; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #E3E7EB"><span style="display: flex; align-items: center; gap: 10px; font-size: 15px"><span style="width: 14px; height: 14px; border-radius: 4px; background: #2F6FB0"></span>1 · Low</span><span style="font-size: 18px; font-weight: 700; font-family: 'IBM Plex Mono', monospace">6</span></div>
+<div style="display: flex; align-items: center; justify-content: space-between; padding: 10px 0"><span style="display: flex; align-items: center; gap: 10px; font-size: 15px"><span style="width: 14px; height: 14px; border-radius: 4px; background: #C7CFD6"></span>No recent data</span><span style="font-size: 18px; font-weight: 700; font-family: 'IBM Plex Mono', monospace">2</span></div>
+</div>
+<span style="font-size: 13px; line-height: 1.4; color: #4A5561">Workers with no recent data are treated as High until their app reconnects.</span>
+</section>
+
+</div>
+
+<div style="display: flex; flex-wrap: wrap; gap: 20px">
+
+<section aria-label="Other climate hazards" style="flex: 1 1 420px; min-width: 0; background: #FFFFFF; border-radius: 18px; padding: 22px; display: flex; flex-direction: column; gap: 6px">
+<h2 style="margin: 0; font-size: 13px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #4A5561">Other climate hazards today</h2>
+<div style="display: flex; gap: 14px; align-items: flex-start; padding: 12px 0; border-bottom: 1px solid #E3E7EB">
+<span style="width: 40px; height: 40px; border-radius: 20px; background: #EEF1F3; display: flex; align-items: center; justify-content: center; flex-shrink: 0"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#4A5561" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8h11a3 3 0 1 0-3-3"></path><path d="M3 12h15a3 3 0 1 1-3 3"></path><path d="M3 16h7"></path></svg></span>
+<span style="flex: 1; display: flex; flex-direction: column; gap: 4px"><span style="display: flex; flex-wrap: wrap; align-items: center; gap: 8px"><span style="font-size: 15px; font-weight: 700">Dust and air quality</span><span style="padding: 2px 8px; border-radius: 999px; background: #F4C542; color: #14181D; font-size: 12px; font-weight: 800">Moderate</span></span><span style="font-size: 14px; line-height: 1.4; color: #4A5561">Masks for drivers and outdoor crews. Extra eye-rinse stations.</span></span>
+</div>
+<div style="display: flex; gap: 14px; align-items: flex-start; padding: 12px 0; border-bottom: 1px solid #E3E7EB">
+<span style="width: 40px; height: 40px; border-radius: 20px; background: #EEF1F3; display: flex; align-items: center; justify-content: center; flex-shrink: 0"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#4A5561" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 16a4 4 0 0 0-1-7.9A6 6 0 0 0 4.3 10 3.5 3.5 0 0 0 5 17"></path><path d="M12 13l-2 4h4l-2 4"></path></svg></span>
+<span style="flex: 1; display: flex; flex-direction: column; gap: 4px"><span style="display: flex; flex-wrap: wrap; align-items: center; gap: 8px"><span style="font-size: 15px; font-weight: 700">Thunderstorms 16:00 to 18:00</span><span style="padding: 2px 8px; border-radius: 999px; background: #E8742A; color: #14181D; font-size: 12px; font-weight: 800">Possible</span></span><span style="font-size: 14px; line-height: 1.4; color: #4A5561">Plan to stop crane and work at height. Secure loose materials by 15:30.</span></span>
+</div>
+<span style="font-size: 13px; color: #4A5561; padding-top: 6px">Source: weather forecast · 10:30</span>
+</section>
+
+<section aria-label="System health" style="flex: 1 1 420px; min-width: 0; background: #FFFFFF; border-radius: 18px; padding: 22px; display: flex; flex-direction: column; gap: 6px">
+<h2 style="margin: 0; font-size: 13px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #4A5561">System health</h2>
+<div style="display: flex; align-items: center; gap: 12px; padding: 11px 0; border-bottom: 1px solid #E3E7EB">
+<span style="width: 10px; height: 10px; border-radius: 5px; background: #1E7B4F; flex-shrink: 0"></span>
+<span style="flex: 1; display: flex; flex-direction: column; gap: 1px"><span style="font-size: 15px; font-weight: 700">Weather feed</span><span style="font-size: 13px; color: #4A5561">Updated every 15 min</span></span>
+<span style="font-size: 15px; font-weight: 700; font-family: 'IBM Plex Mono', monospace">10:30</span>
+<span style="padding: 2px 8px; border-radius: 999px; background: #E2F1E9; color: #14532F; font-size: 12px; font-weight: 800">OK</span>
+</div>
+<div style="display: flex; align-items: center; gap: 12px; padding: 11px 0; border-bottom: 1px solid #E3E7EB">
+<span style="width: 10px; height: 10px; border-radius: 5px; background: #C2410C; flex-shrink: 0"></span>
+<span style="flex: 1; display: flex; flex-direction: column; gap: 1px"><span style="font-size: 15px; font-weight: 700">Site sensors</span><span style="font-size: 13px; color: #4A5561">Dust sensor at Block 2 offline since 09:12</span></span>
+<span style="font-size: 15px; font-weight: 700; font-family: 'IBM Plex Mono', monospace">2 of 3</span>
+<span style="padding: 2px 8px; border-radius: 999px; background: #FDF0E6; color: #7A3510; font-size: 12px; font-weight: 800">Check</span>
+</div>
+<div style="display: flex; align-items: center; gap: 12px; padding: 11px 0; border-bottom: 1px solid #E3E7EB">
+<span style="width: 10px; height: 10px; border-radius: 5px; background: #C2410C; flex-shrink: 0"></span>
+<span style="flex: 1; display: flex; flex-direction: column; gap: 1px"><span style="font-size: 15px; font-weight: 700">Worker apps reporting</span><span style="font-size: 13px; color: #4A5561">2 offline, treated as High. 3 on low battery.</span></span>
+<span style="font-size: 15px; font-weight: 700; font-family: 'IBM Plex Mono', monospace">27 of 29</span>
+<span style="padding: 2px 8px; border-radius: 999px; background: #FDF0E6; color: #7A3510; font-size: 12px; font-weight: 800">Check</span>
+</div>
+<div style="display: flex; align-items: center; gap: 12px; padding: 11px 0; border-bottom: 1px solid #E3E7EB">
+<span style="width: 10px; height: 10px; border-radius: 5px; background: #1E7B4F; flex-shrink: 0"></span>
+<span style="flex: 1; display: flex; flex-direction: column; gap: 1px"><span style="font-size: 15px; font-weight: 700">Consented wearables</span><span style="font-size: 13px; color: #4A5561">Only risk levels reach this dashboard</span></span>
+<span style="font-size: 15px; font-weight: 700; font-family: 'IBM Plex Mono', monospace">11 connected</span>
+<span style="padding: 2px 8px; border-radius: 999px; background: #E2F1E9; color: #14532F; font-size: 12px; font-weight: 800">OK</span>
+</div>
+</section>
+
+</div>
+
+<div style="display: flex; flex-wrap: wrap; gap: 20px">
+
+<section aria-label="High-priority alerts" style="flex: 3 1 560px; min-width: 0; background: #FFFFFF; border-radius: 18px; padding: 22px; display: flex; flex-direction: column; gap: 14px">
+<div style="display: flex; justify-content: space-between; align-items: baseline">
+<h2 style="margin: 0; font-size: 18px; font-weight: 800">Needs attention</h2>
+<span style="font-size: 14px; color: #4A5561">3 open</span>
+</div>
+
+<article style="border: 2px solid #9E1B24; border-radius: 14px; padding: 16px; display: flex; flex-direction: column; gap: 10px">
+<div style="display: flex; flex-wrap: wrap; align-items: center; gap: 10px">
+<span style="padding: 4px 10px; border-radius: 999px; background: #9E1B24; color: #FFFFFF; font-size: 12px; font-weight: 800; letter-spacing: 0.04em; text-transform: uppercase">Act now</span>
+<span style="font-size: 16px; font-weight: 800">Worker W-0388 reported feeling unwell</span>
+<span style="font-size: 13px; color: #4A5561; margin-left: auto">Crew B · 10:21</span>
+</div>
+<p style="margin: 0; font-size: 15px; line-height: 1.45">Check on them now, move them to shade and stop their work. First aider notified and case escalated to the occupational health nurse.</p>
+<div style="display: flex; flex-wrap: wrap; gap: 8px">
+<button style="height: 44px; padding: 0 18px; border-radius: 10px; border: none; background: #14181D; color: #FFFFFF; font-family: inherit; font-size: 15px; font-weight: 700">I am on my way</button>
+<button style="height: 44px; padding: 0 18px; border-radius: 10px; border: 1px solid #C7CFD6; background: #FFFFFF; color: #14181D; font-family: inherit; font-size: 15px; font-weight: 700">Mark resolved</button>
+</div>
+</article>
+
+<article style="border: 1px solid #D5DBE0; border-radius: 14px; padding: 16px; display: flex; flex-direction: column; gap: 10px">
+<div style="display: flex; flex-wrap: wrap; align-items: center; gap: 10px">
+<span style="padding: 4px 10px; border-radius: 999px; background: #E8742A; color: #14181D; font-size: 12px; font-weight: 800">3 · High</span>
+<span style="font-size: 16px; font-weight: 800">Crew B, excavation: 7 workers at High</span>
+<span style="font-size: 13px; color: #4A5561; margin-left: auto">Before 12:00</span>
+</div>
+<p style="margin: 0; font-size: 15px; line-height: 1.45"><strong>Why:</strong> very heavy digging in coveralls, risk may reach Critical from 13:00. <strong>Do:</strong> finish heavy digging before 12:00, or move it to 16:00 and switch to lighter tasks until then.</p>
+<div style="display: flex; flex-wrap: wrap; gap: 8px">
+<button style="height: 44px; padding: 0 18px; border-radius: 10px; border: none; background: #14181D; color: #FFFFFF; font-family: inherit; font-size: 15px; font-weight: 700">Acknowledge</button>
+<button style="height: 44px; padding: 0 18px; border-radius: 10px; border: 1px solid #C7CFD6; background: #FFFFFF; color: #14181D; font-family: inherit; font-size: 15px; font-weight: 700">Change shift timing</button>
+</div>
+</article>
+
+<article style="border: 1px solid #D5DBE0; border-radius: 14px; padding: 16px; display: flex; flex-direction: column; gap: 10px">
+<div style="display: flex; flex-wrap: wrap; align-items: center; gap: 10px">
+<span style="padding: 4px 10px; border-radius: 999px; background: #14181D; color: #FFFFFF; font-size: 12px; font-weight: 800">High-priority precautions</span>
+<span style="font-size: 16px; font-weight: 800">Worker W-0412 needs reduced exposure today</span>
+<span style="font-size: 13px; color: #4A5561; margin-left: auto">Crew C · Now</span>
+</div>
+<p style="margin: 0; font-size: 15px; line-height: 1.45"><strong>Do:</strong> reassign to shaded or lighter duty until 15:00 and add a recovery break every 30 min.</p>
+<span style="display: flex; align-items: center; gap: 8px; font-size: 13px; color: #4A5561">
+<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"></rect><path d="M8 11V8a4 4 0 0 1 8 0v3"></path></svg>Health reasons are visible to occupational health only.</span>
+<div style="display: flex; flex-wrap: wrap; gap: 8px">
+<button style="height: 44px; padding: 0 18px; border-radius: 10px; border: none; background: #14181D; color: #FFFFFF; font-family: inherit; font-size: 15px; font-weight: 700">Reassign</button>
+<button style="height: 44px; padding: 0 18px; border-radius: 10px; border: 1px solid #C7CFD6; background: #FFFFFF; color: #14181D; font-family: inherit; font-size: 15px; font-weight: 700">Acknowledge</button>
+</div>
+</article>
+</section>
+
+<section aria-label="Recommended actions" style="flex: 2 1 380px; min-width: 0; background: #FFFFFF; border-radius: 18px; padding: 22px; display: flex; flex-direction: column; gap: 14px">
+<div style="display: flex; justify-content: space-between; align-items: baseline">
+<h2 style="margin: 0; font-size: 18px; font-weight: 800">Actions today</h2>
+<span style="font-size: 14px; color: #4A5561">2 of 5 done</span>
+</div>
+<div style="display: flex; flex-direction: column">
+<div style="display: flex; align-items: flex-start; gap: 12px; padding: 12px 0; border-bottom: 1px solid #E3E7EB"><span style="flex: 1; display: flex; flex-direction: column; gap: 2px"><span style="font-size: 15px; font-weight: 700">Extra 15 min breaks every 45 min</span><span style="font-size: 13px; color: #4A5561">Crews B and C · from 10:00</span></span><span style="padding: 4px 10px; border-radius: 999px; background: #E2F1E9; color: #14532F; font-size: 12px; font-weight: 800">Done</span></div>
+<div style="display: flex; align-items: flex-start; gap: 12px; padding: 12px 0; border-bottom: 1px solid #E3E7EB"><span style="flex: 1; display: flex; flex-direction: column; gap: 2px"><span style="font-size: 15px; font-weight: 700">Set up cooled rest area near Block 2</span><span style="font-size: 13px; color: #4A5561">Site · by 11:00</span></span><span style="padding: 4px 10px; border-radius: 999px; background: #E2F1E9; color: #14532F; font-size: 12px; font-weight: 800">Done</span></div>
+<div style="display: flex; align-items: flex-start; gap: 12px; padding: 12px 0; border-bottom: 1px solid #E3E7EB"><span style="flex: 1; display: flex; flex-direction: column; gap: 2px"><span style="font-size: 15px; font-weight: 700">Move heavy digging before 12:00</span><span style="font-size: 13px; color: #4A5561">Crew B · by 12:00</span></span><span style="padding: 4px 10px; border-radius: 999px; background: #E3EDF7; color: #1D4E80; font-size: 12px; font-weight: 800">Acknowledged</span></div>
+<div style="display: flex; align-items: flex-start; gap: 12px; padding: 12px 0; border-bottom: 1px solid #E3E7EB"><span style="flex: 1; display: flex; flex-direction: column; gap: 2px"><span style="font-size: 15px; font-weight: 700">Rotate welders to shaded tasks hourly</span><span style="font-size: 13px; color: #4A5561">Crew C · 12:00 to 15:00</span></span><span style="padding: 4px 10px; border-radius: 999px; background: #EEF1F3; color: #4A5561; font-size: 12px; font-weight: 800">Pending</span></div>
+<div style="display: flex; align-items: flex-start; gap: 12px; padding: 12px 0"><span style="flex: 1; display: flex; flex-direction: column; gap: 2px"><span style="font-size: 15px; font-weight: 700">Prepare to pause outdoor work if Critical</span><span style="font-size: 13px; color: #4A5561">All crews · 13:00 to 15:00</span></span><span style="padding: 4px 10px; border-radius: 999px; background: #EEF1F3; color: #4A5561; font-size: 12px; font-weight: 800">Pending</span></div>
+</div>
+<span style="font-size: 13px; line-height: 1.4; color: #4A5561">Actions keep PPE in place. HeatGuard never suggests removing protective equipment.</span>
+</section>
+
+</div>
+
+<section aria-label="Today's measures" style="background: #FFFFFF; border-radius: 18px; padding: 22px; display: flex; flex-direction: column; gap: 14px">
+<div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 8px">
+<h2 style="margin: 0; font-size: 18px; font-weight: 800">Today so far</h2>
+<a href="Measures.dc.html" style="font-size: 15px; font-weight: 700">All safety and productivity measures</a>
+</div>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 16px">
+<div style="display: flex; flex-direction: column; gap: 2px; padding: 4px 0"><span style="font-size: 24px; font-weight: 700; font-family: 'IBM Plex Mono', monospace">1 h 40 m</span><span style="font-size: 13px; color: #4A5561">Warning lead time</span></div><div style="display: flex; flex-direction: column; gap: 2px; padding: 4px 0"><span style="font-size: 24px; font-weight: 700; font-family: 'IBM Plex Mono', monospace">1 of 6</span><span style="font-size: 13px; color: #4A5561">Warnings not borne out</span></div><div style="display: flex; flex-direction: column; gap: 2px; padding: 4px 0"><span style="font-size: 24px; font-weight: 700; font-family: 'IBM Plex Mono', monospace">86%</span><span style="font-size: 13px; color: #4A5561">Actions followed</span></div><div style="display: flex; flex-direction: column; gap: 2px; padding: 4px 0"><span style="font-size: 24px; font-weight: 700; font-family: 'IBM Plex Mono', monospace">2</span><span style="font-size: 13px; color: #4A5561">Symptom reports</span></div><div style="display: flex; flex-direction: column; gap: 2px; padding: 4px 0"><span style="font-size: 24px; font-weight: 700; font-family: 'IBM Plex Mono', monospace">1</span><span style="font-size: 13px; color: #4A5561">Emergency escalation</span></div><div style="display: flex; flex-direction: column; gap: 2px; padding: 4px 0"><span style="font-size: 24px; font-weight: 700; font-family: 'IBM Plex Mono', monospace">3.5 h</span><span style="font-size: 13px; color: #4A5561">Work time paused</span></div></div>
+</section>
+
+<section aria-label="Crew assessment" style="background: #FFFFFF; border-radius: 18px; padding: 22px; display: flex; flex-direction: column; gap: 14px">
+<h2 style="margin: 0; font-size: 18px; font-weight: 800">Crews</h2>
+<div style="overflow-x: auto">
+<table style="width: 100%; min-width: 900px; border-collapse: collapse; font-size: 15px">
+<thead>
+<tr style="text-align: left; color: #4A5561; font-size: 13px">
+<th scope="col" style="padding: 10px 12px; border-bottom: 2px solid #D5DBE0; font-weight: 700">Crew</th>
+<th scope="col" style="padding: 10px 12px; border-bottom: 2px solid #D5DBE0; font-weight: 700">Activity</th>
+<th scope="col" style="padding: 10px 12px; border-bottom: 2px solid #D5DBE0; font-weight: 700">Workload</th>
+<th scope="col" style="padding: 10px 12px; border-bottom: 2px solid #D5DBE0; font-weight: 700">PPE</th>
+<th scope="col" style="padding: 10px 12px; border-bottom: 2px solid #D5DBE0; font-weight: 700">Workers</th>
+<th scope="col" style="padding: 10px 12px; border-bottom: 2px solid #D5DBE0; font-weight: 700">Now</th>
+<th scope="col" style="padding: 10px 12px; border-bottom: 2px solid #D5DBE0; font-weight: 700">Peak 13:00 to 15:00</th>
+<th scope="col" style="padding: 10px 12px; border-bottom: 2px solid #D5DBE0; font-weight: 700">Next action</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="padding: 14px 12px; border-bottom: 1px solid #E3E7EB; font-weight: 700">Crew A</td>
+<td style="padding: 14px 12px; border-bottom: 1px solid #E3E7EB">Concrete work</td>
+<td style="padding: 14px 12px; border-bottom: 1px solid #E3E7EB">Heavy</td>
+<td style="padding: 14px 12px; border-bottom: 1px solid #E3E7EB">Standard</td>
+<td style="padding: 14px 12px; border-bottom: 1px solid #E3E7EB; font-family: 'IBM Plex Mono', monospace">8</td>
+<td style="padding: 14px 12px; border-bottom: 1px solid #E3E7EB"><span style="padding: 4px 10px; border-radius: 999px; background: #F4C542; color: #14181D; font-size: 13px; font-weight: 800">2 · Elevated</span></td>
+<td style="padding: 14px 12px; border-bottom: 1px solid #E3E7EB"><span style="padding: 4px 10px; border-radius: 999px; background: #E8742A; color: #14181D; font-size: 13px; font-weight: 800">3 · High</span></td>
+<td style="padding: 14px 12px; border-bottom: 1px solid #E3E7EB">Shade breaks from 12:00</td>
+</tr>
+<tr>
+<td style="padding: 14px 12px; border-bottom: 1px solid #E3E7EB; font-weight: 700">Crew B</td>
+<td style="padding: 14px 12px; border-bottom: 1px solid #E3E7EB">Excavation</td>
+<td style="padding: 14px 12px; border-bottom: 1px solid #E3E7EB">Very heavy</td>
+<td style="padding: 14px 12px; border-bottom: 1px solid #E3E7EB">Coveralls</td>
+<td style="padding: 14px 12px; border-bottom: 1px solid #E3E7EB; font-family: 'IBM Plex Mono', monospace">7</td>
+<td style="padding: 14px 12px; border-bottom: 1px solid #E3E7EB"><span style="padding: 4px 10px; border-radius: 999px; background: #E8742A; color: #14181D; font-size: 13px; font-weight: 800">3 · High</span></td>
+<td style="padding: 14px 12px; border-bottom: 1px solid #E3E7EB"><span style="padding: 4px 10px; border-radius: 999px; background: #9E1B24; color: #FFFFFF; font-size: 13px; font-weight: 800">4 · Critical possible</span></td>
+<td style="padding: 14px 12px; border-bottom: 1px solid #E3E7EB">Heavy digging before 12:00</td>
+</tr>
+<tr>
+<td style="padding: 14px 12px; border-bottom: 1px solid #E3E7EB; font-weight: 700">Crew C</td>
+<td style="padding: 14px 12px; border-bottom: 1px solid #E3E7EB">Welding</td>
+<td style="padding: 14px 12px; border-bottom: 1px solid #E3E7EB">Moderate</td>
+<td style="padding: 14px 12px; border-bottom: 1px solid #E3E7EB">Welding PPE</td>
+<td style="padding: 14px 12px; border-bottom: 1px solid #E3E7EB; font-family: 'IBM Plex Mono', monospace">6</td>
+<td style="padding: 14px 12px; border-bottom: 1px solid #E3E7EB"><span style="padding: 4px 10px; border-radius: 999px; background: #F4C542; color: #14181D; font-size: 13px; font-weight: 800">2 · Elevated</span></td>
+<td style="padding: 14px 12px; border-bottom: 1px solid #E3E7EB"><span style="padding: 4px 10px; border-radius: 999px; background: #E8742A; color: #14181D; font-size: 13px; font-weight: 800">3 · High</span></td>
+<td style="padding: 14px 12px; border-bottom: 1px solid #E3E7EB">Rotate to shaded tasks hourly</td>
+</tr>
+<tr>
+<td style="padding: 14px 12px; font-weight: 700">Crew D</td>
+<td style="padding: 14px 12px">Site logistics</td>
+<td style="padding: 14px 12px">Light</td>
+<td style="padding: 14px 12px">Standard</td>
+<td style="padding: 14px 12px; font-family: 'IBM Plex Mono', monospace">8</td>
+<td style="padding: 14px 12px"><span style="padding: 4px 10px; border-radius: 999px; background: #2F6FB0; color: #FFFFFF; font-size: 13px; font-weight: 800">1 · Low</span></td>
+<td style="padding: 14px 12px"><span style="padding: 4px 10px; border-radius: 999px; background: #F4C542; color: #14181D; font-size: 13px; font-weight: 800">2 · Elevated</span></td>
+<td style="padding: 14px 12px">Routine breaks</td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+
+<section aria-label="Last 7 days" style="background: #FFFFFF; border-radius: 18px; padding: 22px; display: flex; flex-direction: column; gap: 16px">
+<div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 8px">
+<h2 style="margin: 0; font-size: 18px; font-weight: 800">Last 7 days</h2>
+<span style="font-size: 14px; color: #4A5561">Hours at High or above · actions done on time: 18 of 21</span>
+</div>
+<div style="display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 14px; align-items: end; height: 180px" role="img" aria-label="Hours at High or above: Thursday 3, Friday 4, Saturday 2, Sunday 0, Monday 5, Tuesday 6, Wednesday 4">
+<div style="display: flex; flex-direction: column; align-items: center; gap: 6px; justify-content: flex-end; height: 100%"><span style="font-size: 13px; font-weight: 700; font-family: 'IBM Plex Mono', monospace">3</span><span style="width: 100%; max-width: 64px; height: 60px; border-radius: 8px 8px 0 0; background: #E8742A"></span><span style="font-size: 13px; color: #4A5561">Thu</span></div>
+<div style="display: flex; flex-direction: column; align-items: center; gap: 6px; justify-content: flex-end; height: 100%"><span style="font-size: 13px; font-weight: 700; font-family: 'IBM Plex Mono', monospace">4</span><span style="width: 100%; max-width: 64px; height: 80px; border-radius: 8px 8px 0 0; background: #E8742A"></span><span style="font-size: 13px; color: #4A5561">Fri</span></div>
+<div style="display: flex; flex-direction: column; align-items: center; gap: 6px; justify-content: flex-end; height: 100%"><span style="font-size: 13px; font-weight: 700; font-family: 'IBM Plex Mono', monospace">2</span><span style="width: 100%; max-width: 64px; height: 40px; border-radius: 8px 8px 0 0; background: #E8742A"></span><span style="font-size: 13px; color: #4A5561">Sat</span></div>
+<div style="display: flex; flex-direction: column; align-items: center; gap: 6px; justify-content: flex-end; height: 100%"><span style="font-size: 13px; font-weight: 700; font-family: 'IBM Plex Mono', monospace">0</span><span style="width: 100%; max-width: 64px; height: 2px; background: #C7CFD6"></span><span style="font-size: 13px; color: #4A5561">Sun</span></div>
+<div style="display: flex; flex-direction: column; align-items: center; gap: 6px; justify-content: flex-end; height: 100%"><span style="font-size: 13px; font-weight: 700; font-family: 'IBM Plex Mono', monospace">5</span><span style="width: 100%; max-width: 64px; height: 100px; border-radius: 8px 8px 0 0; background: #E8742A"></span><span style="font-size: 13px; color: #4A5561">Mon</span></div>
+<div style="display: flex; flex-direction: column; align-items: center; gap: 6px; justify-content: flex-end; height: 100%"><span style="font-size: 13px; font-weight: 700; font-family: 'IBM Plex Mono', monospace">6</span><span style="width: 100%; max-width: 64px; height: 120px; border-radius: 8px 8px 0 0; background: #E8742A"></span><span style="font-size: 13px; color: #4A5561">Tue</span></div>
+<div style="display: flex; flex-direction: column; align-items: center; gap: 6px; justify-content: flex-end; height: 100%"><span style="font-size: 13px; font-weight: 700; font-family: 'IBM Plex Mono', monospace">4</span><span style="width: 100%; max-width: 64px; height: 80px; border-radius: 8px 8px 0 0; background: #E8742A"></span><span style="font-size: 13px; color: #4A5561">Wed</span></div>
+</div>
+</section>
+
+<footer style="display: flex; gap: 10px; align-items: flex-start; padding: 4px 4px 24px 4px; font-size: 13px; line-height: 1.5; color: #4A5561">
+<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex-shrink: 0; margin-top: 1px"><rect x="5" y="11" width="14" height="10" rx="2"></rect><path d="M8 11V8a4 4 0 0 1 8 0v3"></path></svg>
+<span>You see risk levels and actions, never health conditions, medicines or symptoms. Health information is not used for discipline, productivity rankings or employment decisions.</span>
+</footer>
+
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":2400}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return {};
+  }
+}
+</script>
+</body>
+</html>

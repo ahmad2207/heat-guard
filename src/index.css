@@ -1,1 +1,61 @@
 @import 'tailwindcss';
+
+/*
+ * Design tokens from design-reference/TOKENS.md. The default Tailwind palette is
+ * switched off so components can only use these names.
+ */
+@theme {
+  --font-sans: 'Public Sans', system-ui, sans-serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, monospace;
+
+  --color-*: initial;
+
+  /* Core colours */
+  --color-ink: #14181d;
+  --color-muted: #4a5561;
+  --color-subtle: #8a949e;
+  --color-ground: #eef1f3;
+  --color-surface: #ffffff;
+  --color-line: #d5dbe0;
+  --color-line-soft: #e3e7eb;
+  --color-field: #c7cfd6;
+  --color-ink-raised: #2e3741;
+  --color-ok: #1e7b4f;
+  --color-ok-bg: #e2f1e9;
+  --color-ok-text: #14532f;
+  --color-info-bg: #e3edf7;
+  --color-info-text: #1d4e80;
+  --color-warn-bg: #fdf0e6;
+  --color-danger-bg: #fbe9ea;
+  --color-danger-text: #7a1219;
+  --color-oh-header: #1d3a57;
+
+  /* Risk levels: background and the text colour to use on it */
+  --color-risk-1: #2f6fb0;
+  --color-risk-1-text: #ffffff;
+  --color-risk-2: #f4c542;
+  --color-risk-2-text: #14181d;
+  --color-risk-3: #e8742a;
+  --color-risk-3-text: #14181d;
+  --color-risk-4: #9e1b24;
+  --color-risk-4-text: #ffffff;
+
+  /* Extra colours used in design-reference/html but not listed in the original TOKENS.md */
+  --color-brand: #e8742a;
+  --color-task-moderate: #5b6875;
+  --color-status-live: #4fc38a;
+  --color-ink-control: #222a33;
+  --color-warn: #c2410c;
+  --color-warn-text: #7a3510;
+  --color-warn-strong: #9a4310;
+  --color-oh-header-raised: #2b4e71;
+  --color-oh-header-muted: #d5e2ef;
+  --color-oh-header-line: #5a7896;
+  --color-oh-selected: #f4f7fa;
+}
+
+@layer base {
+  body {
+    @apply bg-ground font-sans text-ink antialiased;
+  }
+}

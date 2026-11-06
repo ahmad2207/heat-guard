@@ -1,0 +1,144 @@
+<!doctype html><html><head><meta name="viewport" content="width=device-width, initial-scale=1"><title>HeatGuard design reference</title><meta charset="utf-8"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@500;600&display=swap"></head><body style="margin:0">
+
+
+<style>
+body{margin:0}
+a{color:#2F6FB0}a:hover{color:#1D4E80}
+</style>
+
+<div style="min-height: 100vh; background: #EEF1F3; font-family: 'Public Sans', system-ui, sans-serif; color: #14181D">
+
+<header style="background: #1D3A57; color: #FFFFFF">
+<div style="max-width: 1360px; margin: 0 auto; padding: 14px 24px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px">
+<div style="display: flex; align-items: center; gap: 10px">
+<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#F4C542" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 14.76V3.5a2.5 2.5 0 0 0-5 0v11.26a4.5 4.5 0 1 0 5 0z"></path><circle cx="11.5" cy="17.5" r="1.5"></circle></svg>
+<span style="font-size: 19px; font-weight: 800">HeatGuard</span>
+<span style="font-size: 15px; color: #D5E2EF; padding-left: 10px; border-left: 1px solid #5A7896">Occupational health</span>
+</div>
+<span style="display: flex; align-items: center; gap: 8px; padding: 8px 12px; border-radius: 10px; background: #2B4E71; font-size: 14px; font-weight: 700">
+<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"></rect><path d="M8 11V8a4 4 0 0 1 8 0v3"></path></svg>Confidential · every view is logged</span>
+</div>
+</header>
+
+<div style="max-width: 1360px; margin: 0 auto; padding: 24px; display: flex; flex-direction: column; gap: 20px">
+
+<div style="display: flex; flex-direction: column; gap: 4px">
+<h1 style="margin: 0; font-size: 28px; font-weight: 800; letter-spacing: -0.01em">Cases and profiles</h1>
+<span style="font-size: 15px; color: #4A5561">[SITE NAME] · health details on this page are never shown to supervisors or employers</span>
+</div>
+
+<div style="display: flex; flex-wrap: wrap; gap: 20px">
+
+<section aria-label="Open escalation" style="flex: 3 1 560px; min-width: 0; background: #FFFFFF; border-radius: 18px; padding: 22px; display: flex; flex-direction: column; gap: 14px">
+<div style="display: flex; flex-wrap: wrap; align-items: center; gap: 10px">
+<span style="padding: 4px 10px; border-radius: 999px; background: #9E1B24; color: #FFFFFF; font-size: 12px; font-weight: 800; letter-spacing: 0.04em; text-transform: uppercase">Escalation</span>
+<h2 style="margin: 0; font-size: 18px; font-weight: 800">Worker W-0388 · Crew B</h2>
+<span style="font-size: 13px; color: #4A5561; margin-left: auto">Reported 10:21</span>
+</div>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px">
+<div style="padding: 12px 14px; border-radius: 12px; background: #EEF1F3; display: flex; flex-direction: column; gap: 2px"><span style="font-size: 12px; font-weight: 700; color: #4A5561">Symptoms reported</span><span style="font-size: 15px; font-weight: 700">Dizzy, very thirsty</span></div>
+<div style="padding: 12px 14px; border-radius: 12px; background: #EEF1F3; display: flex; flex-direction: column; gap: 2px"><span style="font-size: 12px; font-weight: 700; color: #4A5561">Conditions at the time</span><span style="font-size: 15px; font-weight: 700">Level 3 · heavy digging · coveralls</span></div>
+<div style="padding: 12px 14px; border-radius: 12px; background: #EEF1F3; display: flex; flex-direction: column; gap: 2px"><span style="font-size: 12px; font-weight: 700; color: #4A5561">First aid</span><span style="font-size: 15px; font-weight: 700">Attended 10:24 · resting in shade</span></div>
+</div>
+<div style="display: flex; flex-direction: column; gap: 6px">
+<label for="note388" style="font-size: 14px; font-weight: 700">Clinical note (occupational health only)</label>
+<textarea id="note388" rows="2" placeholder="Assessment and advice" style="font-family: inherit; font-size: 15px; padding: 12px; border-radius: 12px; border: 1px solid #C7CFD6; resize: vertical"></textarea>
+</div>
+<div style="display: flex; flex-wrap: wrap; gap: 8px">
+<button style="height: 44px; padding: 0 18px; border-radius: 10px; border: none; background: #14181D; color: #FFFFFF; font-family: inherit; font-size: 15px; font-weight: 700">Fit to return later today</button>
+<button style="height: 44px; padding: 0 18px; border-radius: 10px; border: 1px solid #C7CFD6; background: #FFFFFF; color: #14181D; font-family: inherit; font-size: 15px; font-weight: 700">Rest for the shift</button>
+<button style="height: 44px; padding: 0 18px; border-radius: 10px; border: 1px solid #C7CFD6; background: #FFFFFF; color: #9E1B24; font-family: inherit; font-size: 15px; font-weight: 700">Refer to clinic</button>
+</div>
+<span style="font-size: 13px; color: #4A5561">The supervisor will only see the outcome: back at work, resting, or referred. Never the symptoms or this note.</span>
+</section>
+
+<section aria-label="Review queue" style="flex: 2 1 380px; min-width: 0; background: #FFFFFF; border-radius: 18px; padding: 22px; display: flex; flex-direction: column; gap: 12px">
+<div style="display: flex; justify-content: space-between; align-items: baseline">
+<h2 style="margin: 0; font-size: 18px; font-weight: 800">Profiles to review</h2>
+<span style="font-size: 14px; color: #4A5561">4 waiting</span>
+</div>
+<div style="display: flex; flex-direction: column">
+<div style="display: flex; align-items: center; gap: 12px; padding: 12px; border-radius: 12px; background: #E3EDF7"><span style="flex: 1; display: flex; flex-direction: column; gap: 2px"><span style="font-size: 15px; font-weight: 800">W-0412 · Crew C</span><span style="font-size: 13px; color: #1D4E80">Worker updated health information · today</span></span><span style="font-size: 12px; font-weight: 800; color: #1D4E80">Open</span></div>
+<div style="display: flex; align-items: center; gap: 12px; padding: 12px; border-bottom: 1px solid #E3E7EB"><span style="flex: 1; display: flex; flex-direction: column; gap: 2px"><span style="font-size: 15px; font-weight: 700">W-0377 · Crew A</span><span style="font-size: 13px; color: #4A5561">Worker requested a review · yesterday</span></span></div>
+<div style="display: flex; align-items: center; gap: 12px; padding: 12px; border-bottom: 1px solid #E3E7EB"><span style="flex: 1; display: flex; flex-direction: column; gap: 2px"><span style="font-size: 15px; font-weight: 700">W-0451 · Crew B</span><span style="font-size: 13px; color: #4A5561">New starter, not yet acclimatised · day 3 of 14</span></span></div>
+<div style="display: flex; align-items: center; gap: 12px; padding: 12px"><span style="flex: 1; display: flex; flex-direction: column; gap: 2px"><span style="font-size: 15px; font-weight: 700">W-0290 · Crew D</span><span style="font-size: 13px; color: #4A5561">Restriction due to end · Friday</span></span></div>
+</div>
+</section>
+
+</div>
+
+<section aria-label="Profile W-0412" style="background: #FFFFFF; border-radius: 18px; padding: 22px; display: flex; flex-direction: column; gap: 18px">
+<div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 8px">
+<h2 style="margin: 0; font-size: 20px; font-weight: 800">Profile W-0412 · Crew C · welding</h2>
+<span style="font-size: 14px; color: #4A5561">Consent: health information yes · wearable band yes, since 01 Nov · can be withdrawn by the worker</span>
+</div>
+
+<div style="display: flex; flex-wrap: wrap; gap: 20px">
+
+<div style="flex: 3 1 520px; min-width: 0; display: flex; flex-direction: column; gap: 16px">
+<div style="display: flex; flex-direction: column; gap: 8px">
+<span style="font-size: 13px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: #4A5561">What you record</span>
+<div style="display: flex; flex-wrap: wrap; gap: 8px">
+<span style="padding: 8px 12px; border-radius: 999px; background: #EEF1F3; font-size: 14px; font-weight: 600">Heart condition on file</span>
+<span style="padding: 8px 12px; border-radius: 999px; background: #EEF1F3; font-size: 14px; font-weight: 600">Medicine that affects hydration</span>
+<span style="padding: 8px 12px; border-radius: 999px; background: #EEF1F3; font-size: 14px; font-weight: 600">Acclimatised</span>
+<span style="padding: 8px 12px; border-radius: 999px; background: #EEF1F3; font-size: 14px; font-weight: 600">No past heat illness</span>
+</div>
+<span style="font-size: 13px; color: #4A5561">Only factors with a clear link to heat risk are collected.</span>
+</div>
+
+<fieldset style="margin: 0; border: none; padding: 0; display: flex; flex-direction: column; gap: 8px">
+<legend style="padding: 0; margin-bottom: 8px; font-size: 13px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: #4A5561">Precaution level</legend>
+
+<label style="display: flex; align-items: flex-start; gap: 12px; padding: 12px 14px; border-radius: 12px; border: 2px solid #D5DBE0; background: #FFFFFF; cursor: pointer">
+<input type="radio" name="level" style="width: 20px; height: 20px; margin: 2px 0 0 0; accent-color: #14181D; flex-shrink: 0">
+<span style="display: flex; flex-direction: column; gap: 2px"><span style="font-size: 15px; font-weight: 800">Standard precautions</span><span style="font-size: 13px; color: #4A5561">Same advice as the rest of the crew.</span></span>
+</label>
+
+<label style="display: flex; align-items: flex-start; gap: 12px; padding: 12px 14px; border-radius: 12px; border: 2px solid #D5DBE0; background: #FFFFFF; cursor: pointer">
+<input type="radio" name="level" style="width: 20px; height: 20px; margin: 2px 0 0 0; accent-color: #14181D; flex-shrink: 0">
+<span style="display: flex; flex-direction: column; gap: 2px"><span style="font-size: 15px; font-weight: 800">Enhanced precautions</span><span style="font-size: 13px; color: #4A5561">Earlier warnings and extra breaks.</span></span>
+</label>
+
+<label style="display: flex; align-items: flex-start; gap: 12px; padding: 12px 14px; border-radius: 12px; border: 2px solid #14181D; background: #F4F7FA; cursor: pointer">
+<input type="radio" name="level" checked style="width: 20px; height: 20px; margin: 2px 0 0 0; accent-color: #14181D; flex-shrink: 0">
+<span style="display: flex; flex-direction: column; gap: 2px"><span style="font-size: 15px; font-weight: 800">High-priority precautions</span><span style="font-size: 13px; color: #4A5561">Conservative exposure, set by a professional.</span></span>
+</label>
+
+</fieldset>
+
+<div style="display: flex; flex-direction: column; gap: 6px">
+<span style="font-size: 13px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: #4A5561">Work restrictions</span>
+<span style="font-size: 15px; line-height: 1.45">No heavy work at level 3 and above. Recovery break every 30 min. Review in 4 weeks.</span>
+</div>
+</div>
+
+<div style="flex: 2 1 360px; min-width: 0; display: flex; flex-direction: column; gap: 12px">
+<span style="font-size: 13px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: #4A5561">Preview: what others see</span>
+<div style="border: 1px solid #D5DBE0; border-radius: 14px; padding: 16px; display: flex; flex-direction: column; gap: 8px">
+<span style="font-size: 12px; font-weight: 800; color: #4A5561">SUPERVISOR DASHBOARD</span>
+<span style="align-self: flex-start; padding: 4px 10px; border-radius: 999px; background: #14181D; color: #FFFFFF; font-size: 12px; font-weight: 800">High-priority precautions</span>
+<span style="font-size: 15px; font-weight: 700; line-height: 1.4">Reduce exposure today: shaded or lighter duty at level 3 and above, break every 30 min.</span>
+<span style="font-size: 13px; color: #4A5561">No conditions, medicines or symptoms.</span>
+</div>
+<div style="border: 1px solid #D5DBE0; border-radius: 14px; padding: 16px; display: flex; flex-direction: column; gap: 8px">
+<span style="font-size: 12px; font-weight: 800; color: #4A5561">WORKER APP</span>
+<span style="font-size: 15px; font-weight: 700; line-height: 1.4">Your plan includes lighter or shaded work in hot hours and a break every 30 minutes.</span>
+</div>
+
+<button style="height: 48px; border-radius: 12px; border: none; background: #14181D; color: #FFFFFF; font-family: inherit; font-size: 15px; font-weight: 700">Save and notify worker</button>
+
+
+</div>
+
+</div>
+</section>
+
+<footer style="display: flex; gap: 10px; align-items: flex-start; padding: 4px 4px 24px 4px; font-size: 13px; line-height: 1.5; color: #4A5561">
+<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex-shrink: 0; margin-top: 1px"><rect x="5" y="11" width="14" height="10" rx="2"></rect><path d="M8 11V8a4 4 0 0 1 8 0v3"></path></svg>
+<span>Every view of a health record is logged and visible to the worker. Health information cannot be exported to HR systems or used for discipline, productivity rankings or employment decisions.</span>
+</footer>
+
+</div>
+</div>
+</body></html>

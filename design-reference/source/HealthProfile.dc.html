@@ -1,0 +1,205 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>HeatGuard my health profile</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700;800&amp;family=IBM+Plex+Mono:wght@500;600&amp;display=swap">
+<style>
+body{margin:0}
+a{color:#14181D}a:hover{color:#000000}
+</style>
+</helmet>
+<div style="width: 390px; height: 2480px; box-sizing: border-box; display: flex; flex-direction: column; background: #EEF1F3; font-family: 'Public Sans', system-ui, sans-serif; color: #14181D; overflow: hidden">
+
+<header style="display: flex; align-items: center; gap: 8px; padding: 12px 12px 4px 8px">
+<a href="Privacy.dc.html" aria-label="Back to my data" style="width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; border-radius: 22px; color: #14181D">
+<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"></path></svg>
+</a>
+<h1 style="margin: 0; font-size: 21px; font-weight: 800; flex: 1">My health profile</h1>
+<button aria-label="Listen to this page" style="height: 44px; padding: 0 12px; border-radius: 22px; border: 1px solid #C7CFD6; background: #FFFFFF; color: #14181D; font-family: inherit; font-size: 14px; font-weight: 700; display: flex; align-items: center; gap: 6px">
+<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5L6 9H3v6h3l5 4z"></path><path d="M15.5 8.5a5 5 0 0 1 0 7"></path></svg>Listen</button>
+</header>
+
+<main style="flex: 1; padding: 4px 16px 16px 16px; display: flex; flex-direction: column; gap: 12px">
+
+<section aria-label="About this profile" style="background: #14181D; color: #FFFFFF; border-radius: 16px; padding: 16px; display: flex; gap: 12px; align-items: flex-start">
+<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#F4C542" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex-shrink: 0; margin-top: 1px"><rect x="5" y="11" width="14" height="10" rx="2"></rect><path d="M8 11V8a4 4 0 0 1 8 0v3"></path></svg>
+<span style="font-size: 15px; line-height: 1.45">Every question is optional. Answers go to occupational health only and help them decide if you need extra care in the heat. Your supervisor never sees them.</span>
+</section>
+
+<section aria-label="Basic information" style="background: #FFFFFF; border-radius: 16px; padding: 16px; display: flex; flex-direction: column; gap: 12px">
+<h2 style="margin: 0; font-size: 17px; font-weight: 800">1. About you</h2>
+<div style="display: flex; justify-content: space-between; align-items: center; padding: 12px 14px; border-radius: 12px; background: #EEF1F3">
+<span style="font-size: 14px; color: #4A5561">Worker ID</span>
+<span style="font-size: 16px; font-weight: 700; font-family: 'IBM Plex Mono', monospace">W-0412</span>
+</div>
+<div style="display: flex; flex-direction: column; gap: 6px">
+<label for="age" style="font-size: 15px; font-weight: 700">Age range</label>
+<select id="age" style="height: 48px; padding: 0 12px; border-radius: 12px; border: 1px solid #C7CFD6; background: #FFFFFF; font-family: inherit; font-size: 16px; color: #14181D">
+<option>Prefer not to say</option>
+<option>Under 25</option>
+<option>25 to 39</option>
+<option selected>40 to 54</option>
+<option>55 or over</option>
+</select>
+<span style="font-size: 13px; color: #4A5561">Why we ask: the body copes with heat less well with age.</span>
+</div>
+</section>
+
+<section aria-label="Health conditions" style="background: #FFFFFF; border-radius: 16px; padding: 16px; display: flex; flex-direction: column; gap: 10px">
+<h2 style="margin: 0; font-size: 17px; font-weight: 800">2. Health conditions</h2>
+<span style="font-size: 14px; line-height: 1.4; color: #4A5561">Tick any you have been told you have. You do not need to give details.</span>
+<sc-for list="{{ conditions }}" as="o" hint-placeholder-count="6">
+<label style="min-height: 52px; box-sizing: border-box; padding: 10px 12px; border-radius: 12px; border: 2px solid {{ o.border }}; background: {{ o.bg }}; display: flex; align-items: center; gap: 12px; cursor: pointer">
+<input type="checkbox" checked="{{ o.on }}" onChange="{{ o.toggle }}" style="width: 22px; height: 22px; margin: 0; accent-color: #14181D; flex-shrink: 0">
+<span style="display: flex; flex-direction: column; gap: 1px"><span style="font-size: 15px; font-weight: 700">{{ o.label }}</span><span style="font-size: 13px; color: #4A5561">{{ o.hint }}</span></span>
+</label>
+</sc-for>
+</section>
+
+<section aria-label="Past heat illness" style="background: #FFFFFF; border-radius: 16px; padding: 16px; display: flex; flex-direction: column; gap: 10px">
+<h2 style="margin: 0; font-size: 17px; font-weight: 800">3. Past heat illness</h2>
+<span style="font-size: 14px; line-height: 1.4; color: #4A5561">Have you ever had heat exhaustion or heat stroke, or fainted from the heat?</span>
+<sc-for list="{{ history }}" as="o" hint-placeholder-count="4">
+<label style="min-height: 48px; box-sizing: border-box; padding: 10px 12px; border-radius: 12px; border: 2px solid {{ o.border }}; background: {{ o.bg }}; display: flex; align-items: center; gap: 12px; font-size: 15px; font-weight: 600; cursor: pointer">
+<input type="radio" name="history" checked="{{ o.on }}" onChange="{{ o.pick }}" style="width: 20px; height: 20px; margin: 0; accent-color: #14181D; flex-shrink: 0">
+<span>{{ o.label }}</span>
+</label>
+</sc-for>
+</section>
+
+<section aria-label="Medicines" style="background: #FFFFFF; border-radius: 16px; padding: 16px; display: flex; flex-direction: column; gap: 10px">
+<h2 style="margin: 0; font-size: 17px; font-weight: 800">4. Medicines</h2>
+<span style="font-size: 14px; line-height: 1.4; color: #4A5561">Some medicines make it harder to stay cool or hydrated. Tick the type, not the name.</span>
+<sc-for list="{{ meds }}" as="o" hint-placeholder-count="6">
+<label style="min-height: 52px; box-sizing: border-box; padding: 10px 12px; border-radius: 12px; border: 2px solid {{ o.border }}; background: {{ o.bg }}; display: flex; align-items: center; gap: 12px; cursor: pointer">
+<input type="checkbox" checked="{{ o.on }}" onChange="{{ o.toggle }}" style="width: 22px; height: 22px; margin: 0; accent-color: #14181D; flex-shrink: 0">
+<span style="display: flex; flex-direction: column; gap: 1px"><span style="font-size: 15px; font-weight: 700">{{ o.label }}</span><span style="font-size: 13px; color: #4A5561">{{ o.hint }}</span></span>
+</label>
+</sc-for>
+<span style="font-size: 13px; color: #4A5561">Not sure? Choose "Not sure" and a nurse can check with you.</span>
+</section>
+
+<section aria-label="Getting used to the heat" style="background: #FFFFFF; border-radius: 16px; padding: 16px; display: flex; flex-direction: column; gap: 10px">
+<h2 style="margin: 0; font-size: 17px; font-weight: 800">5. Getting used to the heat</h2>
+<span style="font-size: 14px; line-height: 1.4; color: #4A5561">How long have you been doing this kind of work in this heat?</span>
+<sc-for list="{{ acclim }}" as="o" hint-placeholder-count="4">
+<label style="min-height: 48px; box-sizing: border-box; padding: 10px 12px; border-radius: 12px; border: 2px solid {{ o.border }}; background: {{ o.bg }}; display: flex; align-items: center; gap: 12px; font-size: 15px; font-weight: 600; cursor: pointer">
+<input type="radio" name="acclim" checked="{{ o.on }}" onChange="{{ o.pick }}" style="width: 20px; height: 20px; margin: 0; accent-color: #14181D; flex-shrink: 0">
+<span>{{ o.label }}</span>
+</label>
+</sc-for>
+<span style="font-size: 13px; color: #4A5561">New or returning workers need about 1 to 2 weeks to adjust, so they get extra care at first.</span>
+</section>
+
+<section aria-label="Precautions set for you" style="background: #FFFFFF; border-radius: 16px; padding: 16px; display: flex; flex-direction: column; gap: 10px">
+<h2 style="margin: 0; font-size: 17px; font-weight: 800">6. Precautions set for you</h2>
+<span style="font-size: 14px; line-height: 1.4; color: #4A5561">Set by occupational health from your answers. You cannot change these here, but you can ask for a review.</span>
+<div style="display: flex; align-items: center; gap: 10px">
+<span style="padding: 6px 12px; border-radius: 999px; background: #14181D; color: #FFFFFF; font-size: 14px; font-weight: 700">High-priority precautions</span>
+</div>
+<div style="display: flex; flex-direction: column; gap: 8px; padding: 12px 14px; border-radius: 12px; background: #EEF1F3">
+<span style="font-size: 15px; line-height: 1.4">No heavy work at level 3 and above</span>
+<span style="font-size: 15px; line-height: 1.4">Recovery break every 30 min at level 3 and above</span>
+</div>
+<span style="font-size: 13px; color: #4A5561">Set 12 Oct · next review 9 Nov</span>
+<button style="height: 48px; border-radius: 12px; border: 1px solid #C7CFD6; background: #FFFFFF; color: #14181D; font-family: inherit; font-size: 15px; font-weight: 700">Request a review</button>
+</section>
+
+</main>
+
+<div style="padding: 12px 16px 20px 16px; background: #FFFFFF; border-top: 1px solid #D5DBE0; display: flex; flex-direction: column; gap: 8px">
+<sc-if value="{{ notSaved }}" hint-placeholder-val="{{ true }}">
+<button onClick="{{ save }}" style="height: 54px; border-radius: 14px; border: none; background: #14181D; color: #FFFFFF; font-family: inherit; font-size: 17px; font-weight: 700">Send to occupational health</button>
+</sc-if>
+<sc-if value="{{ saved }}" hint-placeholder-val="{{ false }}">
+<div role="status" style="padding: 14px 16px; border-radius: 14px; background: #E2F1E9; color: #14532F; font-size: 15px; font-weight: 700; line-height: 1.4">Sent. A nurse will review it and you will see any change to your precautions here.</div>
+<a href="Main.dc.html" style="height: 50px; border-radius: 14px; border: 1px solid #C7CFD6; display: flex; align-items: center; justify-content: center; text-decoration: none; color: #14181D; font-size: 16px; font-weight: 700">Go to my status</a>
+</sc-if>
+<span style="font-size: 13px; line-height: 1.4; color: #4A5561; text-align: center">You can change or delete these answers at any time in My data.</span>
+</div>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":2480}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = {
+      cond: { heart: true },
+      med: { bp: true },
+      history: 'no',
+      acclim: 'over2',
+      saved: false
+    };
+  }
+  multi(list, key) {
+    const picked = this.state[key];
+    return list.map((o) => {
+      const on = !!picked[o.id];
+      return {
+        label: o.label, hint: o.hint, on: on,
+        bg: on ? '#FDF0E6' : '#FFFFFF',
+        border: on ? '#14181D' : '#D5DBE0',
+        toggle: () => {
+          let next = Object.assign({}, picked, { [o.id]: !on });
+          if (o.id === 'none' && !on) next = { none: true };
+          if (o.id !== 'none' && !on) next.none = false;
+          this.setState({ [key]: next, saved: false });
+        }
+      };
+    });
+  }
+  single(list, key) {
+    const cur = this.state[key];
+    return list.map((o) => ({
+      label: o.label, on: cur === o.id,
+      bg: cur === o.id ? '#FDF0E6' : '#FFFFFF',
+      border: cur === o.id ? '#14181D' : '#D5DBE0',
+      pick: () => this.setState({ [key]: o.id, saved: false })
+    }));
+  }
+  renderVals() {
+    return {
+      conditions: this.multi([
+        { id: 'heart', label: 'Heart or blood pressure', hint: 'For example heart disease or high blood pressure' },
+        { id: 'lungs', label: 'Breathing', hint: 'For example asthma or COPD' },
+        { id: 'kidney', label: 'Kidneys', hint: 'Any kidney condition' },
+        { id: 'meta', label: 'Diabetes, thyroid or weight-related', hint: 'Conditions that affect how your body uses energy' },
+        { id: 'other', label: 'Something else that affects heat', hint: 'A nurse will ask you about it in private' },
+        { id: 'none', label: 'None of these', hint: '' }
+      ], 'cond'),
+      history: this.single([
+        { id: 'no', label: 'No' },
+        { id: 'recent', label: 'Yes, in the last 12 months' },
+        { id: 'old', label: 'Yes, longer ago' },
+        { id: 'unsure', label: 'Not sure' }
+      ], 'history'),
+      meds: this.multi([
+        { id: 'water', label: 'Water tablets', hint: 'Make you pass more urine' },
+        { id: 'bp', label: 'Heart or blood pressure medicine', hint: 'Taken every day' },
+        { id: 'allergy', label: 'Allergy or sleep medicine', hint: 'Can reduce sweating' },
+        { id: 'mood', label: 'Medicine for mood, nerves or seizures', hint: 'Some affect body temperature' },
+        { id: 'unsure', label: 'Not sure', hint: 'A nurse can check with you' },
+        { id: 'none', label: 'None of these', hint: '' }
+      ], 'med'),
+      acclim: this.single([
+        { id: 'new', label: 'Less than 1 week' },
+        { id: 'adjusting', label: '1 to 2 weeks' },
+        { id: 'over2', label: 'More than 2 weeks' },
+        { id: 'back', label: 'Back after a week or more away' }
+      ], 'acclim'),
+      saved: this.state.saved,
+      notSaved: !this.state.saved,
+      save: () => this.setState({ saved: true })
+    };
+  }
+}
+</script>
+</body>
+</html>

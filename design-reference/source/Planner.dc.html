@@ -1,0 +1,219 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>HeatGuard shift plan</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700;800&amp;family=IBM+Plex+Mono:wght@500;600&amp;display=swap">
+<style>
+body{margin:0}
+a{color:#2F6FB0}a:hover{color:#1D4E80}
+</style>
+</helmet>
+<div style="min-height: 100vh; background: #EEF1F3; font-family: 'Public Sans', system-ui, sans-serif; color: #14181D">
+
+<header style="background: #14181D; color: #FFFFFF">
+<div style="max-width: 1360px; margin: 0 auto; padding: 14px 24px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px">
+<div style="display: flex; align-items: center; gap: 10px">
+<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#E8742A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 14.76V3.5a2.5 2.5 0 0 0-5 0v11.26a4.5 4.5 0 1 0 5 0z"></path><circle cx="11.5" cy="17.5" r="1.5"></circle></svg>
+<span style="font-size: 19px; font-weight: 800">HeatGuard</span>
+<span style="font-size: 15px; color: #D5DBE0; padding-left: 10px; border-left: 1px solid #4A5561">Supervisor</span>
+</div>
+<nav aria-label="Sections" style="display: flex; gap: 6px">
+<a href="Dashboard.dc.html" style="padding: 10px 14px; border-radius: 10px; color: #D5DBE0; text-decoration: none; font-size: 15px; font-weight: 600">Today</a>
+<a href="Planner.dc.html" aria-current="page" style="padding: 10px 14px; border-radius: 10px; background: #2E3741; color: #FFFFFF; text-decoration: none; font-size: 15px; font-weight: 700">Plan</a>
+<a href="Measures.dc.html" style="padding: 10px 14px; border-radius: 10px; color: #D5DBE0; text-decoration: none; font-size: 15px; font-weight: 600">Measures</a>
+</nav>
+<div style="display: flex; flex-wrap: wrap; align-items: center; gap: 16px">
+<span style="display: flex; align-items: center; gap: 8px; font-size: 14px; color: #D5DBE0"><span style="width: 8px; height: 8px; border-radius: 4px; background: #4FC38A"></span>Forecast updated 10:30</span>
+<button aria-label="Account" style="width: 40px; height: 40px; border-radius: 20px; border: 1px solid #4A5561; background: #222A33; color: #FFFFFF; font-family: inherit; font-size: 14px; font-weight: 700">SU</button>
+</div>
+</div>
+</header>
+
+<div style="max-width: 1360px; margin: 0 auto; padding: 24px; display: flex; flex-direction: column; gap: 20px">
+
+<div style="display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 16px">
+<div style="display: flex; flex-direction: column; gap: 4px">
+<h1 style="margin: 0; font-size: 28px; font-weight: 800; letter-spacing: -0.01em">Shift plan</h1>
+<span style="font-size: 15px; color: #4A5561">[SITE NAME] · Day shift · 07:00 to 17:00 · plan breaks, rotation and task timing around the heat</span>
+</div>
+<div role="group" aria-label="Plan to show" style="display: flex; padding: 4px; border-radius: 12px; background: #FFFFFF; border: 1px solid #D5DBE0">
+<button onClick="{{ showCurrent }}" aria-pressed="{{ isCurrent }}" style="height: 44px; padding: 0 18px; border-radius: 9px; border: none; background: {{ curBg }}; color: {{ curFg }}; font-family: inherit; font-size: 15px; font-weight: 700">Current plan</button>
+<button onClick="{{ showSuggested }}" aria-pressed="{{ isSuggested }}" style="height: 44px; padding: 0 18px; border-radius: 9px; border: none; background: {{ sugBg }}; color: {{ sugFg }}; font-family: inherit; font-size: 15px; font-weight: 700">Suggested plan</button>
+</div>
+</div>
+
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px">
+<div style="background: #FFFFFF; border-radius: 16px; padding: 18px 20px; display: flex; flex-direction: column; gap: 4px">
+<span style="font-size: 13px; font-weight: 700; color: #4A5561">Strenuous work in hot hours</span>
+<span style="font-size: 30px; font-weight: 700; font-family: 'IBM Plex Mono', monospace">{{ conflictText }}</span>
+<span style="font-size: 13px; color: #4A5561">Heavy work at High or above, or any strenuous work at Critical</span>
+</div>
+<div style="background: #FFFFFF; border-radius: 16px; padding: 18px 20px; display: flex; flex-direction: column; gap: 4px">
+<span style="font-size: 13px; font-weight: 700; color: #4A5561">Working hours</span>
+<span style="font-size: 30px; font-weight: 700; font-family: 'IBM Plex Mono', monospace">{{ workText }}</span>
+<span style="font-size: 13px; color: #4A5561">Across all crews, same in both plans</span>
+</div>
+<div style="background: #FFFFFF; border-radius: 16px; padding: 18px 20px; display: flex; flex-direction: column; gap: 4px">
+<span style="font-size: 13px; font-weight: 700; color: #4A5561">Workers needing reduced exposure</span>
+<span style="font-size: 30px; font-weight: 700; font-family: 'IBM Plex Mono', monospace">2</span>
+<span style="font-size: 13px; color: #4A5561">Reasons visible to occupational health only</span>
+</div>
+</div>
+
+<section aria-label="Timeline" style="background: #FFFFFF; border-radius: 18px; padding: 22px; display: flex; flex-direction: column; gap: 14px">
+<div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 8px">
+<h2 style="margin: 0; font-size: 18px; font-weight: 800">{{ planTitle }}</h2>
+<span style="font-size: 14px; color: #4A5561">Red outline: work that is too strenuous for the forecast heat</span>
+</div>
+<div style="overflow-x: auto">
+<div style="min-width: 1000px; display: flex; flex-direction: column; gap: 8px">
+<div style="display: grid; grid-template-columns: 220px repeat(10, minmax(0, 1fr)); gap: 6px; align-items: end">
+<span style="font-size: 13px; font-weight: 700; color: #4A5561">Site heat</span>
+<sc-for list="{{ heat }}" as="h" hint-placeholder-count="10">
+<div style="display: flex; flex-direction: column; align-items: center; gap: 4px">
+<span style="font-size: 12px; color: #4A5561; font-family: 'IBM Plex Mono', monospace">{{ h.time }}</span>
+<span style="width: 100%; height: 30px; border-radius: 8px; background: {{ h.bg }}; color: {{ h.fg }}; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 800">{{ h.label }}</span>
+</div>
+</sc-for>
+</div>
+<sc-for list="{{ crews }}" as="c" hint-placeholder-count="4">
+<div style="display: grid; grid-template-columns: 220px repeat(10, minmax(0, 1fr)); gap: 6px; align-items: stretch; padding-top: 8px; border-top: 1px solid #E3E7EB">
+<div style="display: flex; flex-direction: column; gap: 2px; justify-content: center">
+<span style="font-size: 15px; font-weight: 800">{{ c.name }}</span>
+<span style="font-size: 13px; color: #4A5561">{{ c.meta }}</span>
+</div>
+<sc-for list="{{ c.cells }}" as="k" hint-placeholder-count="10">
+<div style="min-height: 56px; box-sizing: border-box; border-radius: 8px; background: {{ k.bg }}; color: {{ k.fg }}; border: {{ k.border }}; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; font-size: 13px; font-weight: 700; text-align: center">
+<span>{{ k.label }}</span>
+<span style="font-size: 11px; font-weight: 800">{{ k.warn }}</span>
+</div>
+</sc-for>
+</div>
+</sc-for>
+</div>
+</div>
+<div style="display: flex; flex-wrap: wrap; gap: 16px; font-size: 13px; color: #4A5561">
+<span style="display: flex; align-items: center; gap: 6px"><span style="width: 16px; height: 16px; border-radius: 4px; background: #14181D"></span>Heavy</span>
+<span style="display: flex; align-items: center; gap: 6px"><span style="width: 16px; height: 16px; border-radius: 4px; background: #5B6875"></span>Moderate</span>
+<span style="display: flex; align-items: center; gap: 6px"><span style="width: 16px; height: 16px; border-radius: 4px; background: #D5DBE0"></span>Light or shaded</span>
+<span style="display: flex; align-items: center; gap: 6px"><span style="width: 16px; height: 16px; border-radius: 4px; border: 2px dashed #8A949E; box-sizing: border-box"></span>Break</span>
+<span style="display: flex; align-items: center; gap: 6px"><span style="width: 16px; height: 16px; border-radius: 4px; border: 3px solid #9E1B24; box-sizing: border-box"></span>Too strenuous for the heat</span>
+</div>
+</section>
+
+<div style="display: flex; flex-wrap: wrap; gap: 20px">
+
+<section aria-label="What the suggested plan changes" style="flex: 3 1 560px; min-width: 0; background: #FFFFFF; border-radius: 18px; padding: 22px; display: flex; flex-direction: column; gap: 14px">
+<h2 style="margin: 0; font-size: 18px; font-weight: 800">What the suggested plan changes</h2>
+<div style="display: flex; flex-direction: column">
+<div style="display: flex; gap: 14px; padding: 12px 0; border-bottom: 1px solid #E3E7EB"><span style="font-size: 15px; font-weight: 800; width: 72px; flex-shrink: 0">Crew B</span><span style="font-size: 15px; line-height: 1.45">Finish heavy digging by 10:00, switch to light shaded work through the peak, return to heavy work at 16:00.</span></div>
+<div style="display: flex; gap: 14px; padding: 12px 0; border-bottom: 1px solid #E3E7EB"><span style="font-size: 15px; font-weight: 800; width: 72px; flex-shrink: 0">Crew A</span><span style="font-size: 15px; line-height: 1.45">Pour concrete in the morning; formwork and finishing between 12:00 and 14:00.</span></div>
+<div style="display: flex; gap: 14px; padding: 12px 0; border-bottom: 1px solid #E3E7EB"><span style="font-size: 15px; font-weight: 800; width: 72px; flex-shrink: 0">Crew C</span><span style="font-size: 15px; line-height: 1.45">Rotate welders to shaded prep work 12:00 to 15:00, with a break at 13:00. Welding PPE stays on while welding.</span></div>
+<div style="display: flex; gap: 14px; padding: 12px 0"><span style="font-size: 15px; font-weight: 800; width: 72px; flex-shrink: 0">Site</span><span style="font-size: 15px; line-height: 1.45">Thunderstorms possible from 16:00: end work at height by 15:30 and secure loose materials.</span></div>
+</div>
+</section>
+
+<section aria-label="Send the plan" style="flex: 2 1 380px; min-width: 0; background: #FFFFFF; border-radius: 18px; padding: 22px; display: flex; flex-direction: column; gap: 14px">
+<h2 style="margin: 0; font-size: 18px; font-weight: 800">Send to crews</h2>
+<p style="margin: 0; font-size: 15px; line-height: 1.45">Each worker gets their own timings and breaks in their language, with an audio option. Workers on reduced exposure get their adjusted plan without anyone else seeing why.</p>
+<sc-if value="{{ notSent }}" hint-placeholder-val="{{ true }}">
+<div style="display: flex; flex-wrap: wrap; gap: 8px">
+<button onClick="{{ send }}" style="height: 48px; padding: 0 20px; border-radius: 12px; border: none; background: #14181D; color: #FFFFFF; font-family: inherit; font-size: 15px; font-weight: 700">Use suggested plan</button>
+<button style="height: 48px; padding: 0 20px; border-radius: 12px; border: 1px solid #C7CFD6; background: #FFFFFF; color: #14181D; font-family: inherit; font-size: 15px; font-weight: 700">Adjust first</button>
+</div>
+</sc-if>
+<sc-if value="{{ sent }}" hint-placeholder-val="{{ false }}">
+<div role="status" style="padding: 14px 16px; border-radius: 12px; background: #E2F1E9; color: #14532F; font-size: 15px; font-weight: 700; line-height: 1.45">Plan sent to 29 workers. Changes are tracked under Actions today.</div>
+</sc-if>
+<span style="font-size: 13px; line-height: 1.45; color: #4A5561">HeatGuard suggests, you decide. Plans never require removing protective equipment, and are not used to judge individual productivity.</span>
+</section>
+
+</div>
+
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1320}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { plan: 'current', sent: false };
+  }
+  renderVals() {
+    const times = ['07', '08', '09', '10', '11', '12', '13', '14', '15', '16'];
+    const heat = [1, 1, 2, 3, 3, 3, 4, 4, 3, 2];
+    const lv = {
+      1: { bg: '#2F6FB0', fg: '#FFFFFF', label: '1' },
+      2: { bg: '#F4C542', fg: '#14181D', label: '2' },
+      3: { bg: '#E8742A', fg: '#14181D', label: '3' },
+      4: { bg: '#9E1B24', fg: '#FFFFFF', label: '4?' }
+    };
+    const plans = {
+      current: { A: 'HHHHBHHBMM', B: 'HHHHHBHHHB', C: 'MMMMBMMMBM', D: 'LLLLBLLBLL' },
+      suggested: { A: 'HHHMBLLBMH', B: 'HHHMBLBLMH', C: 'MMMMBLBLMM', D: 'LLLLBLLBLL' }
+    };
+    const crewInfo = [
+      { id: 'A', name: 'Crew A', meta: 'Concrete · 8 · standard PPE' },
+      { id: 'B', name: 'Crew B', meta: 'Excavation · 7 · coveralls' },
+      { id: 'C', name: 'Crew C', meta: 'Welding · 6 · welding PPE' },
+      { id: 'D', name: 'Crew D', meta: 'Logistics · 8 · standard PPE' }
+    ];
+    const task = {
+      H: { bg: '#14181D', fg: '#FFFFFF', label: 'Heavy' },
+      M: { bg: '#5B6875', fg: '#FFFFFF', label: 'Moderate' },
+      L: { bg: '#D5DBE0', fg: '#14181D', label: 'Light' },
+      B: { bg: '#FFFFFF', fg: '#14181D', label: 'Break' }
+    };
+    const clash = (t, l) => (t === 'H' && l >= 3) || (t === 'M' && l >= 4);
+    const count = (p) => {
+      let c = 0, w = 0;
+      crewInfo.forEach((ci) => {
+        p[ci.id].split('').forEach((t, i) => { if (clash(t, heat[i])) c++; if (t !== 'B') w++; });
+      });
+      return { c, w };
+    };
+    const cur = count(plans.current), sug = count(plans.suggested);
+    const plan = plans[this.state.plan];
+    const isCur = this.state.plan === 'current';
+    return {
+      isCurrent: isCur ? 'true' : 'false',
+      isSuggested: isCur ? 'false' : 'true',
+      curBg: isCur ? '#14181D' : 'transparent',
+      curFg: isCur ? '#FFFFFF' : '#14181D',
+      sugBg: isCur ? 'transparent' : '#14181D',
+      sugFg: isCur ? '#14181D' : '#FFFFFF',
+      showCurrent: () => this.setState({ plan: 'current' }),
+      showSuggested: () => this.setState({ plan: 'suggested' }),
+      planTitle: isCur ? 'Current plan' : 'Suggested plan',
+      conflictText: isCur ? cur.c + ' crew-hours' : sug.c + ' crew-hours (was ' + cur.c + ')',
+      workText: (isCur ? cur.w : sug.w) + ' crew-hours',
+      heat: times.map((t, i) => Object.assign({ time: t + ':00' }, lv[heat[i]])),
+      crews: crewInfo.map((ci) => ({
+        name: ci.name,
+        meta: ci.meta,
+        cells: plan[ci.id].split('').map((t, i) => {
+          const bad = clash(t, heat[i]);
+          return {
+            bg: task[t].bg,
+            fg: task[t].fg,
+            label: task[t].label,
+            warn: bad ? 'Too hot' : '',
+            border: bad ? '3px solid #9E1B24' : (t === 'B' ? '2px dashed #8A949E' : '3px solid transparent')
+          };
+        })
+      })),
+      sent: this.state.sent,
+      notSent: !this.state.sent,
+      send: () => this.setState({ sent: true, plan: 'suggested' })
+    };
+  }
+}
+</script>
+</body>
+</html>

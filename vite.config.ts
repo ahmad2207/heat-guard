@@ -17,14 +17,14 @@ export default defineConfig({
         enabled: isDevPwaEnabled,
       },
       workbox: {
-        globPatterns: ['**/*.{js,css,html,ico,png,svg,webp}'],
+        globPatterns: ['**/*.{js,css,html,ico,png,svg,webp,woff2}'],
       },
       manifest: {
         name: 'HeatGuard AI',
         short_name: 'HeatGuard',
         description: 'Heat-risk decision support for outdoor workers',
-        theme_color: '#ea580c',
-        background_color: '#fafaf9',
+        theme_color: '#E8742A',
+        background_color: '#EEF1F3',
         display: 'standalone',
         start_url: '/',
         scope: '/',

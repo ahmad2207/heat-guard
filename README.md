@@ -90,5 +90,5 @@ Open the preview URL in your browser to verify PWA registration and offline cach
 1. Open your browser and navigate to the local preview or production URL.
 2. Open DevTools (press `F12` or right-click and choose **Inspect**).
 3. Switch to the **Application** tab in DevTools:
-   - **Manifest section**: Verify the app name ("HeatGuard AI"), short name ("HeatGuard"), start URL (`/`), theme color (`#ea580c`), background color (`#fafaf9`), and that all icon sizes (192x192, 512x512, and maskable) load without errors.
+   - **Manifest section**: Verify the app name ("HeatGuard AI"), short name ("HeatGuard"), start URL (`/`), theme color (`#E8742A`), background color (`#EEF1F3`), and that all icon sizes (192x192, 512x512, and maskable) load without errors.
    - **Service Workers section**: Verify that the service worker from `/sw.js` is active and running. Check the **Offline** checkbox and refresh the page to simulate offline mode and confirm the app shell reloads successfully.

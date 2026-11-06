@@ -1,55 +1,53 @@
-import { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
+import { Card } from './components/Card'
+import { ThermometerIcon } from './components/icons'
+import { cn } from './lib/cn'
+import { useOnlineStatus } from './lib/useOnlineStatus'
 
+/** Placeholder page on "/". Phase 2 replaces it with the role switcher. */
 export default function App() {
-  const [isOnline, setIsOnline] = useState<boolean>(() =>
-    typeof navigator !== 'undefined' ? navigator.onLine : true,
-  )
-
-  useEffect(() => {
-    const handleOnline = () => setIsOnline(true)
-    const handleOffline = () => setIsOnline(false)
-
-    window.addEventListener('online', handleOnline)
-    window.addEventListener('offline', handleOffline)
-
-    return () => {
-      window.removeEventListener('online', handleOnline)
-      window.removeEventListener('offline', handleOffline)
-    }
-  }, [])
+  const isOnline = useOnlineStatus()
 
   return (
-    <div className="min-h-screen bg-stone-50 text-stone-900 flex flex-col justify-between p-4 sm:p-6 antialiased">
-      <header className="w-full max-w-sm mx-auto pt-6 text-center">
-        <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-stone-950">
-          HeatGuard AI
-        </h1>
-        <p className="mt-2 text-sm sm:text-base font-medium text-stone-700">
+    <div className="flex min-h-screen flex-col justify-between bg-ground p-4 text-ink sm:p-6">
+      <header className="mx-auto w-full max-w-sm pt-6 text-center">
+        <div className="flex items-center justify-center gap-2">
+          <ThermometerIcon size={30} className="text-brand" />
+          <h1 className="m-0 text-[26px] font-extrabold tracking-[-0.01em]">HeatGuard AI</h1>
+        </div>
+        <p className="mt-2 text-[16px] font-medium text-muted">
           Heat-risk decision support for outdoor workers
         </p>
       </header>
 
-      <main className="w-full max-w-sm mx-auto my-auto py-8">
-        <div className="rounded-xl border border-stone-300 bg-white p-5 shadow-xs">
+      <main className="mx-auto my-auto w-full max-w-sm py-8">
+        <Card className="border border-line">
           <div className="flex items-center justify-between">
-            <span className="text-sm font-semibold text-stone-800">Connection Status</span>
+            <span className="text-[15px] font-bold">Connection status</span>
             <span
-              className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold ${
-                isOnline ? 'bg-emerald-100 text-emerald-900' : 'bg-rose-100 text-rose-900'
-              }`}
+              className={cn(
+                'inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[13px] font-bold',
+                isOnline ? 'bg-ok-bg text-ok-text' : 'bg-danger-bg text-danger-text',
+              )}
             >
               <span
-                className={`h-2 w-2 rounded-full ${isOnline ? 'bg-emerald-600' : 'bg-rose-600'}`}
+                className={cn('size-2 rounded-full', isOnline ? 'bg-ok' : 'bg-risk-4')}
                 aria-hidden="true"
               />
               {isOnline ? 'Online' : 'Offline'}
             </span>
           </div>
-        </div>
+        </Card>
       </main>
 
-      <footer className="w-full max-w-sm mx-auto pb-4 text-center">
-        <p className="text-xs text-stone-500 font-medium">HeatGuard AI Shell</p>
+      <footer className="mx-auto w-full max-w-sm pb-4 text-center">
+        <Link
+          to="/dev/components"
+          className="inline-flex min-h-11 items-center text-[14px] font-bold text-ink underline"
+        >
+          Component library (for testing)
+        </Link>
+        <p className="m-0 text-[13px] font-medium text-muted">HeatGuard AI Shell</p>
       </footer>
     </div>
   )

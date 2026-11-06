@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>HeatGuard consent and choices</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700;800&amp;family=IBM+Plex+Mono:wght@500;600&amp;display=swap">
+<style>
+body{margin:0}
+a{color:#14181D}a:hover{color:#000000}
+</style>
+</helmet>
+<div style="width: 390px; height: 844px; box-sizing: border-box; display: flex; flex-direction: column; background: #EEF1F3; font-family: 'Public Sans', system-ui, sans-serif; color: #14181D; overflow: hidden">
+
+<header style="display: flex; align-items: center; justify-content: space-between; padding: 16px 20px 8px 20px">
+<div style="display: flex; gap: 6px" aria-label="Step 2 of 3">
+<span style="width: 28px; height: 6px; border-radius: 3px; background: #14181D"></span>
+<span style="width: 28px; height: 6px; border-radius: 3px; background: #14181D"></span>
+<span style="width: 28px; height: 6px; border-radius: 3px; background: #C7CFD6"></span>
+</div>
+<label for="ob-lang" style="position: absolute; width: 1px; height: 1px; overflow: hidden">Language</label>
+<select id="ob-lang" style="height: 44px; padding: 0 12px; border-radius: 22px; border: 1px solid #C7CFD6; background: #FFFFFF; font-family: inherit; font-size: 15px; font-weight: 700; color: #14181D">
+<option>English</option><option>Hausa</option><option>Yoruba</option><option>Igbo</option><option>Pidgin</option>
+</select>
+</header>
+
+<main style="flex: 1; overflow-y: auto; padding: 4px 16px 16px 16px; display: flex; flex-direction: column; gap: 12px">
+
+<div style="display: flex; flex-direction: column; gap: 6px; padding: 0 4px">
+<h1 style="margin: 0; font-size: 26px; font-weight: 800; line-height: 1.15">You decide what to share</h1>
+<p style="margin: 0; font-size: 16px; line-height: 1.45; color: #4A5561">HeatGuard warns you about heat and weather risks at work. The more you share, the more personal your advice. Everything below is optional except your work details.</p>
+</div>
+
+<section aria-label="Needed for warnings" style="background: #FFFFFF; border-radius: 16px; padding: 14px 16px; display: flex; align-items: center; gap: 12px">
+<div style="flex: 1; display: flex; flex-direction: column; gap: 2px">
+<span style="font-size: 16px; font-weight: 700">Work details</span>
+<span style="font-size: 14px; line-height: 1.4; color: #4A5561">Crew, task, shift and PPE. Needed to send any warning.</span>
+</div>
+<span style="padding: 6px 10px; border-radius: 999px; background: #EEF1F3; font-size: 13px; font-weight: 700; color: #4A5561">Always on</span>
+</section>
+
+<section aria-label="Optional" style="background: #FFFFFF; border-radius: 16px; padding: 4px 16px; display: flex; flex-direction: column">
+<sc-for list="{{ choices }}" as="c" hint-placeholder-count="3">
+<label style="display: flex; align-items: center; gap: 12px; padding: 12px 0; border-bottom: 1px solid {{ c.line }}; cursor: pointer">
+<span style="flex: 1; display: flex; flex-direction: column; gap: 2px">
+<span style="font-size: 16px; font-weight: 700">{{ c.label }}</span>
+<span style="font-size: 14px; line-height: 1.4; color: #4A5561">{{ c.hint }}</span>
+</span>
+<span style="position: relative; width: 52px; height: 32px; flex-shrink: 0">
+<input type="checkbox" role="switch" checked="{{ c.on }}" onChange="{{ c.toggle }}" style="position: absolute; inset: 0; width: 52px; height: 32px; margin: 0; opacity: 0; cursor: pointer">
+<span aria-hidden="true" style="display: block; width: 52px; height: 32px; border-radius: 16px; background: {{ c.track }}; box-sizing: border-box; padding: 3px; pointer-events: none"><span style="display: block; width: 26px; height: 26px; border-radius: 13px; background: #FFFFFF; margin-left: {{ c.knob }}"></span></span>
+</span>
+</label>
+</sc-for>
+</section>
+
+<section aria-label="Our promise" style="background: #14181D; color: #FFFFFF; border-radius: 16px; padding: 14px 16px; display: flex; flex-direction: column; gap: 8px">
+<span style="font-size: 15px; font-weight: 800; color: #F4C542">Our promise</span>
+<span style="font-size: 14px; line-height: 1.5">Your supervisor only sees your risk level and the actions to take. Your health information is never used for discipline, rankings or job decisions. You can change these choices or delete your data at any time.</span>
+</section>
+
+</main>
+
+<div style="padding: 12px 16px 16px 16px; background: #FFFFFF; border-top: 1px solid #D5DBE0; display: flex; flex-direction: column; gap: 8px">
+<a href="HealthProfile.dc.html" style="height: 54px; border-radius: 14px; background: #14181D; color: #FFFFFF; display: flex; align-items: center; justify-content: center; text-decoration: none; font-size: 17px; font-weight: 700">Agree and continue</a>
+<a href="Privacy.dc.html" style="height: 44px; display: flex; align-items: center; justify-content: center; font-size: 15px; font-weight: 700">Read the full privacy notice</a>
+</div>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { on: { health: true, band: false, reports: true } };
+  }
+  renderVals() {
+    const items = [
+      { id: 'health', label: 'Health precautions', hint: 'Lets occupational health set extra care for you. Without it you get standard advice.' },
+      { id: 'band', label: 'Wearable band', hint: 'Heart rate and skin temperature for earlier warnings. You can pause it any time.' },
+      { id: 'reports', label: 'Symptom reports to occupational health', hint: 'So a nurse can follow up. Supervisors only see that you need help.' }
+    ];
+    const on = this.state.on;
+    return {
+      choices: items.map((c, i) => {
+        const v = !!on[c.id];
+        return {
+          label: c.label, hint: c.hint, on: v,
+          track: v ? '#1E7B4F' : '#8A949E',
+          knob: v ? '20px' : '0px',
+          line: i === items.length - 1 ? 'transparent' : '#E3E7EB',
+          toggle: () => this.setState({ on: Object.assign({}, on, { [c.id]: !v }) })
+        };
+      })
+    };
+  }
+}
+</script>
+</body>
+</html>
