@@ -277,3 +277,63 @@ export interface OhProfile {
   recordedNote: string
   level: PrecautionLevelId
 }
+
+/* ---------- Consent, health profile and My data (screens 1, 2 and 6) ---------- */
+
+export interface ChoiceOption {
+  id: string
+  label: string
+  hint?: string
+}
+
+/** The worker's health profile answers. Every question is optional. */
+export interface HealthProfileAnswers {
+  ageRange: string
+  conditions: string[]
+  heatIllness: string | null
+  medicines: string[]
+  acclimatisation: string | null
+}
+
+export interface SwitchContent {
+  id: keyof SharingChoices
+  label: string
+  description: string
+}
+
+export interface OnboardingContent {
+  steps: { current: number; total: number; label: string }
+  heading: string
+  intro: string
+  workDetails: { title: string; detail: string; badge: string }
+  switches: SwitchContent[]
+  promiseTitle: string
+  promise: string
+  agree: string
+  privacyLink: string
+}
+
+export interface HealthProfileContent {
+  title: string
+  intro: string
+  sharingOffNote: { before: string; link: string; after: string }
+  about: {
+    title: string
+    workerIdLabel: string
+    ageLabel: string
+    /** First option of the select when the question has no answer yet. */
+    ageNotAnswered: string
+    ageOptions: string[]
+    why: string
+  }
+  conditions: { title: string; intro: string; options: ChoiceOption[] }
+  heatIllness: { title: string; intro: string; options: ChoiceOption[] }
+  medicines: { title: string; intro: string; options: ChoiceOption[]; footnote: string }
+  acclimatisation: { title: string; intro: string; options: ChoiceOption[]; footnote: string }
+  precautions: { title: string; intro: string }
+  send: string
+  skip: string
+  footnote: string
+  sentText: string
+  goToStatus: string
+}

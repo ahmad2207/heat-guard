@@ -1,8 +1,13 @@
 import { createBrowserRouter } from 'react-router-dom'
 import App from './App.tsx'
 import { SUPERVISOR_HEADER_STATUS } from './data/mock'
+import { ConsentScreen } from './features/worker/ConsentScreen'
+import { HealthProfileScreen } from './features/worker/HealthProfileScreen'
 import { HomeScreen } from './features/worker/HomeScreen'
+import { MyDataScreen } from './features/worker/MyDataScreen'
+import { PrivacyNoticePage } from './features/worker/PrivacyNoticePage'
 import { ReportScreen } from './features/worker/ReportScreen'
+import { RequireConsent } from './features/worker/RequireConsent'
 import { WhatToDoScreen } from './features/worker/WhatToDoScreen'
 import { OccupationalHealthLayout } from './layouts/OccupationalHealthLayout'
 import type { RouteHandle } from './layouts/routeHandle'
@@ -23,34 +28,28 @@ export const router = createBrowserRouter([
     element: <WorkerLayout />,
     children: [
       {
-        // Field mode (screen 7) will switch this layout in Phase 4.
+        // Home switches to field mode (screen 7) itself. Workers with no saved consent go to
+        // the consent screen first.
         index: true,
         handle: withBottomNav,
-        element: <HomeScreen />,
+        element: (
+          <RequireConsent>
+            <HomeScreen />
+          </RequireConsent>
+        ),
+      },
+      {
+        // Placeholder until the full privacy notice is written.
+        path: 'privacy',
+        element: <PrivacyNoticePage />,
       },
       {
         path: 'welcome',
-        element: (
-          <ScreenPlaceholder
-            number="1"
-            name="Consent and choices"
-            route="/worker/welcome"
-            references={['01-consent.png']}
-            phase={5}
-          />
-        ),
+        element: <ConsentScreen />,
       },
       {
         path: 'health-profile',
-        element: (
-          <ScreenPlaceholder
-            number="2"
-            name="Health profile"
-            route="/worker/health-profile"
-            references={['02-health-profile.png']}
-            phase={5}
-          />
-        ),
+        element: <HealthProfileScreen />,
       },
       {
         path: 'what-to-do',
@@ -64,15 +63,7 @@ export const router = createBrowserRouter([
       {
         path: 'my-data',
         handle: withBottomNav,
-        element: (
-          <ScreenPlaceholder
-            number="6"
-            name="My data and privacy"
-            route="/worker/my-data"
-            references={['06-my-data.png']}
-            phase={5}
-          />
-        ),
+        element: <MyDataScreen />,
       },
     ],
   },

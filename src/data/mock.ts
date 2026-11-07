@@ -33,6 +33,10 @@ import type {
   Worker,
   WorkerStatus,
   CrewId,
+  HealthProfileAnswers,
+  HealthProfileContent,
+  OnboardingContent,
+  SwitchContent,
 } from './types'
 
 /* =========================================================================
@@ -367,6 +371,21 @@ export const FIELD_MODE: FieldModeContent = {
  * WORKER.precaution, the same as every other screen.
  */
 export const MY_DATA = {
+  title: 'My data and privacy',
+  precautionLabel: 'Your precaution level',
+  healthProfileLink: 'Health profile',
+  sharingTitle: 'What you share',
+  sharing: [
+    { id: 'health', label: 'Health precautions', description: 'Seen by occupational health only' },
+    {
+      id: 'band',
+      label: 'Wearable band',
+      description: 'Heart rate and skin temperature. Pause any time.',
+    },
+    { id: 'reports', label: 'Symptom reports', description: 'Details to occupational health only' },
+    { id: 'voice', label: 'Read warnings aloud', description: 'In your chosen language' },
+  ] satisfies SwitchContent[],
+  accessTitle: 'Who looked at your data',
   accessPeriod: 'Last 30 days',
   accessLog: [
     {
@@ -378,7 +397,178 @@ export const MY_DATA = {
   ] satisfies DataAccessEntry[],
   promise:
     'Never used for discipline, rankings or job decisions. Health information is deleted 30 days after you leave the site.',
+  download: 'Download my data',
+  downloadFileName: 'heatguard-my-data.json',
+  delete: 'Delete my health information',
+  deleteConfirm:
+    'Delete your health answers? Occupational health will be told your profile was removed. This cannot be undone.',
+  deleteConfirmButton: 'Delete',
+  deleteCancel: 'Cancel',
+  deleted: 'Your health answers have been deleted.',
 } as const
+
+/** Shown after "Request a review" on My data or the health profile. */
+export const REVIEW_REQUESTED = 'Review requested. A nurse will contact you.'
+
+/** Short codes for the language button. Language choice is visual only for now. */
+export const LANGUAGE_CODES: Record<Language, string> = {
+  English: 'EN',
+  Hausa: 'HA',
+  Yoruba: 'YO',
+  Igbo: 'IG',
+  Pidgin: 'PCM',
+}
+
+/** Screen 1, from design-reference/source/Onboarding.dc.html. */
+export const ONBOARDING: OnboardingContent = {
+  steps: { current: 1, total: 2, label: 'Step 1 of 2' },
+  heading: 'You decide what to share',
+  intro:
+    'HeatGuard warns you about heat and weather risks at work. The more you share, the more personal your advice. Everything below is optional except your work details.',
+  workDetails: {
+    title: 'Work details',
+    detail: 'Crew, task, shift and PPE. Needed to send any warning.',
+    badge: 'Always on',
+  },
+  switches: [
+    {
+      id: 'health',
+      label: 'Health precautions',
+      description:
+        'Lets occupational health set extra care for you. Without it you get standard advice.',
+    },
+    {
+      id: 'band',
+      label: 'Wearable band',
+      description:
+        'Heart rate and skin temperature for earlier warnings. You can pause it any time.',
+    },
+    {
+      id: 'reports',
+      label: 'Symptom reports to occupational health',
+      description: 'So a nurse can follow up. Supervisors only see that you need help.',
+    },
+  ],
+  promiseTitle: 'Our promise',
+  promise:
+    'Your supervisor only sees your risk level and the actions to take. Your health information is never used for discipline, rankings or job decisions. You can change these choices or delete your data at any time.',
+  agree: 'Agree and continue',
+  privacyLink: 'Read the full privacy notice',
+}
+
+/** Screen 2, from design-reference/source/HealthProfile.dc.html. */
+export const HEALTH_PROFILE: HealthProfileContent = {
+  title: 'My health profile',
+  intro:
+    'Every question is optional. Answers go to occupational health only and help them decide if you need extra care in the heat. Your supervisor never sees them.',
+  sharingOffNote: {
+    before: 'You chose not to share health information. You can turn it on in ',
+    link: 'My data',
+    after: '.',
+  },
+  about: {
+    title: '1. About you',
+    workerIdLabel: 'Worker ID',
+    ageLabel: 'Age range',
+    ageNotAnswered: 'Not answered',
+    ageOptions: ['Prefer not to say', 'Under 25', '25 to 39', '40 to 54', '55 or over'],
+    why: 'Why we ask: the body copes with heat less well with age.',
+  },
+  conditions: {
+    title: '2. Health conditions',
+    intro: 'Tick any you have been told you have. You do not need to give details.',
+    options: [
+      {
+        id: 'heart',
+        label: 'Heart or blood pressure',
+        hint: 'For example heart disease or high blood pressure',
+      },
+      { id: 'lungs', label: 'Breathing', hint: 'For example asthma or COPD' },
+      { id: 'kidney', label: 'Kidneys', hint: 'Any kidney condition' },
+      {
+        id: 'meta',
+        label: 'Diabetes, thyroid or weight-related',
+        hint: 'Conditions that affect how your body uses energy',
+      },
+      {
+        id: 'other',
+        label: 'Something else that affects heat',
+        hint: 'A nurse will ask you about it in private',
+      },
+      { id: 'none', label: 'None of these' },
+    ],
+  },
+  heatIllness: {
+    title: '3. Past heat illness',
+    intro: 'Have you ever had heat exhaustion or heat stroke, or fainted from the heat?',
+    options: [
+      { id: 'no', label: 'No' },
+      { id: 'recent', label: 'Yes, in the last 12 months' },
+      { id: 'old', label: 'Yes, longer ago' },
+      { id: 'unsure', label: 'Not sure' },
+    ],
+  },
+  medicines: {
+    title: '4. Medicines',
+    intro: 'Some medicines make it harder to stay cool or hydrated. Tick the type, not the name.',
+    options: [
+      { id: 'water', label: 'Water tablets', hint: 'Make you pass more urine' },
+      { id: 'bp', label: 'Heart or blood pressure medicine', hint: 'Taken every day' },
+      { id: 'allergy', label: 'Allergy or sleep medicine', hint: 'Can reduce sweating' },
+      {
+        id: 'mood',
+        label: 'Medicine for mood, nerves or seizures',
+        hint: 'Some affect body temperature',
+      },
+      { id: 'unsure', label: 'Not sure', hint: 'A nurse can check with you' },
+      { id: 'none', label: 'None of these' },
+    ],
+    footnote: 'Not sure? Choose "Not sure" and a nurse can check with you.',
+  },
+  acclimatisation: {
+    title: '5. Getting used to the heat',
+    intro: 'How long have you been doing this kind of work in this heat?',
+    options: [
+      { id: 'new', label: 'Less than 1 week' },
+      { id: 'adjusting', label: '1 to 2 weeks' },
+      { id: 'over2', label: 'More than 2 weeks' },
+      { id: 'back', label: 'Back after a week or more away' },
+    ],
+    footnote:
+      'New or returning workers need about 1 to 2 weeks to adjust, so they get extra care at first.',
+  },
+  precautions: {
+    title: '6. Precautions set for you',
+    intro:
+      'Set by occupational health from your answers. You cannot change these here, but you can ask for a review.',
+  },
+  send: 'Send to occupational health',
+  skip: 'Skip for now',
+  footnote: 'You can change or delete these answers at any time in My data.',
+  sentText: 'Sent. A nurse will review it and you will see any change to your precautions here.',
+  goToStatus: 'Go to my status',
+}
+
+/** A health profile with no answers. First run starts here, and "Delete" returns to it. */
+export const EMPTY_HEALTH_PROFILE: HealthProfileAnswers = {
+  ageRange: '',
+  conditions: [],
+  heatIllness: null,
+  medicines: [],
+  acclimatisation: null,
+}
+
+/**
+ * SAMPLE: W-0412's answers, from the design's starting state (HealthProfile.dc.html). Loaded only
+ * from the dev panel ("Load W-0412 sample answers") for demos.
+ */
+export const HEALTH_PROFILE_SAMPLE: HealthProfileAnswers = {
+  ageRange: WORKER.ageRange,
+  conditions: ['heart'],
+  heatIllness: 'no',
+  medicines: ['bp'],
+  acclimatisation: 'over2',
+}
 
 /* =========================================================================
  * Supervisor Today (screen 8)

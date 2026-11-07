@@ -1,4 +1,4 @@
-import type { ButtonHTMLAttributes } from 'react'
+import type { ComponentPropsWithRef } from 'react'
 import { Link, type LinkProps } from 'react-router-dom'
 import { buttonClasses, type ButtonSize, type ButtonVariant } from './buttonClasses'
 
@@ -8,7 +8,7 @@ interface StyleProps {
   fullWidth?: boolean
 }
 
-type ButtonProps = StyleProps & ButtonHTMLAttributes<HTMLButtonElement>
+type ButtonProps = StyleProps & ComponentPropsWithRef<'button'>
 
 export function Button({
   variant,

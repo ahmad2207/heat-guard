@@ -13,6 +13,7 @@ import '@fontsource/ibm-plex-mono/latin-600.css'
 import './index.css'
 import { RouterProvider } from 'react-router-dom'
 import { DevSettingsProvider } from './dev/DevSettingsProvider.tsx'
+import { WorkerPreferencesProvider } from './features/worker/WorkerPreferencesProvider.tsx'
 import { router } from './router.tsx'
 
 // import.meta.env.DEV is false in production builds, so Vite drops the panel and its import.
@@ -21,12 +22,14 @@ const DevPanel = import.meta.env.DEV ? lazy(() => import('./dev/DevPanel.tsx')) 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <DevSettingsProvider>
-      <RouterProvider router={router} />
-      {DevPanel && (
-        <Suspense fallback={null}>
-          <DevPanel />
-        </Suspense>
-      )}
+      <WorkerPreferencesProvider>
+        <RouterProvider router={router} />
+        {DevPanel && (
+          <Suspense fallback={null}>
+            <DevPanel />
+          </Suspense>
+        )}
+      </WorkerPreferencesProvider>
     </DevSettingsProvider>
   </StrictMode>,
 )

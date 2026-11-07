@@ -5,6 +5,12 @@ type CheckTileProps = Omit<InputHTMLAttributes<HTMLInputElement>, 'type' | 'onCh
   label: string
   /** Second line under the label, as in the health profile. */
   hint?: string
+  /**
+   * symptom: report screen (56px, semibold, no hint).
+   * profile: health profile (52px, bold title, optional hint), used for "None of these" too.
+   * Defaults to profile when a hint is given.
+   */
+  variant?: 'symptom' | 'profile'
   checked: boolean
   onChange: (checked: boolean) => void
 }
@@ -13,13 +19,22 @@ type CheckTileProps = Omit<InputHTMLAttributes<HTMLInputElement>, 'type' | 'onCh
  * A real checkbox inside a tile-shaped label. Selected tiles get an ink border and warn-bg fill.
  * Values from 05-report-symptoms.html (no hint) and 02-health-profile.html (with hint).
  */
-export function CheckTile({ label, hint, checked, onChange, className, ...rest }: CheckTileProps) {
+export function CheckTile({
+  label,
+  hint,
+  variant = hint ? 'profile' : 'symptom',
+  checked,
+  onChange,
+  className,
+  ...rest
+}: CheckTileProps) {
+  const isProfile = variant === 'profile'
   return (
     <label
       className={cn(
         'flex cursor-pointer items-center rounded-xl border-2 px-3 py-2.5',
         'has-focus-visible:outline-3 has-focus-visible:outline-offset-2 has-focus-visible:outline-ink',
-        hint ? 'min-h-[52px] gap-3' : 'min-h-14 gap-2.5',
+        isProfile ? 'min-h-[52px] gap-3' : 'min-h-14 gap-2.5',
         checked ? 'border-ink bg-warn-bg' : 'border-line bg-surface',
         className,
       )}
@@ -31,10 +46,10 @@ export function CheckTile({ label, hint, checked, onChange, className, ...rest }
         className="m-0 size-[22px] shrink-0 cursor-pointer accent-ink"
         {...rest}
       />
-      {hint ? (
+      {isProfile ? (
         <span className="flex flex-col gap-px">
           <span className="text-[15px] font-bold">{label}</span>
-          <span className="text-[13px] text-muted">{hint}</span>
+          {hint && <span className="text-[13px] text-muted">{hint}</span>}
         </span>
       ) : (
         <span className="text-[15px] font-semibold">{label}</span>

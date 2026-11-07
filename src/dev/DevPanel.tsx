@@ -1,7 +1,9 @@
 import { useEffect, useId, useRef, useState } from 'react'
+import { Button } from '../components/Button'
 import { RadioTile } from '../components/RadioTile'
 import { Switch } from '../components/Switch'
 import { RISK_LEVELS, riskLabel, type RiskLevel } from '../lib/risk'
+import { useWorkerPreferences } from '../features/worker/workerPreferences'
 import { useDevSettings } from './devSettings'
 
 /**
@@ -10,6 +12,7 @@ import { useDevSettings } from './devSettings'
  */
 export default function DevPanel() {
   const { riskLevel, setRiskLevel, forceFieldMode, setForceFieldMode } = useDevSettings()
+  const { resetOnboarding, consentGiven, loadSampleAnswers } = useWorkerPreferences()
   const [open, setOpen] = useState(false)
   const panelId = useId()
   const toggleRef = useRef<HTMLButtonElement>(null)
@@ -61,6 +64,19 @@ export default function DevPanel() {
             checked={forceFieldMode}
             onChange={setForceFieldMode}
           />
+
+          <div className="flex flex-col gap-1 border-t border-line-soft pt-3">
+            <Button variant="secondary" size="sm" fullWidth onClick={loadSampleAnswers}>
+              Load W-0412 sample answers
+            </Button>
+            <Button variant="danger" size="sm" fullWidth onClick={resetOnboarding}>
+              Reset onboarding
+            </Button>
+            <p className="m-0 text-[12px] text-muted">
+              Clears saved consent and health profile.{' '}
+              {consentGiven ? 'Consent is saved.' : 'No consent saved.'}
+            </p>
+          </div>
         </section>
       )}
 

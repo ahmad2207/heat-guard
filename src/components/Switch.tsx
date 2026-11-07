@@ -9,6 +9,8 @@ interface SwitchProps {
   /** Draws the divider under the row, for all but the last switch in a card. */
   divider?: boolean
   disabled?: boolean
+  /** md: consent screen (16px title, 14px hint). sm: My data (15px title, 13px hint, 64px rows). */
+  size?: 'md' | 'sm'
   className?: string
 }
 
@@ -23,26 +25,35 @@ export function Switch({
   onChange,
   divider = false,
   disabled = false,
+  size = 'md',
   className,
 }: SwitchProps) {
+  const small = size === 'sm'
   const labelId = useId()
   const descriptionId = useId()
 
   return (
     <label
       className={cn(
-        'flex min-h-11 cursor-pointer items-center gap-3 py-3',
+        'flex cursor-pointer items-center gap-3',
+        small ? 'min-h-16' : 'min-h-11 py-3',
         divider && 'border-b border-line-soft',
         disabled && 'cursor-not-allowed opacity-50',
         className,
       )}
     >
       <span className="flex flex-1 flex-col gap-0.5">
-        <span id={labelId} className="text-[16px] font-bold">
+        <span id={labelId} className={cn('font-bold', small ? 'text-[15px]' : 'text-[16px]')}>
           {label}
         </span>
         {description && (
-          <span id={descriptionId} className="text-[14px] leading-[1.4] text-muted">
+          <span
+            id={descriptionId}
+            className={cn(
+              'text-muted',
+              small ? 'text-[13px] leading-[1.35]' : 'text-[14px] leading-[1.4]',
+            )}
+          >
             {description}
           </span>
         )}
