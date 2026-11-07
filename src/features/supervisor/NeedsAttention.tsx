@@ -4,7 +4,8 @@ import { Card } from '../../components/Card'
 import { CheckIcon, LockIcon } from '../../components/icons'
 import { RiskBadge } from '../../components/RiskBadge'
 import { StatusPill } from '../../components/StatusPill'
-import { REASSIGN_OPTIONS, TODAY_TEXT } from '../../data/mock'
+import { OH_OUTCOMES, REASSIGN_OPTIONS, TODAY_TEXT } from '../../data/mock'
+import { useEscalationOutcomes } from '../occupational-health/escalationOutcomes'
 import type { NeedsAttentionAlert } from '../../data/types'
 import { now } from '../../lib/clock'
 import { cn } from '../../lib/cn'
@@ -53,6 +54,13 @@ export function NeedsAttention({ alerts }: { alerts: NeedsAttentionAlert[] }) {
     document.getElementById(`${baseId}-${key}`)?.focus()
   }, [focusTarget, state, baseId])
 
+  const { outcomes } = useEscalationOutcomes()
+  const outcomeFor = (workerId: string) => {
+    const saved = outcomes[workerId]
+    const option = OH_OUTCOMES.find((o) => o.id === saved?.id)
+    return saved && option ? `${option.supervisorSees} · ${saved.at}` : undefined
+  }
+
   const update = (id: string, change: AlertState) =>
     setState((current) => ({ ...current, [id]: { ...current[id], ...change } }))
 
@@ -95,7 +103,9 @@ export function NeedsAttention({ alerts }: { alerts: NeedsAttentionAlert[] }) {
             <div className="flex flex-wrap items-center gap-2.5">
               {alert.kind === 'symptom' && <StatusPill status="act-now" />}
               {alert.kind === 'crew-risk' && <RiskBadge level={alert.level} size="sm" />}
-              {alert.kind === 'precaution' && <StatusPill status="precaution" />}
+              {alert.kind === 'precaution' && (
+                <StatusPill status="precaution">{alert.levelName}</StatusPill>
+              )}
               <h3 id={`${alert.id}-title`} className="text-[16px] font-extrabold">
                 {alert.title}
               </h3>
@@ -114,6 +124,12 @@ export function NeedsAttention({ alerts }: { alerts: NeedsAttentionAlert[] }) {
 
             {alert.kind === 'symptom' && (
               <p className="m-0 text-[15px] leading-[1.45]">{alert.text}</p>
+            )}
+            {alert.kind === 'symptom' && outcomeFor(alert.workerId) && (
+              // Only the outcome reaches the supervisor, never symptoms or the clinical note.
+              <p className="m-0 rounded-xl bg-info-bg px-3.5 py-2.5 text-[15px] font-bold text-info-text">
+                {TODAY_TEXT.occupationalHealth}: {outcomeFor(alert.workerId)}
+              </p>
             )}
             {alert.kind === 'crew-risk' && (
               <p className="m-0 text-[15px] leading-[1.45]">

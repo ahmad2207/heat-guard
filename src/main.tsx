@@ -13,6 +13,8 @@ import '@fontsource/ibm-plex-mono/latin-600.css'
 import './index.css'
 import { RouterProvider } from 'react-router-dom'
 import { DevSettingsProvider } from './dev/DevSettingsProvider.tsx'
+import { EscalationOutcomesProvider } from './features/occupational-health/EscalationOutcomesProvider.tsx'
+import { PrecautionLevelsProvider } from './features/occupational-health/PrecautionLevelsProvider.tsx'
 import { WorkerPreferencesProvider } from './features/worker/WorkerPreferencesProvider.tsx'
 import { router } from './router.tsx'
 
@@ -23,12 +25,16 @@ createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <DevSettingsProvider>
       <WorkerPreferencesProvider>
-        <RouterProvider router={router} />
-        {DevPanel && (
-          <Suspense fallback={null}>
-            <DevPanel />
-          </Suspense>
-        )}
+        <PrecautionLevelsProvider>
+          <EscalationOutcomesProvider>
+            <RouterProvider router={router} />
+            {DevPanel && (
+              <Suspense fallback={null}>
+                <DevPanel />
+              </Suspense>
+            )}
+          </EscalationOutcomesProvider>
+        </PrecautionLevelsProvider>
       </WorkerPreferencesProvider>
     </DevSettingsProvider>
   </StrictMode>,

@@ -174,6 +174,8 @@ export type NeedsAttentionAlert =
       id: string
       kind: 'symptom'
       crew: CrewId
+      /** The worker whose escalation outcome, if any, is shown on the card. */
+      workerId: string
       title: string
       meta: string
       text: string
@@ -194,6 +196,10 @@ export type NeedsAttentionAlert =
       id: string
       kind: 'precaution'
       crew: CrewId
+      /** The worker whose saved precaution level this alert follows. */
+      workerId: string
+      /** Pill text, the precaution level name. Set from the saved level. */
+      levelName?: string
       title: string
       meta: string
       do: string
@@ -272,6 +278,22 @@ export interface ProfileToReview {
   open?: boolean
 }
 
+/** A worker's precaution level as set by occupational health. */
+export interface PrecautionRecord {
+  level: PrecautionLevelId
+  /** Shown as "Set by occupational health · 12 Oct". */
+  setOn: string
+  nextReview?: string
+}
+
+export interface OhOutcome {
+  id: string
+  label: string
+  /** The only thing the supervisor sees about the case. */
+  supervisorSees: string
+  variant: 'primary' | 'secondary' | 'danger'
+}
+
 export interface OhProfile {
   workerId: string
   crew: string
@@ -279,7 +301,6 @@ export interface OhProfile {
   consent: string
   recorded: string[]
   recordedNote: string
-  level: PrecautionLevelId
 }
 
 /* ---------- Consent, health profile and My data (screens 1, 2 and 6) ---------- */

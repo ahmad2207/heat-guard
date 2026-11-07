@@ -3,6 +3,9 @@ import { Button } from '../components/Button'
 import { RadioTile } from '../components/RadioTile'
 import { Switch } from '../components/Switch'
 import { RISK_LEVELS, riskLabel, type RiskLevel } from '../lib/risk'
+import { CURRENT_RISK_LEVEL } from '../data/mock'
+import { useEscalationOutcomes } from '../features/occupational-health/escalationOutcomes'
+import { usePrecautionLevels } from '../features/occupational-health/precautionLevels'
 import { useWorkerPreferences } from '../features/worker/workerPreferences'
 import { useDevSettings } from './devSettings'
 
@@ -13,6 +16,16 @@ import { useDevSettings } from './devSettings'
 export default function DevPanel() {
   const { riskLevel, setRiskLevel, forceFieldMode, setForceFieldMode } = useDevSettings()
   const { resetOnboarding, consentGiven, loadSampleAnswers } = useWorkerPreferences()
+  const precautions = usePrecautionLevels()
+  const escalationOutcomes = useEscalationOutcomes()
+  /** Clears all saved demo state across the three roles, and resets this panel. */
+  const resetDemoData = () => {
+    resetOnboarding()
+    precautions.reset()
+    escalationOutcomes.reset()
+    setRiskLevel(CURRENT_RISK_LEVEL)
+    setForceFieldMode(false)
+  }
   const [open, setOpen] = useState(false)
   const panelId = useId()
   const toggleRef = useRef<HTMLButtonElement>(null)
@@ -72,8 +85,12 @@ export default function DevPanel() {
             <Button variant="danger" size="sm" fullWidth onClick={resetOnboarding}>
               Reset onboarding
             </Button>
+            <Button variant="danger" size="sm" fullWidth onClick={resetDemoData}>
+              Reset demo data
+            </Button>
             <p className="m-0 text-[12px] text-muted">
-              Clears saved consent and health profile.{' '}
+              Reset onboarding clears consent and the health profile. Reset demo data also resets
+              precaution levels, escalation outcomes and this panel.{' '}
               {consentGiven ? 'Consent is saved.' : 'No consent saved.'}
             </p>
           </div>

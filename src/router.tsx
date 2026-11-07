@@ -9,6 +9,7 @@ import { PrivacyNoticePage } from './features/worker/PrivacyNoticePage'
 import { ReportScreen } from './features/worker/ReportScreen'
 import { RequireConsent } from './features/worker/RequireConsent'
 import { WhatToDoScreen } from './features/worker/WhatToDoScreen'
+import { CasesScreen } from './features/occupational-health/CasesScreen'
 import { MeasuresScreen } from './features/supervisor/MeasuresScreen'
 import { PlanScreen } from './features/supervisor/PlanScreen'
 import { TodayScreen } from './features/supervisor/TodayScreen'
@@ -17,7 +18,6 @@ import type { RouteHandle } from './layouts/routeHandle'
 import { SupervisorLayout } from './layouts/SupervisorLayout'
 import { WorkerLayout } from './layouts/WorkerLayout'
 import { NotFoundPage } from './pages/NotFoundPage'
-import { ScreenPlaceholder } from './pages/ScreenPlaceholder'
 
 const withBottomNav: RouteHandle = { bottomNav: true }
 
@@ -112,16 +112,7 @@ export const router = createBrowserRouter([
     children: [
       {
         index: true,
-        element: (
-          <ScreenPlaceholder
-            variant="page"
-            number="11"
-            name="Cases and profiles"
-            route="/occupational-health"
-            references={['11-occupational-health.png', '11-occupational-health-phone-width.png']}
-            phase={8}
-          />
-        ),
+        element: <CasesScreen />,
       },
     ],
   },

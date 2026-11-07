@@ -17,6 +17,8 @@ import {
   LAST_7_DAYS,
   LAST_7_DAYS_SUMMARY,
   NEEDS_ATTENTION,
+  PRECAUTION_ALERTS,
+  PRECAUTION_LEVELS,
   SITE,
   SITE_HEAT_BY_HOUR,
   SITE_HEAT_NOTE,
@@ -27,9 +29,10 @@ import {
   TODAY_TEXT,
   WORKERS_BY_LEVEL,
 } from '../../data/mock'
-import type { CrewId } from '../../data/types'
+import type { CrewId, NeedsAttentionAlert } from '../../data/types'
 import { cn } from '../../lib/cn'
 import { riskClasses, riskLabel, riskName } from '../../lib/risk'
+import { usePrecautionLevels } from '../occupational-health/precautionLevels'
 import { CrewsTable } from './CrewsTable'
 import { NeedsAttention } from './NeedsAttention'
 
@@ -336,6 +339,7 @@ export function TodayScreen() {
   const [crewFilter, setCrewFilter] = useState(0)
   const [activityFilter, setActivityFilter] = useState(0)
   const [shiftFilter, setShiftFilter] = useState(0)
+  const { recordFor } = usePrecautionLevels()
 
   // A crew shows when it matches both filters. null means "all".
   const allowed = (crew: CrewId) =>
@@ -343,7 +347,22 @@ export function TodayScreen() {
       (list) => list === null || list.includes(crew),
     )
   const crews = CREWS.filter((crew) => allowed(crew.id))
-  const alerts = NEEDS_ATTENTION.filter((alert) => allowed(alert.crew))
+  // Individual precaution alerts follow the level occupational health has saved. Standard has no
+  // alert. The supervisor sees the level and the action only, never the health reasons.
+  const alerts = NEEDS_ATTENTION.flatMap((alert): NeedsAttentionAlert[] => {
+    if (alert.kind !== 'precaution') return [alert]
+    const { level } = recordFor(alert.workerId)
+    if (level === 'standard') return []
+    const copy = PRECAUTION_ALERTS[level]
+    return [
+      {
+        ...alert,
+        title: copy.title(alert.workerId),
+        do: copy.do,
+        levelName: PRECAUTION_LEVELS[level].name,
+      },
+    ]
+  }).filter((alert) => allowed(alert.crew))
 
   return (
     <>

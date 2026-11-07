@@ -7,6 +7,7 @@ import { SectionLabel } from '../../components/SectionLabel'
 import { Switch } from '../../components/Switch'
 import { MY_DATA, PRECAUTION_LEVELS, REVIEW_REQUESTED, WORKER } from '../../data/mock'
 import { cn } from '../../lib/cn'
+import { usePrecautionLevels } from '../occupational-health/precautionLevels'
 import { downloadMyData } from './downloadMyData'
 import { useWorkerPreferences } from './workerPreferences'
 
@@ -102,7 +103,8 @@ function YourDataSection() {
 /** Screen 6: My data and privacy. Values from design-reference/html/06-my-data.html. */
 export function MyDataScreen() {
   const { sharing, setSharing, reviewRequested, requestReview } = useWorkerPreferences()
-  const precaution = PRECAUTION_LEVELS[WORKER.precaution.level]
+  const record = usePrecautionLevels().recordFor(WORKER.id)
+  const precaution = PRECAUTION_LEVELS[record.level]
 
   const reviewRef = useRef<HTMLParagraphElement>(null)
   const [justRequested, setJustRequested] = useState(false)
@@ -124,7 +126,7 @@ export function MyDataScreen() {
               {precaution.name}
             </span>
             <span className="text-[14px] text-muted">
-              Set by {WORKER.precaution.setBy} · {WORKER.precaution.setOn}
+              Set by {WORKER.precaution.setBy} · {record.setOn}
             </span>
           </div>
           <div className="grid grid-cols-2 gap-2">

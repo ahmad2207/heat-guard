@@ -10,6 +10,7 @@ import { HEALTH_PROFILE, PRECAUTION_LEVELS, REVIEW_REQUESTED, WORKER } from '../
 import type { ChoiceOption, HealthProfileAnswers } from '../../data/types'
 import { cn } from '../../lib/cn'
 import { useSpeech } from '../../lib/useSpeech'
+import { usePrecautionLevels } from '../occupational-health/precautionLevels'
 import { useWorkerPreferences } from './workerPreferences'
 
 const focusRing = 'focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-ink'
@@ -143,7 +144,11 @@ export function HealthProfileScreen() {
   const back = onboardingComplete
     ? { to: '/worker/my-data', label: 'Back to my data' }
     : { to: '/worker/welcome', label: 'Back to your choices' }
-  const precaution = PRECAUTION_LEVELS[WORKER.precaution.level]
+  const record = usePrecautionLevels().recordFor(WORKER.id)
+  const precaution = PRECAUTION_LEVELS[record.level]
+  // High-priority uses the design's two lines; other levels show their restriction text.
+  const restrictions =
+    record.level === 'high' ? WORKER.precaution.restrictions : [precaution.restriction]
 
   const set =
     <K extends keyof HealthProfileAnswers>(key: K) =>
@@ -278,13 +283,14 @@ export function HealthProfileScreen() {
             </span>
           </div>
           <div className="flex flex-col gap-2 rounded-xl bg-ground px-3.5 py-3">
-            {WORKER.precaution.restrictions.map((item) => (
+            {restrictions.map((item) => (
               <p key={item} className="m-0 text-[15px] leading-[1.4]">
                 {item}
               </p>
             ))}
             <p className="m-0 text-[13px] text-muted">
-              Set {WORKER.precaution.setOn} · next review {WORKER.precaution.nextReview}
+              Set {record.setOn}
+              {record.nextReview && ` · next review ${record.nextReview}`}
             </p>
           </div>
           {reviewRequested ? (

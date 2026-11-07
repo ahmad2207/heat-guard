@@ -4,7 +4,8 @@ import { Chip } from '../../components/Chip'
 import { ForecastStrip } from '../../components/ForecastStrip'
 import { CheckIcon, ClockIcon, DropIcon, DustIcon, StormIcon } from '../../components/icons'
 import { RiskCard } from '../../components/RiskCard'
-import { FIELD_MODE, WORKER_STATUS } from '../../data/mock'
+import { EXTRA_PRECAUTIONS_REASON, FIELD_MODE, WORKER, WORKER_STATUS } from '../../data/mock'
+import { usePrecautionLevels } from '../occupational-health/precautionLevels'
 import { useDevSettings } from '../../dev/devSettings'
 import { RISK_WORKER_MESSAGES, riskName } from '../../lib/risk'
 import { useSpeech } from '../../lib/useSpeech'
@@ -44,6 +45,11 @@ export function HomeScreen() {
 /** Screen 3: worker Home. Values from design-reference/html/03-home.html and 03b-home-critical.html. */
 function StatusView({ showBackOnline }: { showBackOnline: boolean }) {
   const { riskLevel } = useDevSettings()
+  // "Extra precautions" only shows while occupational health has W-0412 on Enhanced or High-priority.
+  const { level } = usePrecautionLevels().recordFor(WORKER.id)
+  const reasons = WORKER_STATUS.reasons.filter(
+    (reason) => reason !== EXTRA_PRECAUTIONS_REASON || level !== 'standard',
+  )
   const { speak } = useSpeech()
   const [cups, setCups] = useState(WORKER_STATUS.water.cupsToday)
   const { nextBreak, water, forecast } = WORKER_STATUS
@@ -115,7 +121,7 @@ function StatusView({ showBackOnline }: { showBackOnline: boolean }) {
         <Card aria-label="Why this risk level" className="flex flex-col gap-2.5">
           <h2 className="m-0 text-[16px] font-bold">Why</h2>
           <div className="flex flex-wrap gap-2">
-            {WORKER_STATUS.reasons.map((reason) => (
+            {reasons.map((reason) => (
               <Chip key={reason}>{reason}</Chip>
             ))}
           </div>

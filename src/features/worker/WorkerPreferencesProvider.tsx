@@ -35,11 +35,22 @@ export function WorkerPreferencesProvider({ children }: { children: ReactNode })
       giveConsent: () => update((p) => ({ ...p, consentGiven: true })),
       setProfile: (change) =>
         update((p) => ({ ...p, profile: change(p.profile), profileSent: false })),
-      sendProfile: () => update((p) => ({ ...p, profileSent: true, onboardingComplete: true })),
+      sendProfile: () =>
+        update((p) => ({
+          ...p,
+          profileSent: true,
+          onboardingComplete: true,
+          sentProfile: { answers: p.profile, sentAt: new Date().toISOString() },
+        })),
       skipProfile: () => update((p) => ({ ...p, onboardingComplete: true })),
       requestReview: () => update((p) => ({ ...p, reviewRequested: true })),
       deleteHealthAnswers: () =>
-        update((p) => ({ ...p, profile: EMPTY_HEALTH_PROFILE, profileSent: false })),
+        update((p) => ({
+          ...p,
+          profile: EMPTY_HEALTH_PROFILE,
+          profileSent: false,
+          sentProfile: undefined,
+        })),
       loadSampleAnswers: () =>
         update((p) => ({ ...p, profile: HEALTH_PROFILE_SAMPLE, profileSent: false })),
       resetOnboarding: () => {
