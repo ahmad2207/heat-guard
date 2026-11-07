@@ -46,7 +46,7 @@ export function SupervisorHeader({
 
   return (
     <header className={cn('bg-ink text-surface', className)}>
-      <div className="mx-auto flex max-w-[1360px] flex-wrap items-center justify-between gap-3 px-6 py-3.5">
+      <div className="mx-auto flex max-w-[1408px] flex-wrap items-center justify-between gap-3 px-6 py-3.5">
         <div className="flex items-center gap-2.5">
           <ThermometerIcon size={26} className="text-brand" />
           <span className="text-[19px] font-extrabold">HeatGuard</span>

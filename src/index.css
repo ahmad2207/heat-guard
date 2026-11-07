@@ -54,6 +54,7 @@
   --color-oh-selected: #f4f7fa;
   --color-oh-accent: #f4c542;
   --color-ink-accent: #f4c542;
+  --color-link: #2f6fb0;
 }
 
 @layer base {

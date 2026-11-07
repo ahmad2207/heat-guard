@@ -9,7 +9,7 @@ export function OccupationalHealthLayout() {
   return (
     <div className="min-h-dvh bg-ground text-ink">
       <header className="bg-oh-header text-surface">
-        <div className="mx-auto flex max-w-[1360px] flex-wrap items-center justify-between gap-3 px-6 py-3.5">
+        <div className="mx-auto flex max-w-[1408px] flex-wrap items-center justify-between gap-3 px-6 py-3.5">
           <div className="flex items-center gap-2.5">
             <ThermometerIcon size={26} className="text-oh-accent" />
             <span className="text-[19px] font-extrabold">HeatGuard</span>
@@ -23,7 +23,8 @@ export function OccupationalHealthLayout() {
           </span>
         </div>
       </header>
-      <main className="mx-auto flex max-w-[1360px] flex-col gap-5 p-6">
+      {/* 1360px of content plus 24px padding each side, as in the design HTML. */}
+      <main className="mx-auto flex max-w-[1408px] flex-col gap-5 p-6">
         <Outlet />
       </main>
     </div>

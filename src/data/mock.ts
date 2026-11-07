@@ -45,6 +45,9 @@ import type {
 
 export const LANGUAGES: Language[] = ['English', 'Hausa', 'Yoruba', 'Igbo', 'Pidgin']
 
+/** SAMPLE: the site time the prototype starts at. Used by the demo clock in src/lib/clock.ts. */
+export const SITE_TIME = '10:32'
+
 export const SITE: Site = {
   name: '[SITE NAME]',
   shift: 'Day shift',
@@ -580,11 +583,45 @@ export const SUPERVISOR_HEADER_STATUS = {
   initials: 'SU',
 } as const
 
-export const FILTERS = {
-  crews: ['All crews', 'Crew A', 'Crew B', 'Crew C', 'Crew D'],
-  activities: ['All activities', 'Excavation', 'Concrete work', 'Welding', 'Logistics'],
+/** Filter options on Today. Each option lists the crews it shows; null means all crews. */
+export const FILTERS: {
+  crews: Array<{ label: string; crews: CrewId[] | null }>
+  activities: Array<{ label: string; crews: CrewId[] | null }>
+  shifts: string[]
+} = {
+  crews: [
+    { label: 'All crews', crews: null },
+    { label: 'Crew A', crews: ['A'] },
+    { label: 'Crew B', crews: ['B'] },
+    { label: 'Crew C', crews: ['C'] },
+    { label: 'Crew D', crews: ['D'] },
+  ],
+  activities: [
+    { label: 'All activities', crews: null },
+    { label: 'Excavation', crews: ['B'] },
+    { label: 'Concrete work', crews: ['A'] },
+    { label: 'Welding', crews: ['C'] },
+    { label: 'Logistics', crews: ['D'] },
+  ],
+  // Visual only for now.
   shifts: ['Day shift', 'Night shift'],
-} as const
+}
+
+/** Wording on Today that is not part of a section's data. */
+export const TODAY_TEXT = {
+  hourByHour: 'Today, hour by hour',
+  measuresLink: 'All safety and productivity measures',
+  noCrews: 'No crews match these filters.',
+  nothingNeedsAttention: 'Nothing needs attention for these filters.',
+  resolvedToday: 'Resolved today',
+  onMyWay: 'On my way',
+  reassignedTo: 'Reassigned to',
+  reassignTo: 'Reassign to',
+  cancel: 'Cancel',
+}
+
+/** Choices shown after "Reassign" on an individual precaution alert. */
+export const REASSIGN_OPTIONS = ['Shaded prep work', 'Lighter duty', 'Rest area']
 
 export const SITE_HEAT_NOW = {
   level: 3 as RiskLevel,
@@ -678,6 +715,7 @@ export const NEEDS_ATTENTION: NeedsAttentionAlert[] = [
   {
     id: 'w0388-unwell',
     kind: 'symptom',
+    crew: 'B',
     title: 'Worker W-0388 reported feeling unwell',
     meta: 'Crew B · 10:21',
     text: 'Check on them now, move them to shade and stop their work. First aider notified and case escalated to the occupational health nurse.',
@@ -686,6 +724,7 @@ export const NEEDS_ATTENTION: NeedsAttentionAlert[] = [
   {
     id: 'crew-b-high',
     kind: 'crew-risk',
+    crew: 'B',
     level: 3,
     title: 'Crew B, excavation: 7 workers at High',
     meta: 'Before 12:00',
@@ -696,6 +735,7 @@ export const NEEDS_ATTENTION: NeedsAttentionAlert[] = [
   {
     id: 'w0412-precaution',
     kind: 'precaution',
+    crew: 'C',
     title: 'Worker W-0412 needs reduced exposure today',
     meta: 'Crew C · Now',
     do: 'reassign to shaded or lighter duty until 15:00 and add a recovery break every 30 min.',

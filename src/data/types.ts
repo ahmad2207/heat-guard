@@ -168,10 +168,12 @@ export interface SystemHealthRow {
   status: 'ok' | 'check'
 }
 
+/** Every alert belongs to a crew, so the crew and activity filters can apply to it. */
 export type NeedsAttentionAlert =
   | {
       id: string
       kind: 'symptom'
+      crew: CrewId
       title: string
       meta: string
       text: string
@@ -180,6 +182,7 @@ export type NeedsAttentionAlert =
   | {
       id: string
       kind: 'crew-risk'
+      crew: CrewId
       level: RiskLevel
       title: string
       meta: string
@@ -190,6 +193,7 @@ export type NeedsAttentionAlert =
   | {
       id: string
       kind: 'precaution'
+      crew: CrewId
       title: string
       meta: string
       do: string

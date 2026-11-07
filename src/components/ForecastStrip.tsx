@@ -20,6 +20,8 @@ interface ForecastStripProps {
   variant?: 'worker' | 'site'
   /** Field mode: a saved forecast, drawn with dashed outlines instead of fills (07-field-mode.html). */
   saved?: boolean
+  /** Name of the scrolling box on the site strip, so keyboard users can scroll it. */
+  label?: string
   className?: string
 }
 
@@ -45,12 +47,21 @@ export function ForecastStrip({
   hours,
   variant = 'worker',
   saved = false,
+  label = 'Hour by hour forecast',
   className,
 }: ForecastStripProps) {
   if (variant === 'site') {
     const minWidth = hours.length * 52 + (hours.length - 1) * 6
     return (
-      <div className={cn('overflow-x-auto', className)}>
+      <div
+        role="region"
+        aria-label={label}
+        tabIndex={0}
+        className={cn(
+          'overflow-x-auto rounded-lg focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-ink',
+          className,
+        )}
+      >
         <ol
           className="m-0 grid list-none gap-1.5 p-1"
           style={{

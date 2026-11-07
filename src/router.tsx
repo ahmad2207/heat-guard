@@ -9,6 +9,7 @@ import { PrivacyNoticePage } from './features/worker/PrivacyNoticePage'
 import { ReportScreen } from './features/worker/ReportScreen'
 import { RequireConsent } from './features/worker/RequireConsent'
 import { WhatToDoScreen } from './features/worker/WhatToDoScreen'
+import { TodayScreen } from './features/supervisor/TodayScreen'
 import { OccupationalHealthLayout } from './layouts/OccupationalHealthLayout'
 import type { RouteHandle } from './layouts/routeHandle'
 import { SupervisorLayout } from './layouts/SupervisorLayout'
@@ -81,16 +82,7 @@ export const router = createBrowserRouter([
             initials: SUPERVISOR_HEADER_STATUS.initials,
           },
         } satisfies RouteHandle,
-        element: (
-          <ScreenPlaceholder
-            variant="page"
-            number="8"
-            name="Today"
-            route="/supervisor"
-            references={['08-supervisor-today.png', '08-supervisor-today-phone-width.png']}
-            phase={6}
-          />
-        ),
+        element: <TodayScreen />,
       },
       {
         path: 'plan',

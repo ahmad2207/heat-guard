@@ -13,7 +13,8 @@ export function SupervisorLayout() {
         showRole={supervisorHeader?.showRole ?? true}
         initials={supervisorHeader?.initials}
       />
-      <main className="mx-auto flex max-w-[1360px] flex-col gap-5 p-6">
+      {/* 1360px of content plus 24px padding each side, as in the design HTML. */}
+      <main className="mx-auto flex max-w-[1408px] flex-col gap-5 p-6">
         <Outlet />
       </main>
     </div>
