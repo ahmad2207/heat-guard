@@ -41,12 +41,99 @@ export function ThermometerIcon({ withBulb = true, ...props }: IconProps & { wit
   )
 }
 
-export function SpeakerIcon(props: IconProps) {
+/** Two sound waves on the risk card, one on the labelled "Listen" buttons. */
+export function SpeakerIcon({ waves = 2, ...props }: IconProps & { waves?: 1 | 2 }) {
   return (
     <Icon {...props}>
       <path d="M11 5L6 9H2v6h4l5 4z" />
       <path d="M15.5 8.5a5 5 0 0 1 0 7" />
-      <path d="M19 5a10 10 0 0 1 0 14" />
+      {waves === 2 && <path d="M19 5a10 10 0 0 1 0 14" />}
+    </Icon>
+  )
+}
+
+export function ChevronLeftIcon(props: IconProps) {
+  return (
+    <Icon {...props}>
+      <path d="M15 18l-6-6 6-6" />
+    </Icon>
+  )
+}
+
+export function WarningIcon(props: IconProps) {
+  return (
+    <Icon {...props}>
+      <path d="M10.3 3.9L1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z" />
+      <path d="M12 9v4" />
+      <path d="M12 17h.01" />
+    </Icon>
+  )
+}
+
+/** Stopwatch on Home (with the top bar), plain clock on What to do. */
+export function ClockIcon({ stopwatch = false, ...props }: IconProps & { stopwatch?: boolean }) {
+  return (
+    <Icon {...props}>
+      <circle cx="12" cy="13" r="8" />
+      <path d="M12 9v4l2.5 2.5" />
+      {stopwatch && <path d="M9 2h6" />}
+    </Icon>
+  )
+}
+
+export function DropIcon(props: IconProps) {
+  return (
+    <Icon {...props}>
+      <path d="M12 3s6 6.5 6 11a6 6 0 0 1-12 0c0-4.5 6-11 6-11z" />
+    </Icon>
+  )
+}
+
+export function CoolIcon(props: IconProps) {
+  return (
+    <Icon {...props}>
+      <path d="M12 2v20" />
+      <path d="M4.9 6.9l14.2 10.2" />
+      <path d="M4.9 17.1L19.1 6.9" />
+    </Icon>
+  )
+}
+
+export function LighterWorkIcon(props: IconProps) {
+  return (
+    <Icon {...props}>
+      <path d="M4 18h16" />
+      <path d="M7 14l3-3 3 3 4-4" />
+    </Icon>
+  )
+}
+
+export function CalendarIcon(props: IconProps) {
+  return (
+    <Icon {...props}>
+      <rect x="3" y="5" width="18" height="16" rx="2" />
+      <path d="M3 10h18" />
+      <path d="M8 3v4" />
+      <path d="M16 3v4" />
+    </Icon>
+  )
+}
+
+export function DustIcon(props: IconProps) {
+  return (
+    <Icon {...props}>
+      <path d="M3 8h11a3 3 0 1 0-3-3" />
+      <path d="M3 12h15a3 3 0 1 1-3 3" />
+      <path d="M3 16h7" />
+    </Icon>
+  )
+}
+
+export function StormIcon(props: IconProps) {
+  return (
+    <Icon {...props}>
+      <path d="M17 16a4 4 0 0 0-1-7.9A6 6 0 0 0 4.3 10 3.5 3.5 0 0 0 5 17" />
+      <path d="M12 13l-2 4h4l-2 4" />
     </Icon>
   )
 }

@@ -56,6 +56,12 @@
 }
 
 @layer base {
+  /* The design HTML uses the browser's normal line height unless it sets one, so match that
+     instead of Tailwind's default of 1.5. */
+  html {
+    line-height: normal;
+  }
+
   body {
     @apply bg-ground font-sans text-ink antialiased;
   }

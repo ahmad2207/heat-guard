@@ -80,18 +80,27 @@ export interface WorkerStatus {
 
 export interface WhatToDoAction {
   id: string
-  icon: 'rest' | 'water' | 'cool' | 'lighter' | 'shift' | 'unwell'
+  /** `watch` is a neutral warning icon; `unwell` and `urgent` use the red warning style. */
+  icon: 'rest' | 'water' | 'cool' | 'lighter' | 'shift' | 'watch' | 'unwell' | 'urgent'
   title: string
-  detail: string
+  /** Second line under the title. One-line actions leave it out. */
+  detail?: string
+  /** The "Feel unwell?" action links to the report screen. */
+  linksToReport?: boolean
 }
 
-export interface WhatToDo {
-  level: RiskLevel
+/** What to do content for one risk level. */
+export interface WhatToDoLevel {
   headline: string
   actions: WhatToDoAction[]
   why: string
   when: string
-  who: string
+}
+
+export interface WhatToDo {
+  byLevel: Record<RiskLevel, WhatToDoLevel>
+  /** Who the advice is for, by the worker's level compared with their crew's current level. */
+  who: { above: string; same: string; below: string }
   warningSigns: { title: string; text: string }
   confirmedText: string
 }

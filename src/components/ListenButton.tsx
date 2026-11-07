@@ -51,7 +51,7 @@ export function ListenButton({
       )}
       {...rest}
     >
-      <SpeakerIcon size={18} strokeWidth={2.2} />
+      <SpeakerIcon size={18} strokeWidth={2.2} waves={1} />
       Listen
     </button>
   )

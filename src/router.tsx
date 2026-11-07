@@ -1,6 +1,8 @@
 import { createBrowserRouter } from 'react-router-dom'
 import App from './App.tsx'
 import { SUPERVISOR_HEADER_STATUS } from './data/mock'
+import { HomeScreen } from './features/worker/HomeScreen'
+import { WhatToDoScreen } from './features/worker/WhatToDoScreen'
 import { OccupationalHealthLayout } from './layouts/OccupationalHealthLayout'
 import type { RouteHandle } from './layouts/routeHandle'
 import { SupervisorLayout } from './layouts/SupervisorLayout'
@@ -20,17 +22,10 @@ export const router = createBrowserRouter([
     element: <WorkerLayout />,
     children: [
       {
+        // Field mode (screen 7) will switch this layout in Phase 4.
         index: true,
         handle: withBottomNav,
-        element: (
-          <ScreenPlaceholder
-            number="3 and 7"
-            name="Home (and field mode)"
-            route="/worker"
-            references={['03-home.png', '03b-home-critical.png', '07-field-mode.png']}
-            phase={3}
-          />
-        ),
+        element: <HomeScreen />,
       },
       {
         path: 'welcome',
@@ -58,15 +53,7 @@ export const router = createBrowserRouter([
       },
       {
         path: 'what-to-do',
-        element: (
-          <ScreenPlaceholder
-            number="4"
-            name="What to do"
-            route="/worker/what-to-do"
-            references={['04-what-to-do.png']}
-            phase={3}
-          />
-        ),
+        element: <WhatToDoScreen />,
       },
       {
         path: 'report',

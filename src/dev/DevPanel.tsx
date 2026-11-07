@@ -27,7 +27,7 @@ export default function DevPanel() {
   }, [open])
 
   return (
-    <div className="fixed right-3 bottom-24 z-50 flex flex-col items-end gap-2">
+    <div className="fixed right-3 bottom-[148px] z-50 flex flex-col items-end gap-2">
       {open && (
         <section
           id={panelId}

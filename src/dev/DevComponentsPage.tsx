@@ -117,7 +117,7 @@ export default function DevComponentsPage() {
 
         <Group title="RiskCard">
           {RISK_LEVELS.map((level) => (
-            <RiskCard key={level} level={level} />
+            <RiskCard key={level} level={level} onListen={() => {}} />
           ))}
         </Group>
 

@@ -9,6 +9,7 @@ interface RiskCardProps {
   message?: string
   /** Where "See what to do" goes. */
   whatToDoHref?: string
+  /** Reads the warning aloud. The Listen button is hidden when this is not given. */
   onListen?: () => void
   className?: string
 }
@@ -44,7 +45,7 @@ export function RiskCard({
         >
           See what to do
         </Link>
-        <ListenButton variant="icon" onClick={onListen} />
+        {onListen && <ListenButton variant="icon" onClick={onListen} />}
       </div>
     </section>
   )

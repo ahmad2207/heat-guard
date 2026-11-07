@@ -31,7 +31,7 @@ export default function App() {
 
         <nav aria-label="Choose your role" className="flex flex-col gap-3">
           {ROLES.map((role) => (
-            <ButtonLink key={role.to} to={role.to} size="lg" fullWidth className="min-h-16">
+            <ButtonLink key={role.to} to={role.to} size="lg" fullWidth className="min-h-16!">
               {role.label}
             </ButtonLink>
           ))}

@@ -29,6 +29,7 @@ import type {
   SystemHealthRow,
   TaskType,
   WhatToDo,
+  WhatToDoAction,
   Worker,
   WorkerStatus,
   CrewId,
@@ -160,46 +161,130 @@ export const WORKER_STATUS: WorkerStatus = {
   ],
 }
 
-/** From design-reference/source/Alert.dc.html. */
+const FEEL_UNWELL: WhatToDoAction = {
+  id: 'unwell',
+  icon: 'unwell',
+  title: 'Feel unwell?',
+  detail: 'Report it at once. A first aider will come to you.',
+  linksToReport: true,
+}
+
+const COOL_DOWN: WhatToDoAction = {
+  id: 'cool',
+  icon: 'cool',
+  title: 'Cool down',
+  detail: 'Wet cloth on neck and arms during breaks. Keep welding PPE on while welding.',
+}
+
+const DESIGN_WHEN =
+  'Now until 15:00. Between 13:00 and 15:00 the risk may reach Critical (possible, not certain).'
+
+/**
+ * What to do, by risk level. Level 3 is the design (design-reference/source/Alert.dc.html),
+ * adapted to W-0412's welding work. Levels 1, 2 and 4 are the approved prototype wording.
+ * Actions never ask workers to remove protective equipment.
+ */
 export const WHAT_TO_DO: WhatToDo = {
-  level: 3,
-  headline: 'Your heat risk is high and likely to rise after 13:00',
-  actions: [
-    { id: 'rest', icon: 'rest', title: 'Rest', detail: '15 min in shade every 45 min' },
-    {
-      id: 'water',
-      icon: 'water',
-      title: 'Water',
-      detail: 'A cup at every break, even if not thirsty',
+  byLevel: {
+    1: {
+      headline: 'Your heat risk is low',
+      actions: [
+        { id: 'rest', icon: 'rest', title: 'Keep your normal breaks' },
+        { id: 'water', icon: 'water', title: 'Drink a cup of water every 15 to 20 minutes' },
+        {
+          id: 'watch',
+          icon: 'watch',
+          title: 'Watch for warning signs: headache, dizziness or feeling sick',
+        },
+        { ...FEEL_UNWELL, detail: 'Report it at once.' },
+      ],
+      why: 'Conditions are manageable for your work right now, but heat can build quickly later in the day.',
+      when: 'Until conditions change. HeatGuard will warn you early if they do.',
     },
-    {
-      id: 'cool',
-      icon: 'cool',
-      title: 'Cool down',
-      detail: 'Wet cloth on neck and arms during breaks. Keep welding PPE on while welding.',
+    2: {
+      headline: 'Heat is building. Take care now',
+      actions: [
+        { id: 'rest', icon: 'rest', title: 'Take every break on time, in the shade' },
+        {
+          id: 'water',
+          icon: 'water',
+          title: 'Drink a cup of water every 15 to 20 minutes, even if you are not thirsty',
+        },
+        { id: 'cool', icon: 'cool', title: 'Cool down at breaks: wet cloth on your neck and arms' },
+        { id: 'watch', icon: 'watch', title: 'Watch yourself and your crew for warning signs' },
+        { ...FEEL_UNWELL, detail: 'Report it at once.' },
+      ],
+      why: 'The heat and your work mean your body is working harder to stay cool.',
+      when: 'For the next few hours. Check the forecast on your Status screen.',
     },
-    {
-      id: 'lighter',
-      icon: 'lighter',
-      title: 'Lighter work',
-      detail: 'Ask your supervisor for lighter tasks until 15:00',
+    3: {
+      headline: 'Your heat risk is high and likely to rise after 13:00',
+      actions: [
+        { id: 'rest', icon: 'rest', title: 'Rest', detail: '15 min in shade every 45 min' },
+        {
+          id: 'water',
+          icon: 'water',
+          title: 'Water',
+          detail: 'A cup at every break, even if not thirsty',
+        },
+        COOL_DOWN,
+        {
+          id: 'lighter',
+          icon: 'lighter',
+          title: 'Lighter work',
+          detail: 'Ask your supervisor for lighter tasks until 15:00',
+        },
+        {
+          id: 'shift',
+          icon: 'shift',
+          title: 'Shift change possible',
+          detail:
+            'Welding may move to shaded prep work 12:00 to 15:00. Your supervisor will confirm.',
+        },
+        FEEL_UNWELL,
+      ],
+      why: 'Welding in welding PPE on a hot, humid day makes your body heat up faster than it can cool. Your band shows your heart rate has been high for 20 minutes, and your profile asks for extra care.',
+      when: DESIGN_WHEN,
     },
-    {
-      id: 'shift',
-      icon: 'shift',
-      title: 'Shift change possible',
-      detail: 'Welding may move to shaded prep work 12:00 to 15:00. Your supervisor will confirm.',
+    4: {
+      headline: 'Critical heat risk. Stop strenuous work now',
+      actions: [
+        {
+          id: 'stop',
+          icon: 'rest',
+          title: 'Stop strenuous work and move to shade or the cooled rest area',
+        },
+        {
+          id: 'cool',
+          icon: 'cool',
+          title:
+            'Rest and cool down with water on your neck and arms. Follow site rules for your protective equipment',
+        },
+        { id: 'water', icon: 'water', title: 'Drink water in small amounts, often' },
+        {
+          id: 'return',
+          icon: 'shift',
+          title: 'Return to work only when your supervisor says it is safe',
+        },
+        {
+          id: 'unwell',
+          icon: 'urgent',
+          title: 'Dizzy, confused or feeling sick?',
+          detail: 'Get help now',
+          linksToReport: true,
+        },
+      ],
+      why: 'The heat is now too high for strenuous work, and your body may not be able to cool itself.',
+      when: 'Now, until the risk drops or your supervisor says work can restart.',
     },
-    {
-      id: 'unwell',
-      icon: 'unwell',
-      title: 'Feel unwell?',
-      detail: 'Report it at once. A first aider will come to you.',
-    },
-  ],
-  why: 'Welding in welding PPE on a hot, humid day makes your body heat up faster than it can cool. Your band shows your heart rate has been high for 20 minutes, and your profile asks for extra care.',
-  when: 'Now until 15:00. Between 13:00 and 15:00 the risk may reach Critical (possible, not certain).',
-  who: 'You and your crew. Your supervisor has the same advice for the whole crew.',
+  },
+  /** Chosen by comparing the worker's level with their crew's current level. */
+  who: {
+    above:
+      "You. Your precautions put you above your crew's level today. Your supervisor has your adjusted plan, without any health details.",
+    same: 'You and your crew. Your supervisor has the same advice for the whole crew.',
+    below: 'Your crew. Your supervisor has advice for the whole crew.',
+  },
   warningSigns: {
     title: 'Stop and get help if you feel',
     text: 'Dizzy, confused, sick, very weak, or you stop sweating and your skin feels hot.',
