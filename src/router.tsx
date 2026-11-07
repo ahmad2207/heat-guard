@@ -9,6 +9,8 @@ import { PrivacyNoticePage } from './features/worker/PrivacyNoticePage'
 import { ReportScreen } from './features/worker/ReportScreen'
 import { RequireConsent } from './features/worker/RequireConsent'
 import { WhatToDoScreen } from './features/worker/WhatToDoScreen'
+import { MeasuresScreen } from './features/supervisor/MeasuresScreen'
+import { PlanScreen } from './features/supervisor/PlanScreen'
 import { TodayScreen } from './features/supervisor/TodayScreen'
 import { OccupationalHealthLayout } from './layouts/OccupationalHealthLayout'
 import type { RouteHandle } from './layouts/routeHandle'
@@ -92,35 +94,13 @@ export const router = createBrowserRouter([
             initials: SUPERVISOR_HEADER_STATUS.initials,
           },
         } satisfies RouteHandle,
-        element: (
-          <ScreenPlaceholder
-            variant="page"
-            number="9"
-            name="Shift plan"
-            route="/supervisor/plan"
-            references={[
-              '09-supervisor-plan.png',
-              '09b-supervisor-plan-suggested.png',
-              '09-supervisor-plan-phone-width.png',
-            ]}
-            phase={7}
-          />
-        ),
+        element: <PlanScreen />,
       },
       {
         path: 'measures',
         // The Measures design shows the header without role, status or account.
         handle: { supervisorHeader: { showRole: false } } satisfies RouteHandle,
-        element: (
-          <ScreenPlaceholder
-            variant="page"
-            number="10"
-            name="Measures"
-            route="/supervisor/measures"
-            references={['10-supervisor-measures.png', '10-supervisor-measures-phone-width.png']}
-            phase={7}
-          />
-        ),
+        element: <MeasuresScreen />,
       },
     ],
   },

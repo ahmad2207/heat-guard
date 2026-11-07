@@ -30,7 +30,7 @@ export function CrewsTable({ crews }: { crews: CrewRow[] }) {
         role="region"
         aria-labelledby={headingId}
         tabIndex={0}
-        className="overflow-x-auto rounded-lg focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-ink"
+        className="relative overflow-x-auto rounded-lg focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-ink"
       >
         <table className="w-full min-w-[900px] border-collapse text-[15px]">
           <thead>

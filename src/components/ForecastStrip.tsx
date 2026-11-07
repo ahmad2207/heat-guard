@@ -58,7 +58,7 @@ export function ForecastStrip({
         aria-label={label}
         tabIndex={0}
         className={cn(
-          'overflow-x-auto rounded-lg focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-ink',
+          'relative overflow-x-auto rounded-lg focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-ink',
           className,
         )}
       >

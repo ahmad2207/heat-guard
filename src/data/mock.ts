@@ -925,6 +925,43 @@ export const PLAN_SEND = {
   note: 'HeatGuard suggests, you decide. Plans never require removing protective equipment, and are not used to judge individual productivity.',
 }
 
+/** Wording on the shift plan. From Planner.dc.html, plus the edit-mode lines (not in the design). */
+export const PLAN_TEXT = {
+  title: 'Shift plan',
+  subtitle:
+    '[SITE NAME] · Day shift · 07:00 to 17:00 · plan breaks, rotation and task timing around the heat',
+  toggleLabel: 'Plan to show',
+  current: 'Current plan',
+  suggested: 'Suggested plan',
+  editing: 'Suggested plan, editing',
+  strenuousTitle: 'Strenuous work in hot hours',
+  strenuousNote: 'Heavy work at High or above, or any strenuous work at Critical',
+  workingTitle: 'Working hours',
+  workingNoteSame: 'Across all crews, same in both plans',
+  workingNoteDifferent: 'Across all crews',
+  reducedTitle: 'Workers needing reduced exposure',
+  reducedNote: 'Reasons visible to occupational health only',
+  fewerHours: (hours: number) =>
+    `This plan has ${hours} fewer working ${hours === 1 ? 'hour' : 'hours'} than the current plan.`,
+  timelineNote: 'Red outline: work that is too strenuous for the forecast heat',
+  siteHeat: 'Site heat',
+  tooHot: 'Too hot',
+  legend: {
+    H: 'Heavy',
+    M: 'Moderate',
+    L: 'Light or shaded',
+    B: 'Break',
+    tooHot: 'Too strenuous for the heat',
+  },
+  editHint: 'Tap a task to change it: Heavy, Moderate, Light, Break.',
+  changesTitle: 'What the suggested plan changes',
+  sendTitle: 'Send to crews',
+  useSuggested: 'Use suggested plan',
+  adjustFirst: 'Adjust first',
+  useThis: 'Use this plan',
+  cancelChanges: 'Cancel changes',
+}
+
 /* =========================================================================
  * Measures (screen 10)
  * ========================================================================= */
@@ -1008,6 +1045,10 @@ export const ACTIONS_BY_CREW: Bar[] = [
 ]
 
 export const MEASURES_TEXT = {
+  title: 'Safety and productivity measures',
+  periodLabel: 'Period',
+  leadTimesTitle: 'How early warnings came',
+  byCrewTitle: 'Actions followed, by crew',
   subtitle: '[SITE NAME] · all crews · compared with a rules-only baseline',
   leadTimesNote: 'Number of warnings by lead time, last 30 days',
   byCrewNote: 'Crew-level only. Crews under 5 workers are grouped.',
