@@ -2,6 +2,8 @@ import { useMatches } from 'react-router-dom'
 
 /** Per-route settings read by the layouts. Set with `handle` in src/router.tsx. */
 export interface RouteHandle {
+  /** Screen name for the page title, shown as "[title] · HeatGuard AI". */
+  title?: string
   /** Worker routes that show the bottom navigation. */
   bottomNav?: boolean
   /** Supervisor header settings for this route. */

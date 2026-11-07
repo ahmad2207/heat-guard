@@ -26,7 +26,7 @@ export function CasesScreen() {
         <Card
           variant="page"
           aria-label="Review queue"
-          className="flex min-w-0 flex-[2_1_380px] flex-col gap-3"
+          className="flex min-w-0 flex-[2_1_424px] flex-col gap-3"
         >
           <div className="flex items-baseline justify-between gap-2">
             <h2 className="text-[18px] font-extrabold">{OH_TEXT.reviewTitle}</h2>

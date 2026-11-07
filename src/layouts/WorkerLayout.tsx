@@ -12,7 +12,7 @@ export function WorkerLayout() {
 
   return (
     <ActionConfirmationProvider>
-      <div className="min-h-dvh bg-ground text-ink">
+      <div className="worker-shell min-h-dvh bg-ground text-ink">
         <div className="mx-auto flex min-h-dvh w-full max-w-[430px] flex-col">
           <main className="flex flex-1 flex-col">
             <Outlet />

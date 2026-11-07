@@ -154,7 +154,9 @@ export function ReportScreen() {
       </div>
 
       {!sent && (
-        <div className="px-4 pt-3 pb-2">
+        // Pinned above the bottom nav: the nav is 63px plus its bottom padding of 10px or the
+        // safe-area inset, whichever is larger.
+        <div className="sticky bottom-[calc(63px_+_max(10px,env(safe-area-inset-bottom)))] z-10 bg-ground px-4 pt-3 pb-2">
           <Button size="lg" fullWidth disabled={!canSend} onClick={() => setSent(true)}>
             {sendLabel}
           </Button>

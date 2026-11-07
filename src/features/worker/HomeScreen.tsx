@@ -65,6 +65,8 @@ function StatusView({ showBackOnline }: { showBackOnline: boolean }) {
   return (
     <>
       <WorkerHomeHeader />
+      {/* The design has no visible page title on Home; this one is for screen readers. */}
+      <h1 className="sr-only">Your heat status</h1>
 
       <div role="status" className="px-4">
         {showBackOnline && (

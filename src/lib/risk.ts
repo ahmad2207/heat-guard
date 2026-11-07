@@ -28,14 +28,36 @@ export interface RiskClasses {
   text: string
   /** Border token class in the level colour, for outlines */
   border: string
+  /** Focus ring in the text colour for that level, so it shows on the coloured background. */
+  focusRing: string
 }
 
 // Written out in full so Tailwind can find every class name at build time.
 const CLASSES: Record<RiskLevel, RiskClasses> = {
-  1: { bg: 'bg-risk-1', text: 'text-risk-1-text', border: 'border-risk-1' },
-  2: { bg: 'bg-risk-2', text: 'text-risk-2-text', border: 'border-risk-2' },
-  3: { bg: 'bg-risk-3', text: 'text-risk-3-text', border: 'border-risk-3' },
-  4: { bg: 'bg-risk-4', text: 'text-risk-4-text', border: 'border-risk-4' },
+  1: {
+    bg: 'bg-risk-1',
+    text: 'text-risk-1-text',
+    border: 'border-risk-1',
+    focusRing: 'focus-visible:outline-risk-1-text',
+  },
+  2: {
+    bg: 'bg-risk-2',
+    text: 'text-risk-2-text',
+    border: 'border-risk-2',
+    focusRing: 'focus-visible:outline-risk-2-text',
+  },
+  3: {
+    bg: 'bg-risk-3',
+    text: 'text-risk-3-text',
+    border: 'border-risk-3',
+    focusRing: 'focus-visible:outline-risk-3-text',
+  },
+  4: {
+    bg: 'bg-risk-4',
+    text: 'text-risk-4-text',
+    border: 'border-risk-4',
+    focusRing: 'focus-visible:outline-risk-4-text',
+  },
 }
 
 /** Background, text and border token classes for a risk level. */

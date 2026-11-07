@@ -68,4 +68,28 @@
   body {
     @apply bg-ground font-sans text-ink antialiased;
   }
+
+  /* Worker screens pin action bars and the nav to the bottom. Keep focused fields clear of them
+     (Report send bar 74px plus nav 73px). */
+  html:has(.worker-shell) {
+    scroll-padding-bottom: 160px;
+  }
+
+  /* A visible focus style for anything that does not set its own. */
+  :focus-visible {
+    outline: 3px solid var(--color-ink);
+    outline-offset: 2px;
+  }
+}
+
+/* Respect reduced motion everywhere, including any transition added later. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  ::before,
+  ::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+  }
 }

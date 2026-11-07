@@ -75,7 +75,7 @@ export function NeedsAttention({ alerts }: { alerts: NeedsAttentionAlert[] }) {
     <Card
       variant="page"
       aria-label="High-priority alerts"
-      className="flex min-w-0 flex-[3_1_560px] flex-col gap-3.5"
+      className="flex min-w-0 flex-[3_1_604px] flex-col gap-3.5"
     >
       <div className="flex items-baseline justify-between gap-2">
         <h2 className="text-[18px] font-extrabold">Needs attention</h2>

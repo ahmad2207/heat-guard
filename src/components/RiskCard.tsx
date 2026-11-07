@@ -22,7 +22,7 @@ export function RiskCard({
   onListen,
   className,
 }: RiskCardProps) {
-  const { bg, text } = riskClasses(level)
+  const { bg, text, focusRing } = riskClasses(level)
   return (
     <section
       aria-label="Your heat risk"
@@ -41,7 +41,11 @@ export function RiskCard({
       <div className="flex gap-2">
         <Link
           to={whatToDoHref}
-          className="flex h-[52px] flex-1 items-center justify-center rounded-[14px] bg-surface text-[17px] font-bold text-ink no-underline focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-ink"
+          className={cn(
+            'flex h-[52px] flex-1 items-center justify-center rounded-[14px] bg-surface text-[17px] font-bold text-ink no-underline focus-visible:outline-3 focus-visible:outline-offset-2',
+            // The ring sits on the card colour, so it uses the card's text colour.
+            focusRing,
+          )}
         >
           See what to do
         </Link>

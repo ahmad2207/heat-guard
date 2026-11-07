@@ -54,7 +54,8 @@ export function FieldModeView({ reconnect, status }: FieldModeViewProps) {
 
   return (
     <>
-      <WorkerHomeHeader />
+      <WorkerHomeHeader fieldMode />
+      <h1 className="sr-only">Your heat status, field mode</h1>
 
       <div className="flex flex-col gap-3 px-4 pb-4">
         <section

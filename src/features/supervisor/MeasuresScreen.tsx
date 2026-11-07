@@ -112,7 +112,7 @@ export function MeasuresScreen() {
         <Card
           variant="page"
           aria-label="Warning lead time"
-          className="flex min-w-0 flex-[1_1_460px] flex-col gap-3.5"
+          className="flex min-w-0 flex-[1_1_504px] flex-col gap-3.5"
         >
           <h2 className="text-[18px] font-extrabold">{MEASURES_TEXT.leadTimesTitle}</h2>
           <p className="m-0 text-[14px] text-muted">{MEASURES_TEXT.leadTimesNote}</p>
@@ -131,7 +131,7 @@ export function MeasuresScreen() {
         <Card
           variant="page"
           aria-label="Actions followed by crew"
-          className="flex min-w-0 flex-[1_1_460px] flex-col gap-3.5"
+          className="flex min-w-0 flex-[1_1_504px] flex-col gap-3.5"
         >
           <h2 className="text-[18px] font-extrabold">{MEASURES_TEXT.byCrewTitle}</h2>
           <p className="m-0 text-[14px] text-muted">{MEASURES_TEXT.byCrewNote}</p>

@@ -1,4 +1,4 @@
-import { createBrowserRouter } from 'react-router-dom'
+import { createBrowserRouter, type RouteObject } from 'react-router-dom'
 import App from './App.tsx'
 import { SUPERVISOR_HEADER_STATUS } from './data/mock'
 import { ConsentScreen } from './features/worker/ConsentScreen'
@@ -19,7 +19,21 @@ import { SupervisorLayout } from './layouts/SupervisorLayout'
 import { WorkerLayout } from './layouts/WorkerLayout'
 import { NotFoundPage } from './pages/NotFoundPage'
 
-const withBottomNav: RouteHandle = { bottomNav: true }
+/** Route handle with a page title, and the bottom nav on the worker screens that have it. */
+const page = (title: string, extra: RouteHandle = {}): RouteHandle => ({ title, ...extra })
+
+const devRoutes: RouteObject[] = import.meta.env.DEV
+  ? [
+      {
+        path: '/dev/components',
+        handle: page('Component library'),
+        lazy: async () => {
+          const { default: Component } = await import('./dev/DevComponentsPage.tsx')
+          return { Component }
+        },
+      },
+    ]
+  : []
 
 export const router = createBrowserRouter([
   // Role switcher
@@ -34,7 +48,8 @@ export const router = createBrowserRouter([
         // Home switches to field mode (screen 7) itself. Workers with no saved consent go to
         // the consent screen first.
         index: true,
-        handle: withBottomNav,
+        // Field mode is part of this route, so it keeps the Status title.
+        handle: page('Status', { bottomNav: true }),
         element: (
           <RequireConsent>
             <HomeScreen />
@@ -44,28 +59,32 @@ export const router = createBrowserRouter([
       {
         // Placeholder until the full privacy notice is written.
         path: 'privacy',
+        handle: page('Privacy notice'),
         element: <PrivacyNoticePage />,
       },
       {
         path: 'welcome',
+        handle: page('Consent and choices'),
         element: <ConsentScreen />,
       },
       {
         path: 'health-profile',
+        handle: page('Health profile'),
         element: <HealthProfileScreen />,
       },
       {
         path: 'what-to-do',
+        handle: page('What to do'),
         element: <WhatToDoScreen />,
       },
       {
         path: 'report',
-        handle: withBottomNav,
+        handle: page('Report symptoms', { bottomNav: true }),
         element: <ReportScreen />,
       },
       {
         path: 'my-data',
-        handle: withBottomNav,
+        handle: page('My data and privacy', { bottomNav: true }),
         element: <MyDataScreen />,
       },
     ],
@@ -78,28 +97,28 @@ export const router = createBrowserRouter([
     children: [
       {
         index: true,
-        handle: {
+        handle: page('Today', {
           supervisorHeader: {
             status: SUPERVISOR_HEADER_STATUS.today,
             initials: SUPERVISOR_HEADER_STATUS.initials,
           },
-        } satisfies RouteHandle,
+        }),
         element: <TodayScreen />,
       },
       {
         path: 'plan',
-        handle: {
+        handle: page('Shift plan', {
           supervisorHeader: {
             status: SUPERVISOR_HEADER_STATUS.plan,
             initials: SUPERVISOR_HEADER_STATUS.initials,
           },
-        } satisfies RouteHandle,
+        }),
         element: <PlanScreen />,
       },
       {
         path: 'measures',
         // The Measures design shows the header without role, status or account.
-        handle: { supervisorHeader: { showRole: false } } satisfies RouteHandle,
+        handle: page('Safety and productivity measures', { supervisorHeader: { showRole: false } }),
         element: <MeasuresScreen />,
       },
     ],
@@ -112,20 +131,28 @@ export const router = createBrowserRouter([
     children: [
       {
         index: true,
+        handle: page('Cases and profiles'),
         element: <CasesScreen />,
       },
     ],
   },
 
-  {
-    // Temporary component library. Loaded on demand so it stays out of the main bundle.
-    // Phase 9 removes it from production builds.
-    path: '/dev/components',
-    lazy: async () => {
-      const { default: Component } = await import('./dev/DevComponentsPage.tsx')
-      return { Component }
-    },
-  },
+  // Component library, development builds only. In production the URL shows the not-found
+  // page, and Vite leaves the page out of the bundle.
+  ...devRoutes,
 
-  { path: '*', element: <NotFoundPage /> },
+  { path: '*', handle: page('Page not found'), element: <NotFoundPage /> },
 ])
+
+const APP_NAME = 'HeatGuard AI'
+
+/** Sets the page title from the deepest matching route: "[Screen] · HeatGuard AI". */
+function applyTitle(state: typeof router.state) {
+  const title = [...state.matches]
+    .reverse()
+    .map((match) => (match.route.handle as RouteHandle | undefined)?.title)
+    .find(Boolean)
+  document.title = title ? `${title} · ${APP_NAME}` : APP_NAME
+}
+applyTitle(router.state)
+router.subscribe(applyTitle)

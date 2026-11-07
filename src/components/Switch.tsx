@@ -72,14 +72,14 @@ export function Switch({
         <span
           aria-hidden="true"
           className={cn(
-            'pointer-events-none block h-8 w-[52px] rounded-full p-[3px] transition-colors',
+            'pointer-events-none block h-8 w-[52px] rounded-full p-[3px] transition-colors motion-reduce:transition-none',
             'peer-focus-visible:outline-3 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-ink',
             checked ? 'bg-ok' : 'bg-subtle',
           )}
         >
           <span
             className={cn(
-              'block size-[26px] rounded-full bg-surface transition-transform',
+              'block size-[26px] rounded-full bg-surface transition-transform motion-reduce:transition-none',
               checked && 'translate-x-5',
             )}
           />

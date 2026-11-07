@@ -311,7 +311,7 @@ export function PlanScreen() {
         <Card
           variant="page"
           aria-label={PLAN_TEXT.changesTitle}
-          className="flex min-w-0 flex-[3_1_560px] flex-col gap-3.5"
+          className="flex min-w-0 flex-[3_1_604px] flex-col gap-3.5"
         >
           <h2 className="text-[18px] font-extrabold">{PLAN_TEXT.changesTitle}</h2>
           <ul className="m-0 flex list-none flex-col p-0">
@@ -333,7 +333,7 @@ export function PlanScreen() {
         <Card
           variant="page"
           aria-label="Send the plan"
-          className="flex min-w-0 flex-[2_1_380px] flex-col gap-3.5"
+          className="flex min-w-0 flex-[2_1_424px] flex-col gap-3.5"
         >
           <h2 className="text-[18px] font-extrabold">{PLAN_TEXT.sendTitle}</h2>
           <p className="m-0 text-[15px] leading-[1.45]">{PLAN_SEND.text}</p>

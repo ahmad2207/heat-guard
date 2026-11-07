@@ -751,7 +751,6 @@ export const NEEDS_ATTENTION: NeedsAttentionAlert[] = [
     actions: ['Reassign', 'Acknowledge'],
   },
 ]
-export const NEEDS_ATTENTION_OPEN = '3 open'
 
 export const ACTIONS_TODAY: ActionToday[] = [
   {
@@ -785,7 +784,6 @@ export const ACTIONS_TODAY: ActionToday[] = [
     status: 'pending',
   },
 ]
-export const ACTIONS_TODAY_SUMMARY = '2 of 5 done'
 export const ACTIONS_TODAY_NOTE =
   'Actions keep PPE in place. HeatGuard never suggests removing protective equipment.'
 

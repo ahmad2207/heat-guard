@@ -47,6 +47,11 @@ const DAY_NAMES: Record<string, string> = {
   Sat: 'Saturday',
   Sun: 'Sunday',
 }
+/*
+ * Card flex-basis values are the design's basis plus 44px of padding: the design HTML measures
+ * flex-basis on the content box, Tailwind on the border box.
+ */
+
 /** Last 7 days: each hour at High or above is 20px of bar, as in 08-supervisor-today.html. */
 const BAR_PX_PER_HOUR = 20
 
@@ -95,7 +100,7 @@ function SiteHeat() {
     <Card
       variant="page"
       aria-label="Site heat overview"
-      className="flex min-w-0 flex-[2_1_560px] flex-col gap-[18px]"
+      className="flex min-w-0 flex-[2_1_604px] flex-col gap-[18px]"
     >
       <div className="flex flex-wrap justify-between gap-4">
         <div className="flex flex-col gap-2">
@@ -138,7 +143,7 @@ function WorkersByLevel() {
     <Card
       variant="page"
       aria-label="Workforce risk distribution"
-      className="flex min-w-0 flex-[1_1_320px] flex-col gap-4"
+      className="flex min-w-0 flex-[1_1_364px] flex-col gap-4"
     >
       <SectionLabel>Workers by risk level</SectionLabel>
       <div role="img" aria-label={summary} className="flex h-[18px] overflow-hidden rounded-[9px]">
@@ -181,7 +186,7 @@ function ClimateHazards() {
     <Card
       variant="page"
       aria-label="Other climate hazards"
-      className="flex min-w-0 flex-[1_1_420px] flex-col gap-1.5"
+      className="flex min-w-0 flex-[1_1_464px] flex-col gap-1.5"
     >
       <SectionLabel>Other climate hazards today</SectionLabel>
       <ul className="m-0 list-none p-0">
@@ -215,7 +220,7 @@ function SystemHealth() {
     <Card
       variant="page"
       aria-label="System health"
-      className="flex min-w-0 flex-[1_1_420px] flex-col gap-1.5"
+      className="flex min-w-0 flex-[1_1_464px] flex-col gap-1.5"
     >
       <SectionLabel>System health</SectionLabel>
       <ul className="m-0 list-none p-0">
@@ -247,7 +252,7 @@ function ActionsToday() {
     <Card
       variant="page"
       aria-label="Recommended actions"
-      className="flex min-w-0 flex-[2_1_380px] flex-col gap-3.5"
+      className="flex min-w-0 flex-[2_1_424px] flex-col gap-3.5"
     >
       <div className="flex items-baseline justify-between gap-2">
         <h2 className="text-[18px] font-extrabold">Actions today</h2>

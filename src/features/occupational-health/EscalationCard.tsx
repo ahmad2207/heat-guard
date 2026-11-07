@@ -35,7 +35,7 @@ export function EscalationCard() {
     <Card
       variant="page"
       aria-label="Open escalation"
-      className="flex min-w-0 flex-[3_1_560px] flex-col gap-3.5"
+      className="flex min-w-0 flex-[3_1_604px] flex-col gap-3.5"
     >
       <div className="flex flex-wrap items-center gap-2.5">
         <StatusPill status="escalation" />
