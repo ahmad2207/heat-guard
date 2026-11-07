@@ -52,6 +52,7 @@
   --color-oh-header-muted: #d5e2ef;
   --color-oh-header-line: #5a7896;
   --color-oh-selected: #f4f7fa;
+  --color-oh-accent: #f4c542;
 }
 
 @layer base {

@@ -39,6 +39,7 @@ These appear in `html/` but were not in the core list. They are in the Tailwind 
 | `oh-header-muted` | #D5E2EF | "Occupational health" role label on the navy header |
 | `oh-header-line` | #5A7896 | Divider before the role label on the navy header |
 | `oh-selected` | #F4F7FA | Selected precaution level option on the occupational health profile |
+| `oh-accent` | #F4C542 | Thermometer logo on the occupational health header. Same value as `risk-2`, kept separate so the logo never reads as a risk level |
 
 `#000000` is only used as the link hover colour in the exported HTML, so it has no token.
 
