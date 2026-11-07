@@ -1,18 +1,48 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Card } from '../../components/Card'
 import { Chip } from '../../components/Chip'
 import { ForecastStrip } from '../../components/ForecastStrip'
-import { ClockIcon, DropIcon, DustIcon, StormIcon, ThermometerIcon } from '../../components/icons'
+import { CheckIcon, ClockIcon, DropIcon, DustIcon, StormIcon } from '../../components/icons'
 import { RiskCard } from '../../components/RiskCard'
-import { WORKER, WORKER_STATUS } from '../../data/mock'
+import { FIELD_MODE, WORKER_STATUS } from '../../data/mock'
 import { useDevSettings } from '../../dev/devSettings'
 import { RISK_WORKER_MESSAGES, riskName } from '../../lib/risk'
 import { useSpeech } from '../../lib/useSpeech'
+import { FieldModeView } from './FieldModeView'
+import { useFieldMode } from './useFieldMode'
+import { WorkerHomeHeader } from './WorkerHomeHeader'
 
 const HAZARD_ICONS = { dust: DustIcon, storm: StormIcon }
 
-/** Screen 3: worker Home. Values from design-reference/html/03-home.html and 03b-home-critical.html. */
+const BACK_ONLINE_MS = 4000
+
+/**
+ * Screen 3: worker Home. Switches to field mode (screen 7) when offline or forced by the dev panel.
+ */
 export function HomeScreen() {
+  const fieldMode = useFieldMode()
+
+  // When field mode ends, briefly say that the data is up to date again.
+  const [wasFieldMode, setWasFieldMode] = useState(fieldMode.active)
+  const [showBackOnline, setShowBackOnline] = useState(false)
+  if (fieldMode.active !== wasFieldMode) {
+    setWasFieldMode(fieldMode.active)
+    setShowBackOnline(!fieldMode.active)
+  }
+  useEffect(() => {
+    if (!showBackOnline) return
+    const timer = setTimeout(() => setShowBackOnline(false), BACK_ONLINE_MS)
+    return () => clearTimeout(timer)
+  }, [showBackOnline])
+
+  if (fieldMode.active) {
+    return <FieldModeView reconnect={fieldMode.reconnect} status={fieldMode.status} />
+  }
+  return <StatusView showBackOnline={showBackOnline} />
+}
+
+/** Screen 3: worker Home. Values from design-reference/html/03-home.html and 03b-home-critical.html. */
+function StatusView({ showBackOnline }: { showBackOnline: boolean }) {
   const { riskLevel } = useDevSettings()
   const { speak } = useSpeech()
   const [cups, setCups] = useState(WORKER_STATUS.water.cupsToday)
@@ -28,20 +58,16 @@ export function HomeScreen() {
 
   return (
     <>
-      <header className="flex items-center justify-between px-5 pt-3.5 pb-2.5">
-        <div className="flex items-center gap-2">
-          <ThermometerIcon size={26} className="text-brand" />
-          <span className="text-[19px] font-extrabold tracking-[-0.01em]">HeatGuard</span>
-        </div>
-        {/* Language choice is visual only for now. Translations come after Phase 9. */}
-        <button
-          type="button"
-          aria-label={`Change language, current ${WORKER.language}`}
-          className="h-11 min-w-16 rounded-full border border-field bg-surface px-3.5 text-[15px] font-bold text-ink focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-ink"
-        >
-          EN
-        </button>
-      </header>
+      <WorkerHomeHeader />
+
+      <div role="status" className="px-4">
+        {showBackOnline && (
+          <p className="mb-3 flex items-center gap-2 rounded-xl bg-ok-bg px-3.5 py-2.5 text-[15px] font-bold text-ok-text">
+            <CheckIcon size={20} strokeWidth={2.4} />
+            {FIELD_MODE.backOnline}
+          </p>
+        )}
+      </div>
 
       <div className="flex flex-col gap-3 px-4 pb-4">
         <div aria-label="Data sources" className="flex flex-wrap items-center gap-1.5 text-[13px]">

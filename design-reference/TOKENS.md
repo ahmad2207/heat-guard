@@ -40,6 +40,7 @@ These appear in `html/` but were not in the core list. They are in the Tailwind 
 | `oh-header-line` | #5A7896 | Divider before the role label on the navy header |
 | `oh-selected` | #F4F7FA | Selected precaution level option on the occupational health profile |
 | `oh-accent` | #F4C542 | Thermometer logo on the occupational health header. Same value as `risk-2`, kept separate so the logo never reads as a risk level |
+| `ink-accent` | #F4C542 | Icons and headings on `ink` panels: field mode status icons, the "Our promise" heading and the health profile lock. Same value as `risk-2`, kept separate so these never read as a risk level |
 
 `#000000` is only used as the link hover colour in the exported HTML, so it has no token.
 

@@ -107,7 +107,13 @@ export interface WhatToDo {
 
 export interface SymptomReportContent {
   emergency: { title: string; text: string; phoneLabel: string; phoneNumber: string }
+  /** Shown after "Alert first aider" is pressed. */
+  alertedText: string
   symptoms: Array<{ id: string; label: string }>
+  noteLabel: string
+  notePlaceholder: string
+  /** Send button label when nothing is ticked and the note is empty. */
+  sendDisabledLabel: string
   sentTitle: string
   sentText: string
   privacy: string
@@ -116,7 +122,14 @@ export interface SymptomReportContent {
 export interface FieldModeContent {
   connection: { title: string; detail: string }
   band: { title: string; detail: string }
+  /** Sample battery state, used when the browser cannot report the real battery. */
   battery: { title: string; detail: string }
+  /** Real battery at or below this percent, and not charging, shows battery saver as on. */
+  batterySaverAt: number
+  /** Detail line for a real battery above the saver level. */
+  batteryNormalDetail: string
+  reconnect: { idle: string; checking: string; failed: string }
+  backOnline: string
   assumedLevel: RiskLevel
   safetyText: string
   lastKnown: string

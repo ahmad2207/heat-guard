@@ -301,6 +301,7 @@ export const SYMPTOM_REPORT: SymptomReportContent = {
     // Placeholder number used by the design's tel: link. Replace per site.
     phoneNumber: '112',
   },
+  alertedText: 'First aider alerted. Stay where you are.',
   symptoms: [
     { id: 'headache', label: 'Headache' },
     { id: 'dizzy', label: 'Dizzy' },
@@ -309,6 +310,9 @@ export const SYMPTOM_REPORT: SymptomReportContent = {
     { id: 'cramps', label: 'Muscle cramps' },
     { id: 'weak', label: 'Very tired or weak' },
   ],
+  noteLabel: 'Anything else? (optional)',
+  notePlaceholder: 'Type or use voice',
+  sendDisabledLabel: 'Tick a symptom or add a note to send',
   sentTitle: 'Report sent',
   sentText:
     'Stop work and rest in the shade now. Your supervisor has been asked to check on you. If you feel worse, use the emergency buttons above.',
@@ -327,6 +331,15 @@ export const FIELD_MODE: FieldModeContent = {
     title: 'Battery 14% · saver on',
     detail: 'Screen dimmed, updates every 15 min. Alarms still sound.',
   },
+  batterySaverAt: 20,
+  batteryNormalDetail: 'Alarms still sound.',
+  // "Still offline, trying again" is the design's label after a failed try.
+  reconnect: {
+    idle: 'Try to reconnect',
+    checking: 'Checking connection',
+    failed: 'Still offline, trying again',
+  },
+  backOnline: 'Back online. Data updated.',
   assumedLevel: 3,
   safetyText:
     'We cannot get new weather data, so HeatGuard is assuming high risk to keep you safe until it reconnects.',

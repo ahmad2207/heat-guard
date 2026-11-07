@@ -162,3 +162,34 @@ export function LockIcon(props: IconProps) {
     </Icon>
   )
 }
+
+export function NoSignalIcon(props: IconProps) {
+  return (
+    <Icon {...props}>
+      <path d="M2 2l20 20" />
+      <path d="M8.5 16.5a5 5 0 0 1 7 0" />
+      <path d="M5 12.5a10 10 0 0 1 5.2-2.8" />
+      <path d="M12 20h.01" />
+    </Icon>
+  )
+}
+
+/** Wearable band, crossed out. */
+export function BandOffIcon(props: IconProps) {
+  return (
+    <Icon {...props}>
+      <rect x="7" y="3" width="10" height="18" rx="3" />
+      <path d="M4 8l16 8" />
+    </Icon>
+  )
+}
+
+export function BatteryLowIcon(props: IconProps) {
+  return (
+    <Icon {...props}>
+      <rect x="2" y="7" width="18" height="10" rx="2" />
+      <path d="M22 11v2" />
+      <path d="M5 10v4" />
+    </Icon>
+  )
+}

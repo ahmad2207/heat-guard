@@ -161,6 +161,7 @@ Follow CLAUDE.md. Phase 9: final pass.
 4. Confirm the PWA still installs and the worker app shell opens offline.
 5. Remove the /dev/components route from production builds (keep it in development).
 6. Search the whole codebase for em dashes and replace any you find.
+7. Pin the Report send button above the bottom nav using position sticky.
 
 Give me a summary of what changed and anything I should test on my phone. STOP for review before committing.
 ```

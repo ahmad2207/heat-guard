@@ -2,6 +2,7 @@ import { createBrowserRouter } from 'react-router-dom'
 import App from './App.tsx'
 import { SUPERVISOR_HEADER_STATUS } from './data/mock'
 import { HomeScreen } from './features/worker/HomeScreen'
+import { ReportScreen } from './features/worker/ReportScreen'
 import { WhatToDoScreen } from './features/worker/WhatToDoScreen'
 import { OccupationalHealthLayout } from './layouts/OccupationalHealthLayout'
 import type { RouteHandle } from './layouts/routeHandle'
@@ -58,15 +59,7 @@ export const router = createBrowserRouter([
       {
         path: 'report',
         handle: withBottomNav,
-        element: (
-          <ScreenPlaceholder
-            number="5"
-            name="Report symptoms"
-            route="/worker/report"
-            references={['05-report-symptoms.png']}
-            phase={4}
-          />
-        ),
+        element: <ReportScreen />,
       },
       {
         path: 'my-data',
