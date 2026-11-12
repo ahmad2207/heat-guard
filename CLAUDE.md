@@ -17,3 +17,14 @@ Heat-risk warning PWA for outdoor workers, supervisors and occupational health. 
 - Never use em dashes in UI copy, comments, docs or commit messages.
 - Work one phase at a time. Show the diffs, run the build, then stop and wait for review. Do not refactor code outside the current phase without asking.
 - Do not commit until the user approves.
+
+## Backend integration
+
+The briefs are in `docs/backend/`: `HeatGuard_Frontend_To-Do.pdf` (main brief), `FRONTEND_BACKEND_GAPS.md` (status and decisions D1 to D8) and `openapi.json` once saved. The live API docs at `[backend URL]/docs` are the source for exact field names and response shapes.
+
+- All backend calls go through one module in `src/api/`. Components never call `fetch` directly.
+- The backend sends codes, IDs and UTC times. Convert them into the app's own types in small converter functions in `src/api/converters/`, and format words and times in the site's timezone in the UI. Never show raw codes to users.
+- Keep sample data working behind `VITE_DATA_SOURCE=mock`. Production uses `api`.
+- Every screen that loads data has loading, error and empty states. Requests wait up to 90 seconds; after 3 seconds show "Waking up the server...".
+- Never send health details anywhere the spec does not allow. Supervisors never receive or display health status (decision D1).
+- Field mode must keep working offline and with an expired token.
