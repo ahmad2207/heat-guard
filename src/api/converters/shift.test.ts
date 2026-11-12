@@ -110,9 +110,9 @@ describe('shift and heartbeat calls', () => {
   afterEach(() => vi.unstubAllGlobals())
 
   it('posts each action to its assignment path', async () => {
-    fetchMock.mockResolvedValue(json(201, { ...day }))
+    fetchMock.mockImplementation(async () => json(201, { ...day }))
     for (const action of ['clock-in', 'break-start', 'break-end', 'clock-out'] as const) {
-      await sendShiftAction('a1', action)
+      await expect(sendShiftAction('a1', action)).resolves.toMatchObject({ status: 'sent' })
     }
     expect(calls()).toEqual([
       'POST /assignments/a1/clock-in',

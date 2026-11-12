@@ -208,8 +208,9 @@ describe('outbox', () => {
     await acknowledgeRecommendation('rec-1')
     await sendFirstAidAlert()
     online = true
-    fetchMock.mockResolvedValue(json(201, {}))
-    await flushOutbox()
+    fetchMock.mockImplementation(async () => json(201, {}))
+    const outcomes = await flushOutbox()
+    expect([...outcomes.values()].map((o) => o.status)).toEqual(['sent', 'sent', 'sent'])
     expect(calls()).toEqual([
       'POST /me/water',
       'POST /recommendations/rec-1/interventions',
@@ -237,7 +238,7 @@ describe('outbox', () => {
   })
   it('sends a new action after anything already waiting', async () => {
     enqueue({ kind: 'first-aid-alert', path: '/me/first-aid-alert' })
-    fetchMock.mockResolvedValue(json(201, {}))
+    fetchMock.mockImplementation(async () => json(201, {}))
     await submit({ kind: 'water', path: '/me/water', body: { cups: 1 } })
     expect(calls()).toEqual(['POST /me/first-aid-alert', 'POST /me/water'])
   })

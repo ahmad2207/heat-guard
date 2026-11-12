@@ -155,7 +155,7 @@ export interface ClimateHazard {
   id: string
   icon: 'dust' | 'storm'
   title: string
-  severity: 'Moderate' | 'Possible'
+  severity: 'Moderate' | 'High' | 'Possible'
   detail: string
 }
 
@@ -164,7 +164,8 @@ export interface SystemHealthRow {
   title: string
   detail: string
   value: string
-  status: 'ok' | 'check'
+  /** null: nothing to check (for example no site sensors), so no dot colour and no pill. */
+  status: 'ok' | 'check' | null
 }
 
 /** Every alert belongs to a crew, so the crew and activity filters can apply to it. */
@@ -223,7 +224,8 @@ export interface CrewRow {
   workload: string
   ppe: string
   workers: number
-  now: RiskLevel
+  /** null when there is no current reading for the crew. */
+  now: RiskLevel | null
   peak: { level: RiskLevel; possible?: boolean }
   nextAction: string
 }

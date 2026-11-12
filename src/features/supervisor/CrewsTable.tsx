@@ -1,23 +1,24 @@
 import { useId } from 'react'
 import { Card } from '../../components/Card'
 import { RiskBadge } from '../../components/RiskBadge'
-import { CREWS_PEAK_LABEL, TODAY_TEXT } from '../../data/mock'
+import { TODAY_TEXT } from '../../data/mock'
 import type { CrewRow } from '../../data/types'
 import { cn } from '../../lib/cn'
 
-const HEADINGS = [
+const headings = (peakLabel: string) => [
   'Crew',
   'Activity',
   'Workload',
   'PPE',
   'Workers',
   'Now',
-  CREWS_PEAK_LABEL,
+  peakLabel,
   'Next action',
 ]
 
 /** Crews table. Scrolls sideways inside its own box on narrow screens. */
-export function CrewsTable({ crews }: { crews: CrewRow[] }) {
+export function CrewsTable({ crews, peakLabel }: { crews: CrewRow[]; peakLabel: string }) {
+  const HEADINGS = headings(peakLabel)
   const headingId = useId()
   const cell = (last: boolean) => cn('px-3 py-3.5', !last && 'border-b border-line-soft')
 
@@ -66,7 +67,11 @@ export function CrewsTable({ crews }: { crews: CrewRow[] }) {
                   <td className={cell(last)}>{crew.ppe}</td>
                   <td className={cn(cell(last), 'font-mono')}>{crew.workers}</td>
                   <td className={cell(last)}>
-                    <RiskBadge level={crew.now} size="md" />
+                    {crew.now ? (
+                      <RiskBadge level={crew.now} size="md" />
+                    ) : (
+                      <span className="text-[14px] text-muted">{TODAY_TEXT.noReading}</span>
+                    )}
                   </td>
                   <td className={cell(last)}>
                     <RiskBadge level={crew.peak.level} size="md" possible={crew.peak.possible} />

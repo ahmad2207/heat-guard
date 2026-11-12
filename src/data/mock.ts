@@ -642,12 +642,41 @@ export const TODAY_TEXT = {
   hourByHour: 'Today, hour by hour',
   measuresLink: 'All safety and productivity measures',
   noCrews: 'No crews match these filters.',
+  noReading: 'No current reading',
   nothingNeedsAttention: 'Nothing needs attention for these filters.',
   resolvedToday: 'Resolved today',
   onMyWay: 'On my way',
   reassignedTo: 'Reassigned to',
   reassignTo: 'Reassign to',
   cancel: 'Cancel',
+}
+
+/** Supervisor Today wording for the connected app (api mode). DECISIONS.md, needs attention. */
+export const SUPERVISOR_LIVE_TEXT = {
+  helpFirstAid: (code: string) => `Worker ${code} asked for a first aider`,
+  helpSymptom: (code: string) => `Worker ${code} reported feeling unwell`,
+  helpText: 'Check on them now, move them to shade and stop their work. First aider notified.',
+  criticalTitle: (code: string) => `Worker ${code} is at Critical`,
+  criticalText: 'Stop their activity now.',
+  crewRiskTitle: (crew: string, activity: string, count: number) =>
+    `${crew}${activity ? `, ${activity.toLowerCase()}` : ''}: ${count} ${count === 1 ? 'worker' : 'workers'} at High or above`,
+  reducedExposure: (code: string) => `Worker ${code} needs reduced exposure today`,
+  earlierBreaks: (code: string) => `Worker ${code} needs earlier breaks today`,
+  healthNote: 'Health reasons are never shown.',
+  onMyWay: 'I am on my way',
+  markResolved: 'Mark resolved',
+  acknowledge: 'Acknowledge',
+  activityStopped: 'Activity stopped',
+  changeShiftTiming: 'Change shift timing',
+  reassign: 'Reassign',
+  onMyWayDone: 'On my way',
+  resolvedDone: 'Marked resolved',
+  acknowledgedDone: 'Acknowledged',
+  stoppedDone: 'Activity stopped',
+  noHazards: 'No other climate hazards today.',
+  noSite: 'No site is linked to your account. Ask your administrator to add you to a site.',
+  updating: 'Updating...',
+  allShifts: 'All shifts',
 }
 
 /** Choices shown after "Reassign" on an individual precaution alert. */
