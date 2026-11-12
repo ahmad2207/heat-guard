@@ -53,6 +53,8 @@ interface WaterData {
   /** Cups waiting to be sent. */
   queued?: number
   error?: string | null
+  /** The count could not be loaded; "+ Cup" still works. */
+  unavailable?: boolean
 }
 
 /**
@@ -196,6 +198,7 @@ function ApiStatus({ view, showBackOnline }: { view: RiskView; showBackOnline: b
         // Not while a cup is being sent: only when it is really waiting for signal.
         queued: sending ? 0 : queued,
         error,
+        unavailable: water.status === 'error' && serverCups === null,
       }}
     />
   )
@@ -287,6 +290,11 @@ function StatusView({
                   : `Water: ${water.cups} ${water.cups === 1 ? 'cup' : 'cups'} today`}
               </span>
               <span className="text-[14px] text-muted">{WORKER_STATUS.water.advice}</span>
+              {water.unavailable && (
+                <span className="text-[13px] font-semibold text-muted">
+                  {LIVE_TEXT.waterUnavailable}
+                </span>
+              )}
               {!!water.queued && (
                 <span className="text-[13px] font-semibold text-warn-text">{LIVE_TEXT.queued}</span>
               )}
@@ -298,7 +306,7 @@ function StatusView({
             </span>
             <button
               type="button"
-              aria-label="Add a cup of water"
+              aria-label="+ Cup: add a cup of water"
               onClick={water.onAddCup}
               className="h-11 shrink-0 rounded-xl border border-field bg-surface px-3.5 text-[15px] font-bold text-ink focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-ink"
             >

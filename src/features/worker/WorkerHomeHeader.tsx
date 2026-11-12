@@ -21,7 +21,7 @@ export function WorkerHomeHeader({ fieldMode = false }: { fieldMode?: boolean })
       {/* Language choice is visual only for now. Translations come after Phase 9. */}
       <button
         type="button"
-        aria-label={`Change language, current ${language}`}
+        aria-label={`${LANGUAGE_CODES[language]}: change language, current ${language}`}
         className="h-11 min-w-16 rounded-full border border-field bg-surface px-3.5 text-[15px] font-bold text-ink focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-ink"
       >
         {LANGUAGE_CODES[language]}

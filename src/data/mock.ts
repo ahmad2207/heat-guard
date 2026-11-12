@@ -333,6 +333,7 @@ export const LIVE_TEXT = {
   alertFailed: 'The alert could not be sent. Call for help with the button above.',
   reportFailed: 'The report could not be sent. Try again, or use the emergency buttons above.',
   cupFailed: 'That cup was not saved. Try again.',
+  waterUnavailable: 'Your water count is not available right now.',
   // Shift card on Home
   shiftTitle: 'Your shift',
   endShiftConfirm: 'End your shift for today?',
@@ -674,6 +675,8 @@ export const SUPERVISOR_LIVE_TEXT = {
   acknowledgedDone: 'Acknowledged',
   stoppedDone: 'Activity stopped',
   noHazards: 'No other climate hazards today.',
+  noActions: 'No actions yet today.',
+  noHistory: 'No history yet.',
   noSite: 'No site is linked to your account. Ask your administrator to add you to a site.',
   updating: 'Updating...',
   allShifts: 'All shifts',

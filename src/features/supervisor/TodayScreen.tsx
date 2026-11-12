@@ -324,6 +324,9 @@ function ActionsToday({
           {done} of {total} done
         </span>
       </div>
+      {actions.length === 0 && (
+        <p className="m-0 text-[15px] text-muted">{SUPERVISOR_LIVE_TEXT.noActions}</p>
+      )}
       <ul className="m-0 flex list-none flex-col p-0">
         {actions.map((action, index) => (
           <li
@@ -383,31 +386,35 @@ function LastSevenDays({ days, summary: heading }: { days: DayBar[]; summary: st
         <h2 className="text-[18px] font-extrabold">Last 7 days</h2>
         <span className="text-[14px] text-muted">{heading}</span>
       </div>
-      <div
-        role="img"
-        aria-label={summary}
-        className="grid h-[180px] items-end gap-3.5"
-        style={{ gridTemplateColumns: `repeat(${Math.max(days.length, 1)}, minmax(0, 1fr))` }}
-      >
-        {days.map((day, index) => (
-          <div
-            key={`${day.day}-${index}`}
-            className="flex h-full flex-col items-center justify-end gap-1.5"
-          >
-            <span className="font-mono text-[13px] font-bold">{day.hours}</span>
-            {day.hours > 0 ? (
-              <span
-                className="w-full max-w-16 rounded-t-lg bg-risk-3"
-                // Capped so a long day stays inside the 180px chart.
-                style={{ height: Math.min(day.hours * BAR_PX_PER_HOUR, 130) }}
-              />
-            ) : (
-              <span className="h-0.5 w-full max-w-16 bg-field" />
-            )}
-            <span className="text-[13px] text-muted">{day.day}</span>
-          </div>
-        ))}
-      </div>
+      {days.length === 0 ? (
+        <p className="m-0 text-[15px] text-muted">{SUPERVISOR_LIVE_TEXT.noHistory}</p>
+      ) : (
+        <div
+          role="img"
+          aria-label={summary}
+          className="grid h-[180px] items-end gap-3.5"
+          style={{ gridTemplateColumns: `repeat(${Math.max(days.length, 1)}, minmax(0, 1fr))` }}
+        >
+          {days.map((day, index) => (
+            <div
+              key={`${day.day}-${index}`}
+              className="flex h-full flex-col items-center justify-end gap-1.5"
+            >
+              <span className="font-mono text-[13px] font-bold">{day.hours}</span>
+              {day.hours > 0 ? (
+                <span
+                  className="w-full max-w-16 rounded-t-lg bg-risk-3"
+                  // Capped so a long day stays inside the 180px chart.
+                  style={{ height: Math.min(day.hours * BAR_PX_PER_HOUR, 130) }}
+                />
+              ) : (
+                <span className="h-0.5 w-full max-w-16 bg-field" />
+              )}
+              <span className="text-[13px] text-muted">{day.day}</span>
+            </div>
+          ))}
+        </div>
+      )}
     </Card>
   )
 }
@@ -573,6 +580,11 @@ function ApiTodayForSite({ siteId }: { siteId: string }) {
   if (data && unfiltered && JSON.stringify(data.activities) !== JSON.stringify(activities)) {
     setActivities(data.activities)
   }
+  // If the crew list cannot be loaded, the crews of an unfiltered page fill the dropdown instead.
+  const [pageCrews, setPageCrews] = useState<Array<{ id: string; name: string }>>([])
+  const crewsHere =
+    data && unfiltered ? data.crews.map((crew) => ({ id: crew.id, name: crew.name })) : null
+  if (crewsHere && JSON.stringify(crewsHere) !== JSON.stringify(pageCrews)) setPageCrews(crewsHere)
   if (!data) {
     return today.error ? (
       <ErrorState
@@ -589,7 +601,7 @@ function ApiTodayForSite({ siteId }: { siteId: string }) {
     setFilters((current) => ({ ...current, [key]: value }))
   const crewOptions: FilterOption[] = [
     { value: '', label: FILTERS.crews[0].label },
-    ...(options.status === 'ready' ? options.data : []).map((crew) => ({
+    ...(options.status === 'ready' ? options.data : pageCrews).map((crew) => ({
       value: crew.id,
       label: crew.name,
     })),

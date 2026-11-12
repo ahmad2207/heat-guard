@@ -357,7 +357,7 @@ function PlanBoard({
         )}
       </div>
 
-      {data.crews.length === 0 ? (
+      {data.crews.length === 0 || data.hours.length === 0 ? (
         <EmptyState variant="page" message={PLAN_LIVE_TEXT.noCrews} />
       ) : (
         <Timeline

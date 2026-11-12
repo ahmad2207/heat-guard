@@ -38,7 +38,11 @@ Copy `.env.example` to `.env.local` (`.env` and `.env.local` are not committed).
 | `VITE_API_URL`     | `https://health-heat.onrender.com` | Backend host only. Routes are under `/api/v1`                                            |
 | `VITE_DATA_SOURCE` | `mock` or `api`                    | Sample data or the backend. If empty: `api` when `VITE_API_URL` is set, otherwise `mock` |
 
-With `mock`, the app runs on the sample data in `src/data/mock.ts` and the demo clock (10:32). With `api`, data comes from the backend, times use the device clock shown in the site timezone, and requests wait up to 90 seconds (the free server can take close to a minute to wake).
+With `mock`, the app runs on the sample data in `src/data/mock.ts` and the demo clock (10:32). With `api`, data comes from the backend, times use the device clock shown in the site timezone, and requests wait up to 90 seconds.
+
+**Waking up.** The backend runs on a free Render plan that sleeps when nobody uses it. The first request after a quiet spell can take up to a minute: after 3 seconds every loading screen shows "Waking up the server..." and "This can take a minute or two." Requests give up after 90 seconds with a Try again button. Open the app once a few minutes before a demo.
+
+**Switching to sample data.** Set `VITE_DATA_SOURCE=mock` in `.env.local` (or delete `.env.local`) and restart `npm run dev`. Sample mode has no login: `/` shows the role switcher. On Vercel, change `VITE_DATA_SOURCE` in the project settings and redeploy.
 
 The service worker is off in development. To test it in development, set `DEV_PWA=true`:
 
@@ -63,8 +67,8 @@ $env:DEV_PWA="true"; npm run dev    # Windows PowerShell
 
 ```
 src/
-  api/          Backend access: client.ts (the only module that calls fetch), data.ts (api or mock),
-                converters/ (backend codes to app types), schema.d.ts (generated), types/provisional.ts
+  api/          Backend access: client.ts (the only module that calls fetch), auth, worker, supervisor,
+                outbox (offline queue), converters/ (backend codes to app types), schema.d.ts (generated)
   components/   Shared UI: Button, Card, RiskBadge, RiskCard, ForecastStrip, Switch, tiles, headers, icons
   data/         Sample data (mock.ts) and its types (types.ts)
   dev/          Developer panel and component library, development builds only
@@ -85,13 +89,30 @@ src/
 
 ## Demo guide
 
-### Role switcher
+The step-by-step demo is in [docs/DEMO_SCRIPT.md](docs/DEMO_SCRIPT.md). Decisions agreed with the backend team (wording, codes, privacy rules) are in [docs/backend/DECISIONS.md](docs/backend/DECISIONS.md).
 
-The home page (`/`) has two buttons: **Worker** and **Supervisor**. There is no login in the prototype.
+### Signing in (api mode)
+
+`/` goes to **Sign in**. Use a worker or staff ID and the PIN. Every demo account has PIN **1234**.
+
+| ID     | Role       | Use it for                                                                                       |
+| ------ | ---------- | ------------------------------------------------------------------------------------------------ |
+| S-001  | Supervisor | Today, Shift plan and Measures                                                                   |
+| W-0412 | Worker     | High-priority precautions: the precaution card, and "needs reduced exposure" on supervisor Today |
+| W-0384 | Worker     | Enhanced precautions: "needs earlier breaks" on supervisor Today                                 |
+| W-0302 | Worker     | A fresh account that opens on the consent screen (first run)                                     |
+
+Workers go to their Status screen and supervisors to Today. Sign out is at the bottom of **My data** for workers and in the account button (top right) for supervisors. A wrong ID or PIN, or a locked account, shows "Invalid ID or PIN". With no connection the message says so instead.
+
+A worker who has signed in once keeps field mode offline, even when the session has expired. Taps made offline ("+ Cup", "I understand", alerts, symptom reports and the shift buttons) are queued and sent in order when the phone is back online.
+
+### Role switcher (sample mode)
+
+In sample mode the home page (`/`) has two buttons, **Worker** and **Supervisor**, and there is no login.
 
 ### Developer panel
 
-In development builds (`npm run dev`) a **Dev** button sits at the bottom right. It does not appear in production. It lets you:
+In development builds (`npm run dev`) a **Dev** button sits at the bottom right. It does not appear in production. It only changes sample data; in api mode the real data comes from the backend. It lets you:
 
 - set the worker's risk level from 1 (Low) to 4 (Critical)
 - force field mode on, to see the offline layout while online
@@ -101,18 +122,29 @@ In development builds (`npm run dev`) a **Dev** button sits at the bottom right.
 
 ### Precaution levels
 
-In sample mode the levels come from `src/data/mock.ts` and match the backend demo: W-0412 is on High-priority precautions and W-0384 on Enhanced. The worker **Home** and **My data** show W-0412's level. Supervisor **Today** shows only the action for each worker, for example "Worker W-0412 needs reduced exposure today", never the level name or any health reason.
+In api mode the worker's level comes from the backend (`GET /me`). A worker with no health profile sees no precaution card. In sample mode the levels come from `src/data/mock.ts` and match the backend demo: W-0412 is on High-priority precautions and W-0384 on Enhanced. Supervisor **Today** shows only the action for each worker, for example "Worker W-0412 needs reduced exposure today", never the level name or any health reason.
 
 ### Field mode on a phone
 
 1. Open the live site in Chrome on Android and choose **Install app** (or **Add to Home screen**).
-2. Open HeatGuard from the home screen once, and go to the worker **Status** screen.
+2. Open HeatGuard from the home screen, sign in as a worker (api mode) and wait for the **Status** screen to load once, so the forecast is saved on the phone.
 3. Turn on airplane mode, close the app and open it again.
-4. Status opens in field mode: no connection, "Assume High", the standard heat plan and the saved forecast.
+4. Status opens in field mode: no connection, "Assume High", the last known level, the standard heat plan and the saved forecast.
 5. Turn airplane mode off: the app returns to the normal Status screen and shows "Back online. Data updated."
+
+### Still to come
+
+These are not built yet, by agreement with the backend team:
+
+- Push notifications (sending a plan marks it as sent but notifies no one yet)
+- SMS alerts
+- The engine's "possible" level and forecast confidence (shown automatically once the backend sends them)
+- Pidgin advice and the translations for Hausa, Yoruba, Igbo and Pidgin
+- An incident log (Measures shows "not tracked yet")
+- The wristband (Bluetooth band pairing and readings)
 
 ## Notes
 
-- Screens still use the sample data from `src/data/mock.ts`. The API client and data layer are in place; screens are connected to the backend phase by phase.
+- In api mode every screen uses the backend. Sample data is used only when `VITE_DATA_SOURCE=mock`.
 - `src/lib/heat-risk/types.ts` belongs to the risk engine work and is not used by the frontend.
 - The language choice is saved but visual only. Translations for Hausa, Yoruba, Igbo and Pidgin are the next phase.
