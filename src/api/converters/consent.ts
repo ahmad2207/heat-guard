@@ -1,4 +1,5 @@
 import type { SharingChoices } from '../../data/types'
+import { CONSENT_POLICY_VERSION } from '../constants'
 import type { Schemas } from './codes'
 
 export type ConsentChoicesBody = Schemas['ConsentChoicesDto']
@@ -6,8 +7,14 @@ export type ConsentChoicesBody = Schemas['ConsentChoicesDto']
 /** The three consent switches. "Read warnings aloud" (voice) is a preference, not a consent. */
 export type ConsentChoices = Pick<SharingChoices, 'health' | 'band' | 'reports'>
 
-/** For PUT /me/consents. policyVersion is the privacy notice version the worker saw. */
-export function consentToApi(choices: ConsentChoices, policyVersion: string): ConsentChoicesBody {
+/**
+ * For PUT /me/consents. policyVersion is the privacy notice version the worker saw; it defaults
+ * to the agreed CONSENT_POLICY_VERSION.
+ */
+export function consentToApi(
+  choices: ConsentChoices,
+  policyVersion: string = CONSENT_POLICY_VERSION,
+): ConsentChoicesBody {
   return {
     healthPrecautions: choices.health,
     wearableBand: choices.band,

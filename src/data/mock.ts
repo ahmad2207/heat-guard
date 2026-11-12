@@ -400,7 +400,8 @@ export const MY_DATA = {
   download: 'Download my data',
   downloadFileName: 'heatguard-my-data.json',
   delete: 'Delete my health information',
-  deleteConfirm: 'Delete your health answers? This cannot be undone.',
+  deleteConfirm:
+    'Delete your health answers? This cannot be undone. Your sharing choice stays on until you turn it off below.',
   setOn: (date: string) => `Set on ${date}`,
   deleteConfirmButton: 'Delete',
   deleteCancel: 'Cancel',

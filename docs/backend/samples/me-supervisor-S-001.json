@@ -1,0 +1,12 @@
+{
+  "user": {
+    "id": "da046bde-3c28-4450-8015-95f17dbd0f3c",
+    "loginId": "S-001",
+    "role": "supervisor"
+  },
+  "worker": null,
+  "assignment": null,
+  "site": null,
+  "consents": null,
+  "precaution": null
+}

@@ -80,11 +80,18 @@ describe('age ranges', () => {
 
 describe('consent names', () => {
   it('maps app switches to backend names', () => {
-    expect(consentToApi({ health: true, band: false, reports: true }, '2026-11')).toEqual({
+    expect(consentToApi({ health: true, band: false, reports: true })).toEqual({
       healthPrecautions: true,
       wearableBand: false,
       symptomReports: true,
-      policyVersion: '2026-11',
+      policyVersion: '2026-11-v1',
+    })
+  })
+  it('accepts another policy version', () => {
+    expect(
+      consentToApi({ health: false, band: false, reports: false }, '2027-01-v2'),
+    ).toMatchObject({
+      policyVersion: '2027-01-v2',
     })
   })
   it('maps backend names to app switches', () => {

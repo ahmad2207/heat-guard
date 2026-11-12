@@ -11,7 +11,7 @@ import type { RiskLevel } from '../lib/risk'
 import { apiRequest, type RequestOptions } from './client'
 import { isMockMode } from './config'
 import { crewsFromApi, languageFromCode, riskLevelFromCode, type CrewSummary } from './converters'
-import type { MeResponse, MyRiskResponse, SiteTodayResponse } from './types/provisional'
+import type { MeResponse, MyRiskResponse, SiteTodayResponse } from './types/responses'
 import type { Schemas } from './converters/codes'
 
 /** Cancel and slow-signal options, the same shape useApiData passes in. */
@@ -41,20 +41,22 @@ export async function getMySite(options: LoadOptions = {}): Promise<SiteSummary>
 /* ---------- Worker ---------- */
 
 export interface WorkerSettings {
-  workerId: string
+  /** The worker code shown on screen, for example W-0301. */
+  workerCode: string
   language: Language
   readAloud: boolean
 }
 
 export async function getMySettings(options: LoadOptions = {}): Promise<WorkerSettings> {
   if (isMockMode) {
-    return { workerId: WORKER.id, language: WORKER.language, readAloud: WORKER.sharing.voice }
+    return { workerCode: WORKER.id, language: WORKER.language, readAloud: WORKER.sharing.voice }
   }
   const me = await apiRequest<MeResponse>('/me', options)
   return {
-    workerId: me.workerId ?? '',
-    language: languageFromCode(me.preferredLanguage),
-    readAloud: me.readAloud === true,
+    // The worker code (W-0301) is what screens show; the UUID is only for API paths.
+    workerCode: me.worker?.employeeCode ?? '',
+    language: languageFromCode(me.worker?.language),
+    readAloud: me.worker?.readAloud === true,
   }
 }
 

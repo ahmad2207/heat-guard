@@ -73,14 +73,17 @@ export function readMessages(body: unknown): string[] {
   return []
 }
 
-/** Builds an ApiError from a status and a parsed (or unparsable) body. */
+/**
+ * Builds an ApiError from a status and a parsed (or unparsable) body. For a 400 the server sends
+ * an array of validation messages: only the first is shown (DECISIONS.md, error messages); all of
+ * them stay in details.
+ */
 export function toApiError(status: number, body: unknown): ApiError {
   const kind = kindForStatus(status)
   const messages = readMessages(body)
   // 5xx messages are server internals, not for people. A 503 keeps the plain wording.
   const useFallback = kind === 'server' || kind === 'feature-off' || messages.length === 0
-  const message = useFallback
-    ? FALLBACK_MESSAGES[kind]
-    : messages.map((m) => (/[.!?]$/.test(m) ? m : `${m}.`)).join(' ')
+  const first = messages[0] ?? ''
+  const message = useFallback ? FALLBACK_MESSAGES[kind] : /[.!?]$/.test(first) ? first : `${first}.`
   return new ApiError(kind, status, message, messages)
 }

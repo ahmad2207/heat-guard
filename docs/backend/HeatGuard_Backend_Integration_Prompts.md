@@ -11,32 +11,36 @@ Phased Claude Code prompts for the work in "Connecting the app to the backend" (
 2. Get the backend URL from the backend team (the Render address). Replace `[API_URL]` in Phase 0 with it.
 3. Paste one phase at a time into Claude Code. Each phase stops for your review. Bring the report back if you want a second opinion before approving.
 
+**Status, 12 November 2026.** The phases were run in this order: wording and occupational health removal (Phase 3 below), then the API client (Phase 1 below). Both are done. Next: login (Phase 2), worker profile (4), worker live screens (5), shift buttons (6), supervisor pages (8), hardening (9), wristband (7, optional). The backend team's answers (`HeatGuard_Answers_For_Frontend.pdf`) are recorded in `DECISIONS.md`; the phases below were updated to match them.
+
 ## Where each part of the to-do is handled
 
-| To-do section | Phase |
-| --- | --- |
-| 1. Set-up (API address, one module, token, errors, codes and UTC times, device clock, slow first request) | 1 |
-| 2. Login (ID and PIN, tokens, "Invalid ID or PIN", GET /me, role routing) | 2 |
-| 3. Worker screens (consent, health profile, home, what to do, report, my data, field mode) | 4 and 5 |
-| 4. Start shift and break buttons, "still here" signal | 6 |
-| 4. Wristband (optional) and the simulator | 7 |
-| 5. Supervisor pages (Today, needs attention buttons, shift plan, measures) | 8 |
-| 6. Three wording changes for privacy (D1, D4, D5) | 3 |
-| 7. No occupational health (wording, hide "Request a review", remove the route) | 3 |
-| 8. Things that switch on later (possible level, confidence, Pidgin advice) | 5 (shown when present) |
-| 9. Before the demo (allowed addresses, demo logins) | 9 |
+| To-do section                                                                                             | Phase                  |
+| --------------------------------------------------------------------------------------------------------- | ---------------------- |
+| 1. Set-up (API address, one module, token, errors, codes and UTC times, device clock, slow first request) | 1                      |
+| 2. Login (ID and PIN, tokens, "Invalid ID or PIN", GET /me, role routing)                                 | 2                      |
+| 3. Worker screens (consent, health profile, home, what to do, report, my data, field mode)                | 4 and 5                |
+| 4. Start shift and break buttons, "still here" signal                                                     | 6                      |
+| 4. Wristband (optional) and the simulator                                                                 | 7                      |
+| 5. Supervisor pages (Today, needs attention buttons, shift plan, measures)                                | 8                      |
+| 6. Three wording changes for privacy (D1, D4, D5)                                                         | 3                      |
+| 7. No occupational health (wording, hide "Request a review", remove the route)                            | 3                      |
+| 8. Things that switch on later (possible level, confidence, Pidgin advice)                                | 5 (shown when present) |
+| 9. Before the demo (allowed addresses, demo logins)                                                       | 9                      |
 
 ## Decisions already built into these prompts
 
-| Topic | Decision | Why |
-| --- | --- | --- |
-| Sample data | Keep it behind a switch: `VITE_DATA_SOURCE=api` or `mock`. Production uses `api` | The demo still works if Render is down, and screens can be developed without the backend |
-| Occupational health | Remove the route and the role switcher entry now. Keep the code folder unused until the team confirms it can be deleted | The handout says do not build it; deleting a whole feature needs a team yes |
-| Getting used to the heat (D4) | Keep the question where it is, but mark it "Shared with your work record" and change the privacy wording | Simplest honest fix: the answer now feeds the risk engine |
-| Tokens | Access token in memory, refresh token in localStorage, cleared on sign out | Acceptable for a prototype; note it for a security review before any pilot |
-| Offline and login | An expired token while offline never blocks field mode. Button presses made offline are queued and sent after the next successful refresh | Fail safe, not silent |
-| Too-hot rule | The backend owns it. The plan editor may preview locally, but the numbers shown after saving come from the backend | "Rules decide" on the server |
-| Role switcher | Development builds only | Login replaces it |
+| Topic                         | Decision                                                                                                                                  | Why                                                                                      |
+| ----------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------- |
+| Sample data                   | Keep it behind a switch: `VITE_DATA_SOURCE=api` or `mock`. Production uses `api`                                                          | The demo still works if Render is down, and screens can be developed without the backend |
+| Occupational health           | Remove the route and the role switcher entry now. Keep the code folder unused until the team confirms it can be deleted                   | The handout says do not build it; deleting a whole feature needs a team yes              |
+| Getting used to the heat (D4) | Keep the question where it is, but mark it "Shared with your work record" and change the privacy wording                                  | Simplest honest fix: the answer now feeds the risk engine                                |
+| Tokens                        | Access token in memory, refresh token in localStorage, cleared on sign out                                                                | Acceptable for a prototype; note it for a security review before any pilot               |
+| Offline and login             | An expired token while offline never blocks field mode. Button presses made offline are queued and sent after the next successful refresh | Fail safe, not silent                                                                    |
+| Too-hot rule                  | The backend owns it. The plan editor may preview locally, but the numbers shown after saving come from the backend                        | "Rules decide" on the server                                                             |
+| Role switcher                 | Development builds only                                                                                                                   | Login replaces it                                                                        |
+| Backend answers               | Every later phase follows `docs/backend/DECISIONS.md` (wording, codes, needs attention buttons, policy version)                           | Agreed with the backend team, 12 November 2026                                           |
+| Worker IDs                    | Screens show the worker code (W-0388). The UUID `workerId` is only used in API paths                                                      | Answers, DECISIONS.md                                                                    |
 
 ---
 
@@ -121,7 +125,7 @@ Follow CLAUDE.md. Phase 2: login.
 
 2. Session
    - POST /auth/login. Keep the access token in memory and the refresh token in localStorage (wrapped in try/catch).
-   - After login, GET /me, store the person in a session context, and route by role: workers to /worker, supervisors to /supervisor.
+   - After login, GET /me, store the person in a session context, and route by role (`user.role`): workers to /worker, supervisors to /supervisor. GET /me is not described in the spec; use the type built from docs/backend/samples/ (`MeResponse` in src/api/types/responses.ts): `user`, `worker` (null for supervisors), `site`, `assignment`, `consents`, `precaution`. Supervisors get `site: null`, so load their site with GET /sites.
    - On app start, if a refresh token exists, refresh silently and load /me before showing protected screens.
    - Sign out clears both tokens and all cached personal data, then goes to /login. Add a "Sign out" control to My data for workers and to the account button menu for supervisors.
 
@@ -171,9 +175,9 @@ Run build and lint, show me the diffs with a list of every text change (old and 
 ```
 Follow CLAUDE.md. Phase 4: consent, health profile and My data on the backend. Use the data switch so mock mode still works.
 
-- Consent and first run: language and the three switches are saved with PATCH /me/preferences and PUT /me/consents. First-run check uses the server's consent state (GET /workers/:id/consents or /me as the spec says): if the worker has never chosen, show /worker/welcome. Replace the localStorage version in api mode.
-- Health profile: load and save with GET and PUT /workers/:id/health-profile using the backend codes. Precautions, restrictions and next review come from GET /me. If saving is refused because the health switch is off, show a friendly message with a link to My data.
-- My data: switches use the server; "Who looked at your data" uses GET /me/access-log; Download uses GET /workers/:id/data-export and saves the file; Delete uses DELETE /workers/:id/health-profile with the existing two-step confirmation. Read aloud stays a preference.
+- Consent and first run: language and the three switches are saved with PATCH /me/preferences and PUT /me/consents, always with `policyVersion` set to CONSENT_POLICY_VERSION ("2026-11-v1", src/api/constants.ts). GET /me `consents` holds the current switches as true or false only, so check GET /workers/:id/consents (the consent history) to tell "never chosen" from "chose off": if the worker has never chosen, show /worker/welcome. Replace the localStorage version in api mode. `:id` is `worker.id` from /me (a UUID).
+- Health profile: load and save with GET and PUT /workers/:id/health-profile using the backend codes. To clear a saved age range, send `ageRange: null`. A save without health consent returns 409: show "Turn on health sharing in My data to save your answers." with a link to My data. Precautions, restrictions and next review: GET /me `precaution` was null in both captured samples, so read them from the health profile response and confirm the /me shape with the backend team before relying on it.
+- My data: switches use the server; "Who looked at your data" uses GET /me/access-log, with roles in plain words: `occupational_health` shows "Occupational health viewed your health profile", unknown roles show "Someone at your site viewed your data", never the raw role. Download uses GET /workers/:id/data-export and saves the file. Delete uses DELETE /workers/:id/health-profile with the existing two-step confirmation; it does not withdraw consent, and the confirmation already says so. Read aloud stays a preference.
 - Show loading, slow and error states on each screen.
 
 Test with W-0412 and W-0384 (PIN 1234): change a switch, reload, sign out and in again, and confirm it persisted. Run build and lint, show me the diffs, and STOP for review. Do not commit.
@@ -187,12 +191,16 @@ Test with W-0412 and W-0384 (PIN 1234): change a switch, reload, sign out and in
 Follow CLAUDE.md. Phase 5: the live worker screens.
 
 - Home: risk level, action, reasons, next break, 6-hour forecast, hazards and data sources from GET /me/risk; water count from GET /me/water and "+ Cup" with POST /me/water.
+  - Reasons are engine text already in the worker's language: show them as received, as chips.
+  - Next break: `nextBreak.minutesUntil` and `durationMinutes`, with the fixed place "shaded rest area" (the backend has no break place).
+  - Hazards: `{ type: "dust", severity: "moderate" | "high" }` and `{ type: "thunderstorm", severity: "possible" }` with `from` and `to`, mapped to the existing hazard rows and pills.
+  - Data sources: `dataSources.weather` is `{ ok, at }`; `siteSensor` and `wearable` are null when there is none.
   - dataQuality "degraded": show a small "No fresh heat data" note.
   - source "fallback": the level is at least High by design; show it normally.
   - Fields the engine does not send yet (possible level, confidence): hide them when empty, show them when present.
   - Refresh the risk every 5 minutes while the app is open and when it comes back to the foreground.
-- What to do: keep our per-level copy (decision D8) and show the engine's action as the headline. "Who" compares the worker's level with crewLevel from /me/risk. "I understand" saves with POST /recommendations/:id/interventions.
-- Report: real emergency number from /me. "Alert first aider" uses POST /me/first-aid-alert, "Send" uses POST /me/symptom-reports. The alert must always be sent, even if symptom sharing is off; details only when allowed. Keep the D5 message from Phase 3.
+- What to do: keep our per-level copy (decision D8) and show the engine's action as the headline. "Who" compares the worker's level with crewLevel from /me/risk. "I understand" acknowledges the first item of /me/risk `recommendations` (highest level first) with POST /recommendations/:id/interventions and `{ "status": "acknowledged" }`.
+- Report: real emergency number from /me (`site.emergencyNumber`). "Alert first aider" uses POST /me/first-aid-alert, "Send" uses POST /me/symptom-reports. The alert must always be sent, even if symptom sharing is off; details only when allowed. Keep the D5 message from Phase 3.
 - Field mode: save the latest /me/risk response (level, forecast, time) on the device whenever it loads. Offline, use it as the saved forecast and last known level. Queue "+ Cup", "I understand", first-aid alerts and symptom reports made offline, and send them in order when back online and signed in. Show the worker that a queued alert will be sent as soon as there is signal, and keep the emergency call link visible.
 
 Test online, offline in the browser, and with the backend asleep. Run build and lint, show me the diffs, and STOP for review. Do not commit.
@@ -206,7 +214,7 @@ Test online, offline in the browser, and with the backend asleep. Run build and 
 Follow CLAUDE.md. Phase 6: two things the backend needs from the worker app.
 
 1. Shift buttons on Home, in a compact card below the risk card, matching the design style:
-   - Use the shift and assignment ID from GET /me.
+   - Use `assignment` from GET /me: `id`, `startsAt`, `endsAt`, `plannedBreaks`, `breakMinutes`, and the state fields `clockedInAt`, `onBreakSince`, `lastBreakEndedAt` and `clockedOutAt`. A 409 means the state already changed (for example "Already clocked in"): reload /me and show the current state.
    - One button at a time based on state: "Start shift", then "Start break" and "End shift", then "End break" during a break.
    - Calls: POST /assignments/:id/clock-in, /break/start, /break/end, /clock-out. Show the time of the last action, for example "On break since 12:10".
    - Offline presses are queued like the others and keep their original time if the backend accepts it; otherwise tell me.
@@ -242,10 +250,19 @@ Test without hardware using the backend simulator described in section 4 of the 
 ```
 Follow CLAUDE.md. Phase 8: supervisor pages. Use the data switch so mock mode still works.
 
-- Today: load everything from GET /sites/:id/today (site from /me). Crew, activity and shift filters now all work through the query parameters in the spec, with the shift dropdown filled from the shifts list. Refresh every 5 minutes and on focus.
-  - Needs attention: "I am on my way" and "Mark resolved" use POST /help-requests/:id/acknowledge and /resolve; "Acknowledge" and "Reassign" use POST /recommendations/:id/interventions.
-  - Map supervisor action codes (for example supervisor.worker_reduced_exposure) to our own wording in one place; fall back to the backend's English text for unknown codes.
-- Shift plan: GET and PUT /sites/:id/plan, POST /sites/:id/plan/send. The backend owns the too-hot rule: the editor may preview changes locally, but after saving, show the backend's tooHotCrewHours, workingCrewHours and too-hot cells. Remove the frontend rule from the api path.
+- Today: load everything from GET /sites/:id/today (site from GET /sites: a supervisor's /me has `site: null`). Crew, activity and shift filters now all work through the query parameters in the spec, with the shift dropdown filled from the shifts list. Refresh every 5 minutes and on focus. Show worker codes (`workerCode`), never the UUID.
+  - Needs attention, `needsAttention.items` in the order sent, buttons as in DECISIONS.md:
+    - help: "I am on my way" (POST /help-requests/:id/acknowledge), then "Mark resolved" (/resolve).
+    - critical: new card in the danger style, "Worker [code] is at Critical. Stop their activity now." Buttons Acknowledge (`acknowledged`) and Activity stopped (`implemented`).
+    - crew_risk: Acknowledge (`acknowledged`) and Change shift timing (a link to the shift plan).
+    - worker_care: the `need` only, never the reason. Acknowledge (`acknowledged`) and Reassign (`reassigned`, chosen option in `note`).
+    - critical, crew_risk and worker_care use POST /recommendations/:recommendationId/interventions.
+  - Map supervisor action codes to our own wording in one place (the list is in DECISIONS.md); fall back to the backend's English text for unknown codes.
+  - System health: `siteSensors` null shows "No site sensors"; otherwise the last reading time and an OK or Check pill.
+- Shift plan: GET and PUT /sites/:id/plan, then POST /sites/:id/plan/send with `{ "use": "current" }`. The backend owns the too-hot rule: the editor may preview changes locally, but after saving, show the backend's tooHotCrewHours, workingCrewHours and too-hot cells. Remove the frontend rule from the api path.
+  - "What the suggested plan changes" is written by the app by comparing `current` and `suggested` tasks per crew, for example "Crew B: heavy work moved out of 11:00 to 14:00 and into 16:00".
+  - Send notifies no one yet, so keep "Plan applied for today. Let your crews know about the changes."
+  - "Workers needing reduced exposure" uses `workersNeedingReducedExposure` (a count only) and stays.
 - Measures: GET /sites/:id/measures with the period select (7d, 30d, season) now working. Show a "Provisional" badge wherever the backend marks a figure as provisional, and "Not tracked yet" where incidents are null. Keep "Sample data" only in mock mode.
 
 Test with S-001. Run build and lint, show me the diffs, and STOP for review. Do not commit.
@@ -261,7 +278,7 @@ Follow CLAUDE.md. Phase 9: final pass for the connected app.
 1. Go through every screen in api mode and report any missing loading, slow, error or empty state, then fix them.
 2. Run the earlier checks again: 360, 390, 768 and 1440px; keyboard and focus; contrast; 44px targets; Lighthouse accessibility and best practices on /login, /worker, /worker/report and /supervisor.
 3. Confirm the production build has no dev panel, no role switcher and no mock data in api mode.
-4. Confirm the app works from https://heat-guard-nine.vercel.app with the backend's CORS settings. List any other addresses (preview links) I must ask the backend team to allow.
+4. Confirm the app works from https://heat-guard-nine.vercel.app and a Vercel preview link. The backend already allows production, previews ending in `-ahmads-projects-727aea25.vercel.app` and localhost:5173; list any other address I must ask the backend team to allow.
 5. Update README.md and the handover notes: environment variables, login and demo accounts (S-001, W-0412, W-0384, PIN 1234), the waking-up behaviour, what is still mock or later (push, SMS, possible level, Pidgin advice, incident log), and how to switch to mock mode.
 6. Write a short demo script for demo day: sign in as W-0412, show Home, What to do, Report; sign in as S-001, show Today, the alert without health details, the shift plan and Measures.
 

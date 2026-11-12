@@ -1,0 +1,60 @@
+{
+  "user": {
+    "id": "16c7d561-ccd2-44be-a19e-956df5232d9a",
+    "loginId": "W-0301",
+    "role": "worker"
+  },
+  "worker": {
+    "id": "00776ec3-8035-40ee-a66c-4f4a58cc94f7",
+    "employeeCode": "W-0301",
+    "displayName": "W-0301",
+    "crew": {
+      "id": "1004cc49-0867-4ef8-96a7-044dde21a203",
+      "name": "Crew A"
+    },
+    "language": "en",
+    "readAloud": false,
+    "acclimatization": {
+      "acclimatized": true,
+      "startedOn": "2026-09-13",
+      "daysSinceStart": 60
+    }
+  },
+  "site": {
+    "id": "68af34a0-f049-44e0-ab65-ef81c9005582",
+    "name": "Abuja Demo Site",
+    "timezone": "Africa/Lagos",
+    "emergencyNumber": "112",
+    "shifts": [
+      {
+        "end": "17:00",
+        "name": "Day shift",
+        "start": "07:00"
+      }
+    ]
+  },
+  "assignment": {
+    "id": "eef0399a-7ccb-454a-ae4c-ecde01e57a4d",
+    "siteId": "68af34a0-f049-44e0-ab65-ef81c9005582",
+    "activity": {
+      "code": "concrete_work",
+      "name": "Concrete work"
+    },
+    "workload": "heavy",
+    "workEnvironment": "direct_sun",
+    "startsAt": "2026-11-12T06:00:00.000Z",
+    "endsAt": "2026-11-12T16:00:00.000Z",
+    "plannedBreaks": ["2026-11-12T10:00:00.000Z", "2026-11-12T13:00:00.000Z"],
+    "breakMinutes": 15,
+    "clockedInAt": null,
+    "clockedOutAt": null,
+    "onBreakSince": null,
+    "lastBreakEndedAt": null
+  },
+  "consents": {
+    "healthPrecautions": false,
+    "wearableBand": false,
+    "symptomReports": false
+  },
+  "precaution": null
+}

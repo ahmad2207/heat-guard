@@ -87,8 +87,8 @@ async function readBody(response: Response): Promise<unknown> {
 }
 
 /**
- * Provisional: confirm with the backend team. POST /auth/refresh has no documented response;
- * this reads accessToken and, if sent, a new refreshToken.
+ * POST /auth/refresh returns both tokens (AuthTokensResponse); the new refresh token replaces
+ * the saved one. Read defensively so a bad body ends the session instead of crashing.
  */
 function readTokens(body: unknown): { accessToken: string; refreshToken?: string } | null {
   if (!body || typeof body !== 'object') return null

@@ -1866,11 +1866,23 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
+            /** @description OK. Schema and example come from a real response with the demo data; arrays in the example are shortened to 3 items. */
             200: {
                 headers: {
                     [name: string]: unknown;
                 };
-                content?: never;
+                content: {
+                    /**
+                     * @example {
+                     *       "status": "ok",
+                     *       "database": "up"
+                     *     }
+                     */
+                    "application/json": {
+                        status: string;
+                        database: string;
+                    };
+                };
             };
         };
     };
@@ -1923,11 +1935,23 @@ export interface operations {
             };
         };
         responses: {
+            /** @description OK. Schema and example come from a real response with the demo data; arrays in the example are shortened to 3 items. */
             200: {
                 headers: {
                     [name: string]: unknown;
                 };
-                content?: never;
+                content: {
+                    /**
+                     * @example {
+                     *       "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+                     *       "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+                     *     }
+                     */
+                    "application/json": {
+                        accessToken: string;
+                        refreshToken: string;
+                    };
+                };
             };
             /** @description The request is invalid; `message` lists what is wrong */
             400: {
@@ -1951,11 +1975,23 @@ export interface operations {
             };
         };
         responses: {
+            /** @description OK. Schema and example come from a real response with the demo data; arrays in the example are shortened to 3 items. */
             200: {
                 headers: {
                     [name: string]: unknown;
                 };
-                content?: never;
+                content: {
+                    /**
+                     * @example {
+                     *       "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+                     *       "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+                     *     }
+                     */
+                    "application/json": {
+                        accessToken: string;
+                        refreshToken: string;
+                    };
+                };
             };
             /** @description The request is invalid; `message` lists what is wrong */
             400: {
@@ -1975,11 +2011,35 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
+            /** @description OK. Schema and example come from a real response with the demo data; arrays in the example are shortened to 3 items. */
             200: {
                 headers: {
                     [name: string]: unknown;
                 };
-                content?: never;
+                content: {
+                    /**
+                     * @example {
+                     *       "id": "e13db381-2492-435c-b3d7-753292c49cc1",
+                     *       "organizationId": "1083395a-ffd8-4c14-8e69-fbe7416c2587",
+                     *       "loginId": "A-002",
+                     *       "email": null,
+                     *       "role": "admin",
+                     *       "workerId": null,
+                     *       "isActive": true
+                     *     }
+                     */
+                    "application/json": {
+                        /** Format: uuid */
+                        id: string;
+                        /** Format: uuid */
+                        organizationId: string;
+                        loginId: string;
+                        email: unknown;
+                        role: string;
+                        workerId: unknown;
+                        isActive: boolean;
+                    };
+                };
             };
             /** @description Not logged in, or the access token expired (refresh it) */
             401: {
@@ -1999,11 +2059,56 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
+            /** @description OK. Schema and example come from a real response with the demo data; arrays in the example are shortened to 3 items. */
             200: {
                 headers: {
                     [name: string]: unknown;
                 };
-                content?: never;
+                content: {
+                    /**
+                     * @example [
+                     *       {
+                     *         "id": "d424744a-f950-40fb-9497-0dda281665bf",
+                     *         "organizationId": "1083395a-ffd8-4c14-8e69-fbe7416c2587",
+                     *         "loginId": "A-001",
+                     *         "email": null,
+                     *         "role": "admin",
+                     *         "workerId": null,
+                     *         "isActive": true
+                     *       },
+                     *       {
+                     *         "id": "e13db381-2492-435c-b3d7-753292c49cc1",
+                     *         "organizationId": "1083395a-ffd8-4c14-8e69-fbe7416c2587",
+                     *         "loginId": "A-002",
+                     *         "email": null,
+                     *         "role": "admin",
+                     *         "workerId": null,
+                     *         "isActive": true
+                     *       },
+                     *       {
+                     *         "id": "29c68fb9-f054-440d-a6eb-01c0e37b8bc4",
+                     *         "organizationId": "1083395a-ffd8-4c14-8e69-fbe7416c2587",
+                     *         "loginId": "O-001",
+                     *         "email": null,
+                     *         "role": "occupational_health",
+                     *         "workerId": null,
+                     *         "isActive": true
+                     *       }
+                     *     ]
+                     */
+                    "application/json": {
+                        /** Format: uuid */
+                        id: string;
+                        /** Format: uuid */
+                        organizationId: string;
+                        loginId: string;
+                        email: unknown;
+                        role: string;
+                        /** Format: uuid */
+                        workerId: string | null;
+                        isActive: boolean;
+                    }[];
+                };
             };
             /** @description Not logged in, or the access token expired (refresh it) */
             401: {
@@ -2034,11 +2139,35 @@ export interface operations {
             };
         };
         responses: {
+            /** @description OK. Schema and example come from a real response with the demo data; arrays in the example are shortened to 3 items. */
             201: {
                 headers: {
                     [name: string]: unknown;
                 };
-                content?: never;
+                content: {
+                    /**
+                     * @example {
+                     *       "id": "74478297-02c1-4688-a343-269f216c8f59",
+                     *       "organizationId": "1083395a-ffd8-4c14-8e69-fbe7416c2587",
+                     *       "loginId": "O-DOC-MWDGD5KA",
+                     *       "email": null,
+                     *       "role": "occupational_health",
+                     *       "workerId": null,
+                     *       "isActive": true
+                     *     }
+                     */
+                    "application/json": {
+                        /** Format: uuid */
+                        id: string;
+                        /** Format: uuid */
+                        organizationId: string;
+                        loginId: string;
+                        email: unknown;
+                        role: string;
+                        workerId: unknown;
+                        isActive: boolean;
+                    };
+                };
             };
             /** @description The request is invalid; `message` lists what is wrong */
             400: {
@@ -2078,11 +2207,21 @@ export interface operations {
             };
         };
         responses: {
+            /** @description OK. Schema and example come from a real response with the demo data; arrays in the example are shortened to 3 items. */
             200: {
                 headers: {
                     [name: string]: unknown;
                 };
-                content?: never;
+                content: {
+                    /**
+                     * @example {
+                     *       "reset": true
+                     *     }
+                     */
+                    "application/json": {
+                        reset: boolean;
+                    };
+                };
             };
             /** @description The request is invalid; `message` lists what is wrong */
             400: {
@@ -2563,11 +2702,26 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
+            /** @description OK. Schema and example come from a real response with the demo data; arrays in the example are shortened to 3 items. */
             201: {
                 headers: {
                     [name: string]: unknown;
                 };
-                content?: never;
+                content: {
+                    /**
+                     * @example {
+                     *       "assessedAt": "2026-11-12T11:16:35.373Z",
+                     *       "assessed": 29,
+                     *       "fallback": 0
+                     *     }
+                     */
+                    "application/json": {
+                        /** Format: date-time */
+                        assessedAt: string;
+                        assessed: number;
+                        fallback: number;
+                    };
+                };
             };
             /** @description The request is invalid; `message` lists what is wrong */
             400: {
@@ -2612,11 +2766,239 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
+            /** @description OK. Schema and example come from a real response with the demo data; arrays in the example are shortened to 3 items. */
             200: {
                 headers: {
                     [name: string]: unknown;
                 };
-                content?: never;
+                content: {
+                    /**
+                     * @example {
+                     *       "assessedAt": "2026-11-12T11:16:35.373Z",
+                     *       "environment": {
+                     *         "current": {
+                     *           "observedAt": "2026-11-12T11:15:00.000Z",
+                     *           "source": "weather_api",
+                     *           "airTempC": 32.6,
+                     *           "relativeHumidity": 32,
+                     *           "solarRadiationWm2": 756,
+                     *           "windSpeedMs": 0.86,
+                     *           "wbgtSunC": 30.5,
+                     *           "wbgtShadeC": null,
+                     *           "wbgtMethod": "estimated"
+                     *         },
+                     *         "forecast": [
+                     *           {
+                     *             "at": "2026-11-12T12:00:00.000Z",
+                     *             "wbgtSunC": 31.3,
+                     *             "wbgtShadeC": null,
+                     *             "wbgtMethod": "estimated"
+                     *           },
+                     *           {
+                     *             "at": "2026-11-12T13:00:00.000Z",
+                     *             "wbgtSunC": 30.8,
+                     *             "wbgtShadeC": null,
+                     *             "wbgtMethod": "estimated"
+                     *           },
+                     *           {
+                     *             "at": "2026-11-12T14:00:00.000Z",
+                     *             "wbgtSunC": 29.6,
+                     *             "wbgtShadeC": null,
+                     *             "wbgtMethod": "estimated"
+                     *           }
+                     *         ]
+                     *       },
+                     *       "distribution": {
+                     *         "low": 0,
+                     *         "elevated": 0,
+                     *         "high": 7,
+                     *         "critical": 22
+                     *       },
+                     *       "degraded": 0,
+                     *       "workers": [
+                     *         {
+                     *           "workerId": "7682d995-486f-442d-b4ef-4e64163898ae",
+                     *           "workerName": "W-0301",
+                     *           "crewId": "097bbd11-92d6-471b-8165-7b8f59d757bc",
+                     *           "assessedAt": "2026-11-12T11:16:35.373Z",
+                     *           "level": 4,
+                     *           "levelName": "Critical",
+                     *           "label": "Critical",
+                     *           "action": {
+                     *             "what": "Stop the activity and move to a cool, shaded area. Follow the site heat emergency procedure.",
+                     *             "when": "immediately"
+                     *           },
+                     *           "language": "en",
+                     *           "dataQuality": "ok",
+                     *           "ppeNotModelled": [],
+                     *           "source": "engine",
+                     *           "forecast": {
+                     *             "firstReached": [
+                     *               {
+                     *                 "level": 2,
+                     *                 "at": "2026-11-12T12:00:00Z"
+                     *               },
+                     *               {
+                     *                 "level": 3,
+                     *                 "at": "2026-11-12T12:00:00Z"
+                     *               },
+                     *               {
+                     *                 "level": 4,
+                     *                 "at": "2026-11-12T12:00:00Z"
+                     *               }
+                     *             ],
+                     *             "peakLevel": 4,
+                     *             "peakAt": "2026-11-12T12:00:00.000Z",
+                     *             "possiblePeakLevel": null,
+                     *             "possiblePeakAt": null,
+                     *             "confidence": null
+                     *           }
+                     *         },
+                     *         {
+                     *           "workerId": "2c989bf0-26d2-4e6e-b617-5388640a753b",
+                     *           "workerName": "W-0308",
+                     *           "crewId": "097bbd11-92d6-471b-8165-7b8f59d757bc",
+                     *           "assessedAt": "2026-11-12T11:16:35.373Z",
+                     *           "level": 4,
+                     *           "levelName": "Critical",
+                     *           "label": "Critical",
+                     *           "action": {
+                     *             "what": "Stop the activity and move to a cool, shaded area. Follow the site heat emergency procedure.",
+                     *             "when": "immediately"
+                     *           },
+                     *           "language": "en",
+                     *           "dataQuality": "ok",
+                     *           "ppeNotModelled": [],
+                     *           "source": "engine",
+                     *           "forecast": {
+                     *             "firstReached": [
+                     *               {
+                     *                 "level": 2,
+                     *                 "at": "2026-11-12T12:00:00Z"
+                     *               },
+                     *               {
+                     *                 "level": 3,
+                     *                 "at": "2026-11-12T12:00:00Z"
+                     *               },
+                     *               {
+                     *                 "level": 4,
+                     *                 "at": "2026-11-12T12:00:00Z"
+                     *               }
+                     *             ],
+                     *             "peakLevel": 4,
+                     *             "peakAt": "2026-11-12T12:00:00.000Z",
+                     *             "possiblePeakLevel": null,
+                     *             "possiblePeakAt": null,
+                     *             "confidence": null
+                     *           }
+                     *         },
+                     *         {
+                     *           "workerId": "db369d50-329a-47ee-98cf-4224caee21e9",
+                     *           "workerName": "W-0306",
+                     *           "crewId": "097bbd11-92d6-471b-8165-7b8f59d757bc",
+                     *           "assessedAt": "2026-11-12T11:16:35.373Z",
+                     *           "level": 4,
+                     *           "levelName": "Critical",
+                     *           "label": "Critical",
+                     *           "action": {
+                     *             "what": "Stop the activity and move to a cool, shaded area. Follow the site heat emergency procedure.",
+                     *             "when": "immediately"
+                     *           },
+                     *           "language": "en",
+                     *           "dataQuality": "ok",
+                     *           "ppeNotModelled": [],
+                     *           "source": "engine",
+                     *           "forecast": {
+                     *             "firstReached": [
+                     *               {
+                     *                 "level": 2,
+                     *                 "at": "2026-11-12T12:00:00Z"
+                     *               },
+                     *               {
+                     *                 "level": 3,
+                     *                 "at": "2026-11-12T12:00:00Z"
+                     *               },
+                     *               {
+                     *                 "level": 4,
+                     *                 "at": "2026-11-12T12:00:00Z"
+                     *               }
+                     *             ],
+                     *             "peakLevel": 4,
+                     *             "peakAt": "2026-11-12T12:00:00.000Z",
+                     *             "possiblePeakLevel": null,
+                     *             "possiblePeakAt": null,
+                     *             "confidence": null
+                     *           }
+                     *         }
+                     *       ]
+                     *     }
+                     */
+                    "application/json": {
+                        /** Format: date-time */
+                        assessedAt: string;
+                        environment: {
+                            current: {
+                                /** Format: date-time */
+                                observedAt: string;
+                                source: string;
+                                airTempC: number;
+                                relativeHumidity: number;
+                                solarRadiationWm2: number;
+                                windSpeedMs: number;
+                                wbgtSunC: number;
+                                wbgtShadeC: unknown;
+                                wbgtMethod: string;
+                            };
+                            forecast: {
+                                /** Format: date-time */
+                                at: string;
+                                wbgtSunC: number;
+                                wbgtShadeC: unknown;
+                                wbgtMethod: string;
+                            }[];
+                        };
+                        distribution: {
+                            low: number;
+                            elevated: number;
+                            high: number;
+                            critical: number;
+                        };
+                        degraded: number;
+                        workers: {
+                            /** Format: uuid */
+                            workerId: string;
+                            workerName: string;
+                            /** Format: uuid */
+                            crewId: string;
+                            /** Format: date-time */
+                            assessedAt: string;
+                            level: number;
+                            levelName: string;
+                            label: string;
+                            action: {
+                                what: string;
+                                when: string;
+                            };
+                            language: string;
+                            dataQuality: string;
+                            ppeNotModelled: unknown[];
+                            source: string;
+                            forecast: {
+                                firstReached: {
+                                    level: number;
+                                    /** Format: date-time */
+                                    at: string;
+                                }[];
+                                peakLevel: number;
+                                /** Format: date-time */
+                                peakAt: string;
+                                possiblePeakLevel: unknown;
+                                possiblePeakAt: unknown;
+                                confidence: unknown;
+                            };
+                        }[];
+                    };
+                };
             };
             /** @description Not logged in, or the access token expired (refresh it) */
             401: {
@@ -2650,11 +3032,247 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
+            /** @description OK. Schema and example come from a real response with the demo data; arrays in the example are shortened to 3 items. */
             200: {
                 headers: {
                     [name: string]: unknown;
                 };
-                content?: never;
+                content: {
+                    /**
+                     * @example {
+                     *       "assessedAt": "2026-11-12T11:16:35.373Z",
+                     *       "level": 4,
+                     *       "levelName": "Critical",
+                     *       "label": "Critical",
+                     *       "language": "en",
+                     *       "reasons": [
+                     *         {
+                     *           "factor": "workload",
+                     *           "effect": "Moderate work. You are used to working in the heat."
+                     *         },
+                     *         {
+                     *           "factor": "precaution",
+                     *           "effect": "Your health check advises extra care in the heat, so you will be warned earlier."
+                     *         },
+                     *         {
+                     *           "factor": "heat",
+                     *           "effect": "The heat is 4.3 °C over the safe line for your work."
+                     *         }
+                     *       ],
+                     *       "action": {
+                     *         "what": "Stop the activity and move to a cool, shaded area. Follow the site heat emergency procedure.",
+                     *         "when": "immediately"
+                     *       },
+                     *       "wbgtC": 30.5,
+                     *       "wbgtSource": "estimated",
+                     *       "dataQuality": "ok",
+                     *       "ppeNotModelled": [],
+                     *       "source": "engine",
+                     *       "forecast": {
+                     *         "firstReached": [
+                     *           {
+                     *             "at": "2026-11-12T12:00:00Z",
+                     *             "label": "Elevated",
+                     *             "level": 2
+                     *           },
+                     *           {
+                     *             "at": "2026-11-12T12:00:00Z",
+                     *             "label": "High",
+                     *             "level": 3
+                     *           },
+                     *           {
+                     *             "at": "2026-11-12T12:00:00Z",
+                     *             "label": "Critical",
+                     *             "level": 4
+                     *           }
+                     *         ],
+                     *         "peakLevel": 4,
+                     *         "peakAt": "2026-11-12T12:00:00.000Z",
+                     *         "possiblePeakLevel": null,
+                     *         "possiblePeakAt": null,
+                     *         "confidence": null,
+                     *         "confidenceNote": null,
+                     *         "hours": [
+                     *           {
+                     *             "at": "2026-11-12T12:00:00Z",
+                     *             "label": "Critical",
+                     *             "level": 4,
+                     *             "action": {
+                     *               "what": "Stop the activity and move to a cool, shaded area. Follow the site heat emergency procedure.",
+                     *               "when": "immediately"
+                     *             },
+                     *             "confidence": null,
+                     *             "dataQuality": "ok",
+                     *             "possibleLabel": null,
+                     *             "possibleLevel": null
+                     *           },
+                     *           {
+                     *             "at": "2026-11-12T13:00:00Z",
+                     *             "label": "Critical",
+                     *             "level": 4,
+                     *             "action": {
+                     *               "what": "Stop the activity and move to a cool, shaded area. Follow the site heat emergency procedure.",
+                     *               "when": "immediately"
+                     *             },
+                     *             "confidence": null,
+                     *             "dataQuality": "ok",
+                     *             "possibleLabel": null,
+                     *             "possibleLevel": null
+                     *           },
+                     *           {
+                     *             "at": "2026-11-12T14:00:00Z",
+                     *             "label": "Critical",
+                     *             "level": 4,
+                     *             "action": {
+                     *               "what": "Stop the activity and move to a cool, shaded area. Follow the site heat emergency procedure.",
+                     *               "when": "immediately"
+                     *             },
+                     *             "confidence": null,
+                     *             "dataQuality": "ok",
+                     *             "possibleLabel": null,
+                     *             "possibleLevel": null
+                     *           }
+                     *         ]
+                     *       },
+                     *       "nextBreak": {
+                     *         "onBreakNow": false,
+                     *         "since": null,
+                     *         "startsAt": "2026-11-12T14:00:00.000Z",
+                     *         "minutesUntil": 164,
+                     *         "durationMinutes": 15
+                     *       },
+                     *       "crewLevel": 4,
+                     *       "dataSources": {
+                     *         "weather": {
+                     *           "ok": true,
+                     *           "at": "2026-11-12T11:15:00.000Z"
+                     *         },
+                     *         "siteSensor": null,
+                     *         "wearable": null
+                     *       },
+                     *       "hazards": [],
+                     *       "recommendations": [
+                     *         {
+                     *           "id": "3263bca6-5de4-4a2d-8d02-64a2ad0b2c50",
+                     *           "createdAt": "2026-11-12T11:16:06.340Z",
+                     *           "updatedAt": "2026-11-12T11:16:40.610Z",
+                     *           "organizationId": "1083395a-ffd8-4c14-8e69-fbe7416c2587",
+                     *           "siteId": "cce99add-f021-4b38-adff-c4f25f803c1b",
+                     *           "riskAssessmentId": "99659c5f-8462-48b8-9087-4735c79d1c6b",
+                     *           "workerId": "44eb3f5f-89e0-4248-af5d-3f7eed19aaa8",
+                     *           "crewId": "506a4f1c-9793-46cc-9709-0c5b02eff491",
+                     *           "audience": "worker",
+                     *           "code": "worker.engine_action",
+                     *           "riskLevel": 4,
+                     *           "whatHappened": "Critical",
+                     *           "whyItMatters": "See your risk details for the reasons.",
+                     *           "whoIsAffected": "You",
+                     *           "action": "Stop the activity and move to a cool, shaded area. Follow the site heat emergency procedure.",
+                     *           "timing": "immediate",
+                     *           "dueAt": null,
+                     *           "status": "open"
+                     *         }
+                     *       ]
+                     *     }
+                     */
+                    "application/json": {
+                        /** Format: date-time */
+                        assessedAt: string;
+                        level: number;
+                        levelName: string;
+                        label: string;
+                        language: string;
+                        reasons: {
+                            factor: string;
+                            effect: string;
+                        }[];
+                        action: {
+                            what: string;
+                            when: string;
+                        };
+                        wbgtC: number;
+                        wbgtSource: string;
+                        dataQuality: string;
+                        ppeNotModelled: unknown[];
+                        source: string;
+                        forecast: {
+                            firstReached: {
+                                /** Format: date-time */
+                                at: string;
+                                label: string;
+                                level: number;
+                            }[];
+                            peakLevel: number;
+                            /** Format: date-time */
+                            peakAt: string;
+                            possiblePeakLevel: unknown;
+                            possiblePeakAt: unknown;
+                            confidence: unknown;
+                            confidenceNote: unknown;
+                            hours: {
+                                /** Format: date-time */
+                                at: string;
+                                label: string;
+                                level: number;
+                                action: {
+                                    what: string;
+                                    when: string;
+                                };
+                                confidence: unknown;
+                                dataQuality: string;
+                                possibleLabel: unknown;
+                                possibleLevel: unknown;
+                            }[];
+                        };
+                        nextBreak: {
+                            onBreakNow: boolean;
+                            since: unknown;
+                            /** Format: date-time */
+                            startsAt: string;
+                            minutesUntil: number;
+                            durationMinutes: number;
+                        };
+                        crewLevel: number;
+                        dataSources: {
+                            weather: {
+                                ok: boolean;
+                                /** Format: date-time */
+                                at: string;
+                            };
+                            siteSensor: unknown;
+                            wearable: unknown;
+                        };
+                        hazards: unknown[];
+                        recommendations: {
+                            /** Format: uuid */
+                            id: string;
+                            /** Format: date-time */
+                            createdAt: string;
+                            /** Format: date-time */
+                            updatedAt: string;
+                            /** Format: uuid */
+                            organizationId: string;
+                            /** Format: uuid */
+                            siteId: string;
+                            /** Format: uuid */
+                            riskAssessmentId: string;
+                            /** Format: uuid */
+                            workerId: string;
+                            /** Format: uuid */
+                            crewId: string;
+                            audience: string;
+                            code: string;
+                            riskLevel: number;
+                            whatHappened: string;
+                            whyItMatters: string;
+                            whoIsAffected: string;
+                            action: string;
+                            timing: string;
+                            dueAt: unknown;
+                            status: string;
+                        }[];
+                    };
+                };
             };
             /** @description Not logged in, or the access token expired (refresh it) */
             401: {
@@ -2683,11 +3301,166 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
+            /** @description OK. Schema and example come from a real response with the demo data; arrays in the example are shortened to 3 items. */
             200: {
                 headers: {
                     [name: string]: unknown;
                 };
-                content?: never;
+                content: {
+                    /**
+                     * @example {
+                     *       "workerId": "44eb3f5f-89e0-4248-af5d-3f7eed19aaa8",
+                     *       "workerName": "W-0412",
+                     *       "assessedAt": "2026-11-12T11:16:35.373Z",
+                     *       "level": 4,
+                     *       "levelName": "Critical",
+                     *       "label": "Critical",
+                     *       "language": "en",
+                     *       "reasons": [
+                     *         {
+                     *           "factor": "workload",
+                     *           "effect": "Moderate work. You are used to working in the heat."
+                     *         },
+                     *         {
+                     *           "factor": "precaution",
+                     *           "effect": "Your health check advises extra care in the heat, so you will be warned earlier."
+                     *         },
+                     *         {
+                     *           "factor": "heat",
+                     *           "effect": "The heat is 4.3 °C over the safe line for your work."
+                     *         }
+                     *       ],
+                     *       "action": {
+                     *         "what": "Stop the activity and move to a cool, shaded area. Follow the site heat emergency procedure.",
+                     *         "when": "immediately"
+                     *       },
+                     *       "wbgtC": 30.5,
+                     *       "wbgtSource": "estimated",
+                     *       "dataQuality": "ok",
+                     *       "ppeNotModelled": [],
+                     *       "source": "engine",
+                     *       "forecast": {
+                     *         "firstReached": [
+                     *           {
+                     *             "at": "2026-11-12T12:00:00Z",
+                     *             "label": "Elevated",
+                     *             "level": 2
+                     *           },
+                     *           {
+                     *             "at": "2026-11-12T12:00:00Z",
+                     *             "label": "High",
+                     *             "level": 3
+                     *           },
+                     *           {
+                     *             "at": "2026-11-12T12:00:00Z",
+                     *             "label": "Critical",
+                     *             "level": 4
+                     *           }
+                     *         ],
+                     *         "peakLevel": 4,
+                     *         "peakAt": "2026-11-12T12:00:00.000Z",
+                     *         "possiblePeakLevel": null,
+                     *         "possiblePeakAt": null,
+                     *         "confidence": null,
+                     *         "confidenceNote": null,
+                     *         "hours": [
+                     *           {
+                     *             "at": "2026-11-12T12:00:00Z",
+                     *             "label": "Critical",
+                     *             "level": 4,
+                     *             "action": {
+                     *               "what": "Stop the activity and move to a cool, shaded area. Follow the site heat emergency procedure.",
+                     *               "when": "immediately"
+                     *             },
+                     *             "confidence": null,
+                     *             "dataQuality": "ok",
+                     *             "possibleLabel": null,
+                     *             "possibleLevel": null
+                     *           },
+                     *           {
+                     *             "at": "2026-11-12T13:00:00Z",
+                     *             "label": "Critical",
+                     *             "level": 4,
+                     *             "action": {
+                     *               "what": "Stop the activity and move to a cool, shaded area. Follow the site heat emergency procedure.",
+                     *               "when": "immediately"
+                     *             },
+                     *             "confidence": null,
+                     *             "dataQuality": "ok",
+                     *             "possibleLabel": null,
+                     *             "possibleLevel": null
+                     *           },
+                     *           {
+                     *             "at": "2026-11-12T14:00:00Z",
+                     *             "label": "Critical",
+                     *             "level": 4,
+                     *             "action": {
+                     *               "what": "Stop the activity and move to a cool, shaded area. Follow the site heat emergency procedure.",
+                     *               "when": "immediately"
+                     *             },
+                     *             "confidence": null,
+                     *             "dataQuality": "ok",
+                     *             "possibleLabel": null,
+                     *             "possibleLevel": null
+                     *           }
+                     *         ]
+                     *       }
+                     *     }
+                     */
+                    "application/json": {
+                        /** Format: uuid */
+                        workerId: string;
+                        workerName: string;
+                        /** Format: date-time */
+                        assessedAt: string;
+                        level: number;
+                        levelName: string;
+                        label: string;
+                        language: string;
+                        reasons: {
+                            factor: string;
+                            effect: string;
+                        }[];
+                        action: {
+                            what: string;
+                            when: string;
+                        };
+                        wbgtC: number;
+                        wbgtSource: string;
+                        dataQuality: string;
+                        ppeNotModelled: unknown[];
+                        source: string;
+                        forecast: {
+                            firstReached: {
+                                /** Format: date-time */
+                                at: string;
+                                label: string;
+                                level: number;
+                            }[];
+                            peakLevel: number;
+                            /** Format: date-time */
+                            peakAt: string;
+                            possiblePeakLevel: unknown;
+                            possiblePeakAt: unknown;
+                            confidence: unknown;
+                            confidenceNote: unknown;
+                            hours: {
+                                /** Format: date-time */
+                                at: string;
+                                label: string;
+                                level: number;
+                                action: {
+                                    what: string;
+                                    when: string;
+                                };
+                                confidence: unknown;
+                                dataQuality: string;
+                                possibleLabel: unknown;
+                                possibleLevel: unknown;
+                            }[];
+                        };
+                    };
+                };
             };
             /** @description Not logged in, or the access token expired (refresh it) */
             401: {
@@ -2756,11 +3529,219 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
+            /** @description OK. Schema and example come from a real response with the demo data; arrays in the example are shortened to 3 items. */
             200: {
                 headers: {
                     [name: string]: unknown;
                 };
-                content?: never;
+                content: {
+                    /**
+                     * @example {
+                     *       "site": {
+                     *         "id": "cce99add-f021-4b38-adff-c4f25f803c1b",
+                     *         "createdAt": "2026-11-12T08:21:11.198Z",
+                     *         "updatedAt": "2026-11-12T08:21:11.198Z",
+                     *         "organizationId": "1083395a-ffd8-4c14-8e69-fbe7416c2587",
+                     *         "name": "Abuja Demo Site",
+                     *         "latitude": 9.0579,
+                     *         "longitude": 7.4951,
+                     *         "timezone": "Africa/Lagos",
+                     *         "emergencyNumber": "112",
+                     *         "shifts": [
+                     *           {
+                     *             "end": "17:00",
+                     *             "name": "Day shift",
+                     *             "start": "07:00"
+                     *           }
+                     *         ]
+                     *       },
+                     *       "current": {
+                     *         "id": "c1393263-12e8-4836-bfcc-505ba1a84405",
+                     *         "createdAt": "2026-11-12T11:16:35.346Z",
+                     *         "updatedAt": "2026-11-12T11:16:35.346Z",
+                     *         "siteId": "cce99add-f021-4b38-adff-c4f25f803c1b",
+                     *         "observedAt": "2026-11-12T11:15:00.000Z",
+                     *         "isForecast": false,
+                     *         "source": "weather_api",
+                     *         "airTempC": 32.6,
+                     *         "relativeHumidity": 32,
+                     *         "solarRadiationWm2": 756,
+                     *         "windSpeedMs": 0.86,
+                     *         "directRadiationWm2": 472,
+                     *         "diffuseRadiationWm2": 284,
+                     *         "surfacePressureHpa": 962.3,
+                     *         "weatherCode": 2,
+                     *         "dustUgM3": 49,
+                     *         "pm10UgM3": 36.9,
+                     *         "precipitationMm": 0,
+                     *         "wbgtSunC": 30.5,
+                     *         "wbgtShadeC": null,
+                     *         "wbgtMethod": "estimated",
+                     *         "wbgtModel": "engine/liljegren_2008",
+                     *         "confidence": "medium"
+                     *       },
+                     *       "forecast": [
+                     *         {
+                     *           "id": "35a57112-07c6-47f0-b161-cf0a850e28bc",
+                     *           "createdAt": "2026-11-12T11:16:35.346Z",
+                     *           "updatedAt": "2026-11-12T11:16:35.346Z",
+                     *           "siteId": "cce99add-f021-4b38-adff-c4f25f803c1b",
+                     *           "observedAt": "2026-11-12T12:00:00.000Z",
+                     *           "isForecast": true,
+                     *           "source": "weather_api",
+                     *           "airTempC": 33,
+                     *           "relativeHumidity": 30,
+                     *           "solarRadiationWm2": 733,
+                     *           "windSpeedMs": 0.61,
+                     *           "directRadiationWm2": 437,
+                     *           "diffuseRadiationWm2": 296,
+                     *           "surfacePressureHpa": 961.5,
+                     *           "weatherCode": 3,
+                     *           "dustUgM3": 65,
+                     *           "pm10UgM3": 49.9,
+                     *           "precipitationMm": 0,
+                     *           "wbgtSunC": 31.3,
+                     *           "wbgtShadeC": null,
+                     *           "wbgtMethod": "estimated",
+                     *           "wbgtModel": "engine/liljegren_2008",
+                     *           "confidence": "medium"
+                     *         },
+                     *         {
+                     *           "id": "b9c0c8b8-c3d7-46c0-94fb-08c1571759ca",
+                     *           "createdAt": "2026-11-12T11:16:35.346Z",
+                     *           "updatedAt": "2026-11-12T11:16:35.346Z",
+                     *           "siteId": "cce99add-f021-4b38-adff-c4f25f803c1b",
+                     *           "observedAt": "2026-11-12T13:00:00.000Z",
+                     *           "isForecast": true,
+                     *           "source": "weather_api",
+                     *           "airTempC": 33.1,
+                     *           "relativeHumidity": 28,
+                     *           "solarRadiationWm2": 622,
+                     *           "windSpeedMs": 0.56,
+                     *           "directRadiationWm2": 371,
+                     *           "diffuseRadiationWm2": 251,
+                     *           "surfacePressureHpa": 960.7,
+                     *           "weatherCode": 3,
+                     *           "dustUgM3": 79,
+                     *           "pm10UgM3": 57.5,
+                     *           "precipitationMm": 0,
+                     *           "wbgtSunC": 30.8,
+                     *           "wbgtShadeC": null,
+                     *           "wbgtMethod": "estimated",
+                     *           "wbgtModel": "engine/liljegren_2008",
+                     *           "confidence": "medium"
+                     *         },
+                     *         {
+                     *           "id": "c85b2a7b-1b2d-4aec-8298-3539cb48fc4e",
+                     *           "createdAt": "2026-11-12T11:16:35.346Z",
+                     *           "updatedAt": "2026-11-12T11:16:35.346Z",
+                     *           "siteId": "cce99add-f021-4b38-adff-c4f25f803c1b",
+                     *           "observedAt": "2026-11-12T14:00:00.000Z",
+                     *           "isForecast": true,
+                     *           "source": "weather_api",
+                     *           "airTempC": 33.1,
+                     *           "relativeHumidity": 28,
+                     *           "solarRadiationWm2": 563,
+                     *           "windSpeedMs": 0.69,
+                     *           "directRadiationWm2": 344,
+                     *           "diffuseRadiationWm2": 219,
+                     *           "surfacePressureHpa": 959.6,
+                     *           "weatherCode": 0,
+                     *           "dustUgM3": 91,
+                     *           "pm10UgM3": 64,
+                     *           "precipitationMm": 0,
+                     *           "wbgtSunC": 29.6,
+                     *           "wbgtShadeC": null,
+                     *           "wbgtMethod": "estimated",
+                     *           "wbgtModel": "engine/liljegren_2008",
+                     *           "confidence": "medium"
+                     *         }
+                     *       ]
+                     *     }
+                     */
+                    "application/json": {
+                        site: {
+                            /** Format: uuid */
+                            id: string;
+                            /** Format: date-time */
+                            createdAt: string;
+                            /** Format: date-time */
+                            updatedAt: string;
+                            /** Format: uuid */
+                            organizationId: string;
+                            name: string;
+                            latitude: number;
+                            longitude: number;
+                            timezone: string;
+                            emergencyNumber: string;
+                            shifts: {
+                                end: string;
+                                name: string;
+                                start: string;
+                            }[];
+                        };
+                        current: {
+                            /** Format: uuid */
+                            id: string;
+                            /** Format: date-time */
+                            createdAt: string;
+                            /** Format: date-time */
+                            updatedAt: string;
+                            /** Format: uuid */
+                            siteId: string;
+                            /** Format: date-time */
+                            observedAt: string;
+                            isForecast: boolean;
+                            source: string;
+                            airTempC: number;
+                            relativeHumidity: number;
+                            solarRadiationWm2: number;
+                            windSpeedMs: number;
+                            directRadiationWm2: number;
+                            diffuseRadiationWm2: number;
+                            surfacePressureHpa: number;
+                            weatherCode: number;
+                            dustUgM3: number;
+                            pm10UgM3: number;
+                            precipitationMm: number;
+                            wbgtSunC: number;
+                            wbgtShadeC: unknown;
+                            wbgtMethod: string;
+                            wbgtModel: string;
+                            confidence: string;
+                        };
+                        forecast: {
+                            /** Format: uuid */
+                            id: string;
+                            /** Format: date-time */
+                            createdAt: string;
+                            /** Format: date-time */
+                            updatedAt: string;
+                            /** Format: uuid */
+                            siteId: string;
+                            /** Format: date-time */
+                            observedAt: string;
+                            isForecast: boolean;
+                            source: string;
+                            airTempC: number;
+                            relativeHumidity: number;
+                            solarRadiationWm2: number;
+                            windSpeedMs: number;
+                            directRadiationWm2: number;
+                            diffuseRadiationWm2: number;
+                            surfacePressureHpa: number;
+                            weatherCode: number;
+                            dustUgM3: number;
+                            pm10UgM3: number;
+                            precipitationMm: number;
+                            wbgtSunC: number;
+                            wbgtShadeC: unknown;
+                            wbgtMethod: string;
+                            wbgtModel: string;
+                            confidence: string;
+                        }[];
+                    };
+                };
             };
             /** @description Not logged in, or the access token expired (refresh it) */
             401: {
@@ -2789,11 +3770,21 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
+            /** @description OK. Schema and example come from a real response with the demo data; arrays in the example are shortened to 3 items. */
             201: {
                 headers: {
                     [name: string]: unknown;
                 };
-                content?: never;
+                content: {
+                    /**
+                     * @example {
+                     *       "stored": 13
+                     *     }
+                     */
+                    "application/json": {
+                        stored: number;
+                    };
+                };
             };
             /** @description The request is invalid; `message` lists what is wrong */
             400: {
@@ -2965,11 +3956,15 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
+            /** @description OK. Schema and example come from a real response with the demo data; arrays in the example are shortened to 3 items. */
             200: {
                 headers: {
                     [name: string]: unknown;
                 };
-                content?: never;
+                content: {
+                    /** @example [] */
+                    "application/json": unknown[];
+                };
             };
             /** @description Not logged in, or the access token expired (refresh it) */
             401: {
@@ -3093,11 +4088,21 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
+            /** @description OK. Schema and example come from a real response with the demo data; arrays in the example are shortened to 3 items. */
             200: {
                 headers: {
                     [name: string]: unknown;
                 };
-                content?: never;
+                content: {
+                    /**
+                     * @example {
+                     *       "erased": true
+                     *     }
+                     */
+                    "application/json": {
+                        erased: boolean;
+                    };
+                };
             };
             /** @description Not logged in, or the access token expired (refresh it) */
             401: {
@@ -3186,11 +4191,21 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
+            /** @description OK. Schema and example come from a real response with the demo data; arrays in the example are shortened to 3 items. */
             201: {
                 headers: {
                     [name: string]: unknown;
                 };
-                content?: never;
+                content: {
+                    /**
+                     * @example {
+                     *       "reviewRequested": true
+                     *     }
+                     */
+                    "application/json": {
+                        reviewRequested: boolean;
+                    };
+                };
             };
             /** @description The request is invalid; `message` lists what is wrong */
             400: {
@@ -3328,11 +4343,914 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
+            /** @description OK. Schema and example come from a real response with the demo data; arrays in the example are shortened to 3 items. */
             200: {
                 headers: {
                     [name: string]: unknown;
                 };
-                content?: never;
+                content: {
+                    /**
+                     * @example {
+                     *       "exportedAt": "2026-11-12T11:16:46.723Z",
+                     *       "worker": {
+                     *         "id": "ebafe8e7-e96c-4787-9928-864a8c9ea587",
+                     *         "createdAt": "2026-11-12T08:21:11.315Z",
+                     *         "updatedAt": "2026-11-12T08:21:11.315Z",
+                     *         "organizationId": "1083395a-ffd8-4c14-8e69-fbe7416c2587",
+                     *         "employeeCode": "W-0388",
+                     *         "displayName": "W-0388",
+                     *         "crewId": "e03b476f-e004-4cb9-80b5-44d2623d550e",
+                     *         "preferredLanguage": "en",
+                     *         "readAloud": false,
+                     *         "acclimatizationStartedOn": "2026-09-13",
+                     *         "isActive": true,
+                     *         "leftOn": null
+                     *       },
+                     *       "healthProfile": null,
+                     *       "consents": [
+                     *         {
+                     *           "id": "050ce02a-8155-4311-9b95-804428f86df7",
+                     *           "createdAt": "2026-11-12T11:16:06.554Z",
+                     *           "updatedAt": "2026-11-12T11:16:06.554Z",
+                     *           "workerId": "ebafe8e7-e96c-4787-9928-864a8c9ea587",
+                     *           "purpose": "health_data_processing",
+                     *           "granted": true,
+                     *           "policyVersion": "2026-11-v1",
+                     *           "recordedByUserId": "25faf3f9-2e95-4218-8d2d-91f63cc92443"
+                     *         },
+                     *         {
+                     *           "id": "b70cc877-6191-4ae3-bee9-2f283ab2d758",
+                     *           "createdAt": "2026-11-12T11:16:06.558Z",
+                     *           "updatedAt": "2026-11-12T11:16:06.558Z",
+                     *           "workerId": "ebafe8e7-e96c-4787-9928-864a8c9ea587",
+                     *           "purpose": "wearable_band",
+                     *           "granted": true,
+                     *           "policyVersion": "2026-11-v1",
+                     *           "recordedByUserId": "25faf3f9-2e95-4218-8d2d-91f63cc92443"
+                     *         },
+                     *         {
+                     *           "id": "ff44f958-ea19-487d-ad4c-736b31c690cf",
+                     *           "createdAt": "2026-11-12T11:16:06.560Z",
+                     *           "updatedAt": "2026-11-12T11:16:06.560Z",
+                     *           "workerId": "ebafe8e7-e96c-4787-9928-864a8c9ea587",
+                     *           "purpose": "symptom_reports",
+                     *           "granted": true,
+                     *           "policyVersion": "2026-11-v1",
+                     *           "recordedByUserId": "25faf3f9-2e95-4218-8d2d-91f63cc92443"
+                     *         }
+                     *       ],
+                     *       "ppe": [
+                     *         {
+                     *           "id": "f94af4ca-f1d9-4ee3-b8de-e60e97cf6303",
+                     *           "createdAt": "2026-11-12T08:21:11.315Z",
+                     *           "updatedAt": "2026-11-12T08:21:11.315Z",
+                     *           "workerId": "ebafe8e7-e96c-4787-9928-864a8c9ea587",
+                     *           "ppeItemId": "6e999f36-2975-4f55-a360-1a8c9141d665",
+                     *           "ppeItem": {
+                     *             "id": "6e999f36-2975-4f55-a360-1a8c9141d665",
+                     *             "createdAt": "2026-11-12T08:21:09.053Z",
+                     *             "updatedAt": "2026-11-12T11:15:02.216Z",
+                     *             "organizationId": null,
+                     *             "code": "cloth_coveralls",
+                     *             "name": "Industrial coveralls (woven cloth)",
+                     *             "category": "clothing",
+                     *             "engineClass": "coverall",
+                     *             "engineAddon": null
+                     *           }
+                     *         },
+                     *         {
+                     *           "id": "d30582b4-4595-4d36-8186-c318659ace1f",
+                     *           "createdAt": "2026-11-12T08:21:11.315Z",
+                     *           "updatedAt": "2026-11-12T08:21:11.315Z",
+                     *           "workerId": "ebafe8e7-e96c-4787-9928-864a8c9ea587",
+                     *           "ppeItemId": "abedf89a-6112-47aa-9a2a-ea8ba9aa3908",
+                     *           "ppeItem": {
+                     *             "id": "abedf89a-6112-47aa-9a2a-ea8ba9aa3908",
+                     *             "createdAt": "2026-11-12T08:21:09.053Z",
+                     *             "updatedAt": "2026-11-12T11:15:02.216Z",
+                     *             "organizationId": null,
+                     *             "code": "hard_hat",
+                     *             "name": "Protective helmet",
+                     *             "category": "head",
+                     *             "engineClass": null,
+                     *             "engineAddon": null
+                     *           }
+                     *         }
+                     *       ],
+                     *       "workAssignments": [
+                     *         {
+                     *           "id": "a0413778-901b-419e-bef6-a91a0494c36e",
+                     *           "createdAt": "2026-11-12T08:21:11.318Z",
+                     *           "updatedAt": "2026-11-12T08:21:11.318Z",
+                     *           "organizationId": "1083395a-ffd8-4c14-8e69-fbe7416c2587",
+                     *           "workerId": "ebafe8e7-e96c-4787-9928-864a8c9ea587",
+                     *           "siteId": "cce99add-f021-4b38-adff-c4f25f803c1b",
+                     *           "activityCategoryId": "9a32d992-0abc-46a8-8bae-e88483b3470f",
+                     *           "activityCategory": {
+                     *             "id": "9a32d992-0abc-46a8-8bae-e88483b3470f",
+                     *             "createdAt": "2026-11-12T08:21:09.061Z",
+                     *             "updatedAt": "2026-11-12T11:15:02.225Z",
+                     *             "code": "excavation",
+                     *             "name": "Manual excavation / digging",
+                     *             "defaultWorkload": "heavy",
+                     *             "isPlaceholder": true
+                     *           },
+                     *           "workloadOverride": "very_heavy",
+                     *           "workEnvironment": "direct_sun",
+                     *           "startsAt": "2026-11-12T06:00:00.000Z",
+                     *           "endsAt": "2026-11-12T16:00:00.000Z",
+                     *           "plannedBreaks": [
+                     *             "2026-11-12T11:00:00.000Z",
+                     *             "2026-11-12T15:00:00.000Z"
+                     *           ],
+                     *           "breakMinutes": 15,
+                     *           "clockedInAt": null,
+                     *           "clockedOutAt": null,
+                     *           "onBreakSince": null,
+                     *           "lastBreakEndedAt": null
+                     *         }
+                     *       ],
+                     *       "riskAssessments": [
+                     *         {
+                     *           "id": "b49dd08c-6f73-4978-b952-f4f55c24bf7c",
+                     *           "createdAt": "2026-11-12T11:16:02.900Z",
+                     *           "updatedAt": "2026-11-12T11:16:02.900Z",
+                     *           "organizationId": "1083395a-ffd8-4c14-8e69-fbe7416c2587",
+                     *           "siteId": "cce99add-f021-4b38-adff-c4f25f803c1b",
+                     *           "workerId": "ebafe8e7-e96c-4787-9928-864a8c9ea587",
+                     *           "crewId": "e03b476f-e004-4cb9-80b5-44d2623d550e",
+                     *           "workAssignmentId": "a0413778-901b-419e-bef6-a91a0494c36e",
+                     *           "assessedAt": "2026-11-12T11:15:58.708Z",
+                     *           "source": "engine",
+                     *           "level": 4,
+                     *           "label": "Critical",
+                     *           "language": "en",
+                     *           "reasons": [
+                     *             {
+                     *               "factor": "workload",
+                     *               "effect": "Very heavy work. You are used to working in the heat."
+                     *             },
+                     *             {
+                     *               "factor": "heat",
+                     *               "effect": "The heat is 5.0 °C over the safe line for your work."
+                     *             }
+                     *           ],
+                     *           "action": {
+                     *             "what": "Stop the activity and move to a cool, shaded area. Follow the site heat emergency procedure.",
+                     *             "when": "immediately"
+                     *           },
+                     *           "wbgtC": 30.5,
+                     *           "wbgtSource": "estimated",
+                     *           "dataQuality": "ok",
+                     *           "ppeNotModelled": [],
+                     *           "forecastFirstReached": [
+                     *             {
+                     *               "at": "2026-11-12T12:00:00Z",
+                     *               "label": "Elevated",
+                     *               "level": 2
+                     *             },
+                     *             {
+                     *               "at": "2026-11-12T12:00:00Z",
+                     *               "label": "High",
+                     *               "level": 3
+                     *             },
+                     *             {
+                     *               "at": "2026-11-12T12:00:00Z",
+                     *               "label": "Critical",
+                     *               "level": 4
+                     *             }
+                     *           ],
+                     *           "forecastPeakLevel": 4,
+                     *           "forecastPeakAt": "2026-11-12T12:00:00.000Z",
+                     *           "forecastHours": [
+                     *             {
+                     *               "at": "2026-11-12T12:00:00Z",
+                     *               "label": "Critical",
+                     *               "level": 4,
+                     *               "action": {
+                     *                 "what": "Stop the activity and move to a cool, shaded area. Follow the site heat emergency procedure.",
+                     *                 "when": "immediately"
+                     *               },
+                     *               "confidence": null,
+                     *               "dataQuality": "ok",
+                     *               "possibleLabel": null,
+                     *               "possibleLevel": null
+                     *             },
+                     *             {
+                     *               "at": "2026-11-12T13:00:00Z",
+                     *               "label": "Critical",
+                     *               "level": 4,
+                     *               "action": {
+                     *                 "what": "Stop the activity and move to a cool, shaded area. Follow the site heat emergency procedure.",
+                     *                 "when": "immediately"
+                     *               },
+                     *               "confidence": null,
+                     *               "dataQuality": "ok",
+                     *               "possibleLabel": null,
+                     *               "possibleLevel": null
+                     *             },
+                     *             {
+                     *               "at": "2026-11-12T14:00:00Z",
+                     *               "label": "Critical",
+                     *               "level": 4,
+                     *               "action": {
+                     *                 "what": "Stop the activity and move to a cool, shaded area. Follow the site heat emergency procedure.",
+                     *                 "when": "immediately"
+                     *               },
+                     *               "confidence": null,
+                     *               "dataQuality": "ok",
+                     *               "possibleLabel": null,
+                     *               "possibleLevel": null
+                     *             }
+                     *           ],
+                     *           "forecastConfidence": null,
+                     *           "forecastConfidenceNote": null,
+                     *           "forecastPossiblePeakLevel": null,
+                     *           "forecastPossiblePeakAt": null
+                     *         },
+                     *         {
+                     *           "id": "7ee6755f-3458-4b66-a592-96e9cd801a4c",
+                     *           "createdAt": "2026-11-12T11:16:10.657Z",
+                     *           "updatedAt": "2026-11-12T11:16:10.657Z",
+                     *           "organizationId": "1083395a-ffd8-4c14-8e69-fbe7416c2587",
+                     *           "siteId": "cce99add-f021-4b38-adff-c4f25f803c1b",
+                     *           "workerId": "ebafe8e7-e96c-4787-9928-864a8c9ea587",
+                     *           "crewId": "e03b476f-e004-4cb9-80b5-44d2623d550e",
+                     *           "workAssignmentId": "a0413778-901b-419e-bef6-a91a0494c36e",
+                     *           "assessedAt": "2026-11-12T11:16:06.768Z",
+                     *           "source": "engine",
+                     *           "level": 4,
+                     *           "label": "Critical",
+                     *           "language": "en",
+                     *           "reasons": [
+                     *             {
+                     *               "factor": "workload",
+                     *               "effect": "Very heavy work. You are used to working in the heat."
+                     *             },
+                     *             {
+                     *               "factor": "heat",
+                     *               "effect": "The heat is 5.0 °C over the safe line for your work."
+                     *             }
+                     *           ],
+                     *           "action": {
+                     *             "what": "Stop the activity and move to a cool, shaded area. Follow the site heat emergency procedure.",
+                     *             "when": "immediately"
+                     *           },
+                     *           "wbgtC": 30.5,
+                     *           "wbgtSource": "estimated",
+                     *           "dataQuality": "ok",
+                     *           "ppeNotModelled": [],
+                     *           "forecastFirstReached": [
+                     *             {
+                     *               "at": "2026-11-12T12:00:00Z",
+                     *               "label": "Elevated",
+                     *               "level": 2
+                     *             },
+                     *             {
+                     *               "at": "2026-11-12T12:00:00Z",
+                     *               "label": "High",
+                     *               "level": 3
+                     *             },
+                     *             {
+                     *               "at": "2026-11-12T12:00:00Z",
+                     *               "label": "Critical",
+                     *               "level": 4
+                     *             }
+                     *           ],
+                     *           "forecastPeakLevel": 4,
+                     *           "forecastPeakAt": "2026-11-12T12:00:00.000Z",
+                     *           "forecastHours": [
+                     *             {
+                     *               "at": "2026-11-12T12:00:00Z",
+                     *               "label": "Critical",
+                     *               "level": 4,
+                     *               "action": {
+                     *                 "what": "Stop the activity and move to a cool, shaded area. Follow the site heat emergency procedure.",
+                     *                 "when": "immediately"
+                     *               },
+                     *               "confidence": null,
+                     *               "dataQuality": "ok",
+                     *               "possibleLabel": null,
+                     *               "possibleLevel": null
+                     *             },
+                     *             {
+                     *               "at": "2026-11-12T13:00:00Z",
+                     *               "label": "Critical",
+                     *               "level": 4,
+                     *               "action": {
+                     *                 "what": "Stop the activity and move to a cool, shaded area. Follow the site heat emergency procedure.",
+                     *                 "when": "immediately"
+                     *               },
+                     *               "confidence": null,
+                     *               "dataQuality": "ok",
+                     *               "possibleLabel": null,
+                     *               "possibleLevel": null
+                     *             },
+                     *             {
+                     *               "at": "2026-11-12T14:00:00Z",
+                     *               "label": "Critical",
+                     *               "level": 4,
+                     *               "action": {
+                     *                 "what": "Stop the activity and move to a cool, shaded area. Follow the site heat emergency procedure.",
+                     *                 "when": "immediately"
+                     *               },
+                     *               "confidence": null,
+                     *               "dataQuality": "ok",
+                     *               "possibleLabel": null,
+                     *               "possibleLevel": null
+                     *             }
+                     *           ],
+                     *           "forecastConfidence": null,
+                     *           "forecastConfidenceNote": null,
+                     *           "forecastPossiblePeakLevel": null,
+                     *           "forecastPossiblePeakAt": null
+                     *         },
+                     *         {
+                     *           "id": "487355c1-6180-480e-a5fa-6df945b1d1f6",
+                     *           "createdAt": "2026-11-12T11:16:38.830Z",
+                     *           "updatedAt": "2026-11-12T11:16:38.830Z",
+                     *           "organizationId": "1083395a-ffd8-4c14-8e69-fbe7416c2587",
+                     *           "siteId": "cce99add-f021-4b38-adff-c4f25f803c1b",
+                     *           "workerId": "ebafe8e7-e96c-4787-9928-864a8c9ea587",
+                     *           "crewId": "e03b476f-e004-4cb9-80b5-44d2623d550e",
+                     *           "workAssignmentId": "a0413778-901b-419e-bef6-a91a0494c36e",
+                     *           "assessedAt": "2026-11-12T11:16:35.373Z",
+                     *           "source": "engine",
+                     *           "level": 4,
+                     *           "label": "Critical",
+                     *           "language": "en",
+                     *           "reasons": [
+                     *             {
+                     *               "factor": "workload",
+                     *               "effect": "Very heavy work. You are used to working in the heat."
+                     *             },
+                     *             {
+                     *               "factor": "heat",
+                     *               "effect": "The heat is 5.0 °C over the safe line for your work."
+                     *             }
+                     *           ],
+                     *           "action": {
+                     *             "what": "Stop the activity and move to a cool, shaded area. Follow the site heat emergency procedure.",
+                     *             "when": "immediately"
+                     *           },
+                     *           "wbgtC": 30.5,
+                     *           "wbgtSource": "estimated",
+                     *           "dataQuality": "ok",
+                     *           "ppeNotModelled": [],
+                     *           "forecastFirstReached": [
+                     *             {
+                     *               "at": "2026-11-12T12:00:00Z",
+                     *               "label": "Elevated",
+                     *               "level": 2
+                     *             },
+                     *             {
+                     *               "at": "2026-11-12T12:00:00Z",
+                     *               "label": "High",
+                     *               "level": 3
+                     *             },
+                     *             {
+                     *               "at": "2026-11-12T12:00:00Z",
+                     *               "label": "Critical",
+                     *               "level": 4
+                     *             }
+                     *           ],
+                     *           "forecastPeakLevel": 4,
+                     *           "forecastPeakAt": "2026-11-12T12:00:00.000Z",
+                     *           "forecastHours": [
+                     *             {
+                     *               "at": "2026-11-12T12:00:00Z",
+                     *               "label": "Critical",
+                     *               "level": 4,
+                     *               "action": {
+                     *                 "what": "Stop the activity and move to a cool, shaded area. Follow the site heat emergency procedure.",
+                     *                 "when": "immediately"
+                     *               },
+                     *               "confidence": null,
+                     *               "dataQuality": "ok",
+                     *               "possibleLabel": null,
+                     *               "possibleLevel": null
+                     *             },
+                     *             {
+                     *               "at": "2026-11-12T13:00:00Z",
+                     *               "label": "Critical",
+                     *               "level": 4,
+                     *               "action": {
+                     *                 "what": "Stop the activity and move to a cool, shaded area. Follow the site heat emergency procedure.",
+                     *                 "when": "immediately"
+                     *               },
+                     *               "confidence": null,
+                     *               "dataQuality": "ok",
+                     *               "possibleLabel": null,
+                     *               "possibleLevel": null
+                     *             },
+                     *             {
+                     *               "at": "2026-11-12T14:00:00Z",
+                     *               "label": "Critical",
+                     *               "level": 4,
+                     *               "action": {
+                     *                 "what": "Stop the activity and move to a cool, shaded area. Follow the site heat emergency procedure.",
+                     *                 "when": "immediately"
+                     *               },
+                     *               "confidence": null,
+                     *               "dataQuality": "ok",
+                     *               "possibleLabel": null,
+                     *               "possibleLevel": null
+                     *             }
+                     *           ],
+                     *           "forecastConfidence": null,
+                     *           "forecastConfidenceNote": null,
+                     *           "forecastPossiblePeakLevel": null,
+                     *           "forecastPossiblePeakAt": null
+                     *         }
+                     *       ],
+                     *       "recommendations": [
+                     *         {
+                     *           "id": "8c4bcc54-0edf-4c58-b147-4e4410e04957",
+                     *           "createdAt": "2026-11-12T11:16:06.340Z",
+                     *           "updatedAt": "2026-11-12T11:16:46.419Z",
+                     *           "organizationId": "1083395a-ffd8-4c14-8e69-fbe7416c2587",
+                     *           "siteId": "cce99add-f021-4b38-adff-c4f25f803c1b",
+                     *           "riskAssessmentId": "4db36c0b-c3d5-48e3-9ffe-dc443b0c3100",
+                     *           "workerId": "ebafe8e7-e96c-4787-9928-864a8c9ea587",
+                     *           "crewId": "e03b476f-e004-4cb9-80b5-44d2623d550e",
+                     *           "audience": "worker",
+                     *           "code": "worker.engine_action",
+                     *           "riskLevel": 4,
+                     *           "whatHappened": "Critical",
+                     *           "whyItMatters": "See your risk details for the reasons.",
+                     *           "whoIsAffected": "You",
+                     *           "action": "Stop the activity and move to a cool, shaded area. Follow the site heat emergency procedure.",
+                     *           "timing": "immediate",
+                     *           "dueAt": null,
+                     *           "status": "open"
+                     *         },
+                     *         {
+                     *           "id": "a53288e3-2ff0-4d5c-98b4-c2dd16fbee34",
+                     *           "createdAt": "2026-11-12T11:16:06.340Z",
+                     *           "updatedAt": "2026-11-12T11:16:46.419Z",
+                     *           "organizationId": "1083395a-ffd8-4c14-8e69-fbe7416c2587",
+                     *           "siteId": "cce99add-f021-4b38-adff-c4f25f803c1b",
+                     *           "riskAssessmentId": "4db36c0b-c3d5-48e3-9ffe-dc443b0c3100",
+                     *           "workerId": "ebafe8e7-e96c-4787-9928-864a8c9ea587",
+                     *           "crewId": "e03b476f-e004-4cb9-80b5-44d2623d550e",
+                     *           "audience": "supervisor",
+                     *           "code": "supervisor.suspend_activity",
+                     *           "riskLevel": 4,
+                     *           "whatHappened": "Critical heat risk",
+                     *           "whyItMatters": "Critical heat risk for this worker",
+                     *           "whoIsAffected": "W-0388",
+                     *           "action": "Suspend the affected activity, start heat-emergency procedures and check this worker now.",
+                     *           "timing": "immediate",
+                     *           "dueAt": null,
+                     *           "status": "open"
+                     *         }
+                     *       ],
+                     *       "helpRequests": [
+                     *         {
+                     *           "id": "16e08a6a-4227-4893-af3a-ea948bf2c1b5",
+                     *           "createdAt": "2026-11-12T11:16:06.584Z",
+                     *           "updatedAt": "2026-11-12T11:16:12.690Z",
+                     *           "organizationId": "1083395a-ffd8-4c14-8e69-fbe7416c2587",
+                     *           "workerId": "ebafe8e7-e96c-4787-9928-864a8c9ea587",
+                     *           "siteId": "cce99add-f021-4b38-adff-c4f25f803c1b",
+                     *           "crewId": "e03b476f-e004-4cb9-80b5-44d2623d550e",
+                     *           "kind": "symptom_report",
+                     *           "status": "resolved",
+                     *           "detailsShared": true,
+                     *           "symptoms": [
+                     *             "headache",
+                     *             "dizzy"
+                     *           ],
+                     *           "note": "Started after lunch",
+                     *           "acknowledgedByUserId": null,
+                     *           "acknowledgedAt": null,
+                     *           "resolvedByUserId": "2c46178a-ecf9-43ab-beb1-2263127b33c0",
+                     *           "resolvedAt": "2026-11-12T11:16:12.688Z"
+                     *         },
+                     *         {
+                     *           "id": "e7e9eb8b-b2cb-4c99-8e4f-07f016c034d4",
+                     *           "createdAt": "2026-11-12T11:16:06.590Z",
+                     *           "updatedAt": "2026-11-12T11:16:12.686Z",
+                     *           "organizationId": "1083395a-ffd8-4c14-8e69-fbe7416c2587",
+                     *           "workerId": "ebafe8e7-e96c-4787-9928-864a8c9ea587",
+                     *           "siteId": "cce99add-f021-4b38-adff-c4f25f803c1b",
+                     *           "crewId": "e03b476f-e004-4cb9-80b5-44d2623d550e",
+                     *           "kind": "first_aid_alert",
+                     *           "status": "acknowledged",
+                     *           "detailsShared": false,
+                     *           "symptoms": null,
+                     *           "note": null,
+                     *           "acknowledgedByUserId": "2c46178a-ecf9-43ab-beb1-2263127b33c0",
+                     *           "acknowledgedAt": "2026-11-12T11:16:12.684Z",
+                     *           "resolvedByUserId": null,
+                     *           "resolvedAt": null
+                     *         },
+                     *         {
+                     *           "id": "68ef9e50-2fb7-4d5a-93a2-a5fa7beae387",
+                     *           "createdAt": "2026-11-12T11:16:40.832Z",
+                     *           "updatedAt": "2026-11-12T11:16:46.703Z",
+                     *           "organizationId": "1083395a-ffd8-4c14-8e69-fbe7416c2587",
+                     *           "workerId": "ebafe8e7-e96c-4787-9928-864a8c9ea587",
+                     *           "siteId": "cce99add-f021-4b38-adff-c4f25f803c1b",
+                     *           "crewId": "e03b476f-e004-4cb9-80b5-44d2623d550e",
+                     *           "kind": "symptom_report",
+                     *           "status": "resolved",
+                     *           "detailsShared": true,
+                     *           "symptoms": [
+                     *             "headache",
+                     *             "dizzy"
+                     *           ],
+                     *           "note": "Started after lunch",
+                     *           "acknowledgedByUserId": null,
+                     *           "acknowledgedAt": null,
+                     *           "resolvedByUserId": "2c46178a-ecf9-43ab-beb1-2263127b33c0",
+                     *           "resolvedAt": "2026-11-12T11:16:46.701Z"
+                     *         }
+                     *       ],
+                     *       "waterLogs": [
+                     *         {
+                     *           "id": "5b3d18e7-0b72-43fe-bb34-5f2b62e5458d",
+                     *           "workerId": "ebafe8e7-e96c-4787-9928-864a8c9ea587",
+                     *           "loggedAt": "2026-11-12T11:16:06.565Z",
+                     *           "cups": 1
+                     *         },
+                     *         {
+                     *           "id": "9d3a4cf9-bb3b-4e85-a508-ab333062451f",
+                     *           "workerId": "ebafe8e7-e96c-4787-9928-864a8c9ea587",
+                     *           "loggedAt": "2026-11-12T11:16:40.815Z",
+                     *           "cups": 1
+                     *         }
+                     *       ],
+                     *       "wearableDevice": {
+                     *         "workerId": "ebafe8e7-e96c-4787-9928-864a8c9ea587",
+                     *         "deviceId": "band-docs-0388",
+                     *         "model": "HeatGuard band simulator",
+                     *         "pairedAt": "2026-11-12T11:16:40.823Z",
+                     *         "lastSeenAt": "2026-11-12T11:16:40.826Z",
+                     *         "batteryPercent": 81
+                     *       },
+                     *       "wearableReadings": [
+                     *         {
+                     *           "id": "34ae8e3d-95b6-4092-938b-f4974072b29c",
+                     *           "workerId": "ebafe8e7-e96c-4787-9928-864a8c9ea587",
+                     *           "at": "2026-11-12T11:12:40.826Z",
+                     *           "values": {
+                     *             "heartRateBpm": 118,
+                     *             "skinTempC": 35.1
+                     *           }
+                     *         },
+                     *         {
+                     *           "id": "90c80e81-532e-401b-8b09-f5cb5c8ed947",
+                     *           "workerId": "ebafe8e7-e96c-4787-9928-864a8c9ea587",
+                     *           "at": "2026-11-12T11:13:40.826Z",
+                     *           "values": {
+                     *             "heartRateBpm": 121,
+                     *             "skinTempC": 35.2
+                     *           }
+                     *         },
+                     *         {
+                     *           "id": "87964c6b-87ba-48da-9a4d-7b143855537c",
+                     *           "workerId": "ebafe8e7-e96c-4787-9928-864a8c9ea587",
+                     *           "at": "2026-11-12T11:14:40.826Z",
+                     *           "values": {
+                     *             "heartRateBpm": 124,
+                     *             "skinTempC": 35.300000000000004
+                     *           }
+                     *         }
+                     *       ],
+                     *       "accessLog": [
+                     *         {
+                     *           "id": "7a49029f-449e-44c8-bc55-af3289f03634",
+                     *           "createdAt": "2026-11-12T11:16:06.556Z",
+                     *           "organizationId": "1083395a-ffd8-4c14-8e69-fbe7416c2587",
+                     *           "actorUserId": "25faf3f9-2e95-4218-8d2d-91f63cc92443",
+                     *           "actorRole": "worker",
+                     *           "action": "consent.changed",
+                     *           "subjectWorkerId": "ebafe8e7-e96c-4787-9928-864a8c9ea587",
+                     *           "entityType": "consent",
+                     *           "entityId": "050ce02a-8155-4311-9b95-804428f86df7",
+                     *           "metadata": {
+                     *             "granted": true,
+                     *             "purpose": "health_data_processing",
+                     *             "policyVersion": "2026-11-v1"
+                     *           }
+                     *         },
+                     *         {
+                     *           "id": "b3acc49f-da6e-47e6-a441-0dca21ce6648",
+                     *           "createdAt": "2026-11-12T11:16:06.559Z",
+                     *           "organizationId": "1083395a-ffd8-4c14-8e69-fbe7416c2587",
+                     *           "actorUserId": "25faf3f9-2e95-4218-8d2d-91f63cc92443",
+                     *           "actorRole": "worker",
+                     *           "action": "consent.changed",
+                     *           "subjectWorkerId": "ebafe8e7-e96c-4787-9928-864a8c9ea587",
+                     *           "entityType": "consent",
+                     *           "entityId": "b70cc877-6191-4ae3-bee9-2f283ab2d758",
+                     *           "metadata": {
+                     *             "granted": true,
+                     *             "purpose": "wearable_band",
+                     *             "policyVersion": "2026-11-v1"
+                     *           }
+                     *         },
+                     *         {
+                     *           "id": "9d4fd35d-c906-4dc3-b07a-d36f664aeb90",
+                     *           "createdAt": "2026-11-12T11:16:06.562Z",
+                     *           "organizationId": "1083395a-ffd8-4c14-8e69-fbe7416c2587",
+                     *           "actorUserId": "25faf3f9-2e95-4218-8d2d-91f63cc92443",
+                     *           "actorRole": "worker",
+                     *           "action": "consent.changed",
+                     *           "subjectWorkerId": "ebafe8e7-e96c-4787-9928-864a8c9ea587",
+                     *           "entityType": "consent",
+                     *           "entityId": "ff44f958-ea19-487d-ad4c-736b31c690cf",
+                     *           "metadata": {
+                     *             "granted": true,
+                     *             "purpose": "symptom_reports",
+                     *             "policyVersion": "2026-11-v1"
+                     *           }
+                     *         }
+                     *       ]
+                     *     }
+                     */
+                    "application/json": {
+                        /** Format: date-time */
+                        exportedAt: string;
+                        worker: {
+                            /** Format: uuid */
+                            id: string;
+                            /** Format: date-time */
+                            createdAt: string;
+                            /** Format: date-time */
+                            updatedAt: string;
+                            /** Format: uuid */
+                            organizationId: string;
+                            employeeCode: string;
+                            displayName: string;
+                            /** Format: uuid */
+                            crewId: string;
+                            preferredLanguage: string;
+                            readAloud: boolean;
+                            /** Format: date */
+                            acclimatizationStartedOn: string;
+                            isActive: boolean;
+                            leftOn: unknown;
+                        };
+                        healthProfile: unknown;
+                        consents: {
+                            /** Format: uuid */
+                            id: string;
+                            /** Format: date-time */
+                            createdAt: string;
+                            /** Format: date-time */
+                            updatedAt: string;
+                            /** Format: uuid */
+                            workerId: string;
+                            purpose: string;
+                            granted: boolean;
+                            policyVersion: string;
+                            /** Format: uuid */
+                            recordedByUserId: string;
+                        }[];
+                        ppe: {
+                            /** Format: uuid */
+                            id: string;
+                            /** Format: date-time */
+                            createdAt: string;
+                            /** Format: date-time */
+                            updatedAt: string;
+                            /** Format: uuid */
+                            workerId: string;
+                            /** Format: uuid */
+                            ppeItemId: string;
+                            ppeItem: {
+                                /** Format: uuid */
+                                id: string;
+                                /** Format: date-time */
+                                createdAt: string;
+                                /** Format: date-time */
+                                updatedAt: string;
+                                organizationId: unknown;
+                                code: string;
+                                name: string;
+                                category: string;
+                                engineClass: string | null;
+                                engineAddon: unknown;
+                            };
+                        }[];
+                        workAssignments: {
+                            /** Format: uuid */
+                            id: string;
+                            /** Format: date-time */
+                            createdAt: string;
+                            /** Format: date-time */
+                            updatedAt: string;
+                            /** Format: uuid */
+                            organizationId: string;
+                            /** Format: uuid */
+                            workerId: string;
+                            /** Format: uuid */
+                            siteId: string;
+                            /** Format: uuid */
+                            activityCategoryId: string;
+                            activityCategory: {
+                                /** Format: uuid */
+                                id: string;
+                                /** Format: date-time */
+                                createdAt: string;
+                                /** Format: date-time */
+                                updatedAt: string;
+                                code: string;
+                                name: string;
+                                defaultWorkload: string;
+                                isPlaceholder: boolean;
+                            };
+                            workloadOverride: string;
+                            workEnvironment: string;
+                            /** Format: date-time */
+                            startsAt: string;
+                            /** Format: date-time */
+                            endsAt: string;
+                            plannedBreaks: string[];
+                            breakMinutes: number;
+                            clockedInAt: unknown;
+                            clockedOutAt: unknown;
+                            onBreakSince: unknown;
+                            lastBreakEndedAt: unknown;
+                        }[];
+                        riskAssessments: {
+                            /** Format: uuid */
+                            id: string;
+                            /** Format: date-time */
+                            createdAt: string;
+                            /** Format: date-time */
+                            updatedAt: string;
+                            /** Format: uuid */
+                            organizationId: string;
+                            /** Format: uuid */
+                            siteId: string;
+                            /** Format: uuid */
+                            workerId: string;
+                            /** Format: uuid */
+                            crewId: string;
+                            /** Format: uuid */
+                            workAssignmentId: string;
+                            /** Format: date-time */
+                            assessedAt: string;
+                            source: string;
+                            level: number;
+                            label: string;
+                            language: string;
+                            reasons: {
+                                factor: string;
+                                effect: string;
+                            }[];
+                            action: {
+                                what: string;
+                                when: string;
+                            };
+                            wbgtC: number;
+                            wbgtSource: string;
+                            dataQuality: string;
+                            ppeNotModelled: unknown[];
+                            forecastFirstReached: {
+                                /** Format: date-time */
+                                at: string;
+                                label: string;
+                                level: number;
+                            }[];
+                            forecastPeakLevel: number;
+                            /** Format: date-time */
+                            forecastPeakAt: string;
+                            forecastHours: {
+                                /** Format: date-time */
+                                at: string;
+                                label: string;
+                                level: number;
+                                action: {
+                                    what: string;
+                                    when: string;
+                                };
+                                confidence: unknown;
+                                dataQuality: string;
+                                possibleLabel: unknown;
+                                possibleLevel: unknown;
+                            }[];
+                            forecastConfidence: unknown;
+                            forecastConfidenceNote: unknown;
+                            forecastPossiblePeakLevel: unknown;
+                            forecastPossiblePeakAt: unknown;
+                        }[];
+                        recommendations: {
+                            /** Format: uuid */
+                            id: string;
+                            /** Format: date-time */
+                            createdAt: string;
+                            /** Format: date-time */
+                            updatedAt: string;
+                            /** Format: uuid */
+                            organizationId: string;
+                            /** Format: uuid */
+                            siteId: string;
+                            /** Format: uuid */
+                            riskAssessmentId: string;
+                            /** Format: uuid */
+                            workerId: string;
+                            /** Format: uuid */
+                            crewId: string;
+                            audience: string;
+                            code: string;
+                            riskLevel: number;
+                            whatHappened: string;
+                            whyItMatters: string;
+                            whoIsAffected: string;
+                            action: string;
+                            timing: string;
+                            dueAt: unknown;
+                            status: string;
+                        }[];
+                        helpRequests: {
+                            /** Format: uuid */
+                            id: string;
+                            /** Format: date-time */
+                            createdAt: string;
+                            /** Format: date-time */
+                            updatedAt: string;
+                            /** Format: uuid */
+                            organizationId: string;
+                            /** Format: uuid */
+                            workerId: string;
+                            /** Format: uuid */
+                            siteId: string;
+                            /** Format: uuid */
+                            crewId: string;
+                            kind: string;
+                            status: string;
+                            detailsShared: boolean;
+                            symptoms: string[] | null;
+                            note: string | null;
+                            /** Format: uuid */
+                            acknowledgedByUserId: string | null;
+                            /** Format: date-time */
+                            acknowledgedAt: string | null;
+                            /** Format: uuid */
+                            resolvedByUserId: string | null;
+                            /** Format: date-time */
+                            resolvedAt: string | null;
+                        }[];
+                        waterLogs: {
+                            /** Format: uuid */
+                            id: string;
+                            /** Format: uuid */
+                            workerId: string;
+                            /** Format: date-time */
+                            loggedAt: string;
+                            cups: number;
+                        }[];
+                        wearableDevice: {
+                            /** Format: uuid */
+                            workerId: string;
+                            deviceId: string;
+                            model: string;
+                            /** Format: date-time */
+                            pairedAt: string;
+                            /** Format: date-time */
+                            lastSeenAt: string;
+                            batteryPercent: number;
+                        };
+                        wearableReadings: {
+                            /** Format: uuid */
+                            id: string;
+                            /** Format: uuid */
+                            workerId: string;
+                            /** Format: date-time */
+                            at: string;
+                            values: {
+                                heartRateBpm: number;
+                                skinTempC: number;
+                            };
+                        }[];
+                        accessLog: {
+                            /** Format: uuid */
+                            id: string;
+                            /** Format: date-time */
+                            createdAt: string;
+                            /** Format: uuid */
+                            organizationId: string;
+                            /** Format: uuid */
+                            actorUserId: string;
+                            actorRole: string;
+                            action: string;
+                            /** Format: uuid */
+                            subjectWorkerId: string;
+                            entityType: string;
+                            /** Format: uuid */
+                            entityId: string | null;
+                            metadata: {
+                                granted: boolean;
+                                purpose: string;
+                                policyVersion: string;
+                            } | null;
+                        }[];
+                    };
+                };
             };
             /** @description Not logged in, or the access token expired (refresh it) */
             401: {
@@ -4047,11 +5965,25 @@ export interface operations {
             };
         };
         responses: {
+            /** @description OK. Schema and example come from a real response with the demo data; arrays in the example are shortened to 3 items. */
             200: {
                 headers: {
                     [name: string]: unknown;
                 };
-                content?: never;
+                content: {
+                    /**
+                     * @example {
+                     *       "healthPrecautions": true,
+                     *       "wearableBand": true,
+                     *       "symptomReports": true
+                     *     }
+                     */
+                    "application/json": {
+                        healthPrecautions: boolean;
+                        wearableBand: boolean;
+                        symptomReports: boolean;
+                    };
+                };
             };
             /** @description The request is invalid; `message` lists what is wrong */
             400: {
@@ -4085,11 +6017,24 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
+            /** @description OK. Schema and example come from a real response with the demo data; arrays in the example are shortened to 3 items. */
             200: {
                 headers: {
                     [name: string]: unknown;
                 };
-                content?: never;
+                content: {
+                    /**
+                     * @example {
+                     *       "cupsToday": 2,
+                     *       "lastCupAt": "2026-11-12T11:16:40.815Z"
+                     *     }
+                     */
+                    "application/json": {
+                        cupsToday: number;
+                        /** Format: date-time */
+                        lastCupAt: string;
+                    };
+                };
             };
             /** @description Not logged in, or the access token expired (refresh it) */
             401: {
@@ -4120,11 +6065,24 @@ export interface operations {
             };
         };
         responses: {
+            /** @description OK. Schema and example come from a real response with the demo data; arrays in the example are shortened to 3 items. */
             201: {
                 headers: {
                     [name: string]: unknown;
                 };
-                content?: never;
+                content: {
+                    /**
+                     * @example {
+                     *       "cupsToday": 2,
+                     *       "lastCupAt": "2026-11-12T11:16:40.815Z"
+                     *     }
+                     */
+                    "application/json": {
+                        cupsToday: number;
+                        /** Format: date-time */
+                        lastCupAt: string;
+                    };
+                };
             };
             /** @description The request is invalid; `message` lists what is wrong */
             400: {
@@ -4161,11 +6119,40 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
+            /** @description OK. Schema and example come from a real response with the demo data; arrays in the example are shortened to 3 items. */
             200: {
                 headers: {
                     [name: string]: unknown;
                 };
-                content?: never;
+                content: {
+                    /**
+                     * @example [
+                     *       {
+                     *         "date": "2026-11-12",
+                     *         "actorRole": "supervisor",
+                     *         "action": "risk.overview_viewed",
+                     *         "count": 4,
+                     *         "lastAt": "2026-11-12T11:16:40.870Z"
+                     *       },
+                     *       {
+                     *         "date": "2026-11-12",
+                     *         "actorRole": "occupational_health",
+                     *         "action": "risk.detail_read",
+                     *         "count": 1,
+                     *         "lastAt": "2026-11-12T11:16:40.808Z"
+                     *       }
+                     *     ]
+                     */
+                    "application/json": {
+                        /** Format: date */
+                        date: string;
+                        actorRole: string;
+                        action: string;
+                        count: number;
+                        /** Format: date-time */
+                        lastAt: string;
+                    }[];
+                };
             };
             /** @description Not logged in, or the access token expired (refresh it) */
             401: {
@@ -4196,11 +6183,21 @@ export interface operations {
             };
         };
         responses: {
+            /** @description OK. Schema and example come from a real response with the demo data; arrays in the example are shortened to 3 items. */
             200: {
                 headers: {
                     [name: string]: unknown;
                 };
-                content?: never;
+                content: {
+                    /**
+                     * @example {
+                     *       "ok": true
+                     *     }
+                     */
+                    "application/json": {
+                        ok: boolean;
+                    };
+                };
             };
             /** @description The request is invalid; `message` lists what is wrong */
             400: {
@@ -4238,11 +6235,42 @@ export interface operations {
             };
         };
         responses: {
+            /** @description OK. Schema and example come from a real response with the demo data; arrays in the example are shortened to 3 items. */
             201: {
                 headers: {
                     [name: string]: unknown;
                 };
-                content?: never;
+                content: {
+                    /**
+                     * @example {
+                     *       "id": "68ef9e50-2fb7-4d5a-93a2-a5fa7beae387",
+                     *       "kind": "symptom_report",
+                     *       "status": "open",
+                     *       "createdAt": "2026-11-12T11:16:40.832Z",
+                     *       "detailsShared": true,
+                     *       "symptoms": [
+                     *         "headache",
+                     *         "dizzy"
+                     *       ],
+                     *       "note": "Started after lunch",
+                     *       "acknowledgedAt": null,
+                     *       "resolvedAt": null
+                     *     }
+                     */
+                    "application/json": {
+                        /** Format: uuid */
+                        id: string;
+                        kind: string;
+                        status: string;
+                        /** Format: date-time */
+                        createdAt: string;
+                        detailsShared: boolean;
+                        symptoms: string[];
+                        note: string;
+                        acknowledgedAt: unknown;
+                        resolvedAt: unknown;
+                    };
+                };
             };
             /** @description The request is invalid; `message` lists what is wrong */
             400: {
@@ -4276,11 +6304,39 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
+            /** @description OK. Schema and example come from a real response with the demo data; arrays in the example are shortened to 3 items. */
             201: {
                 headers: {
                     [name: string]: unknown;
                 };
-                content?: never;
+                content: {
+                    /**
+                     * @example {
+                     *       "id": "7b4523cc-29cf-4886-b71b-9fc39e2b38fc",
+                     *       "kind": "first_aid_alert",
+                     *       "status": "open",
+                     *       "createdAt": "2026-11-12T11:16:40.838Z",
+                     *       "detailsShared": false,
+                     *       "symptoms": null,
+                     *       "note": null,
+                     *       "acknowledgedAt": null,
+                     *       "resolvedAt": null
+                     *     }
+                     */
+                    "application/json": {
+                        /** Format: uuid */
+                        id: string;
+                        kind: string;
+                        status: string;
+                        /** Format: date-time */
+                        createdAt: string;
+                        detailsShared: boolean;
+                        symptoms: unknown;
+                        note: unknown;
+                        acknowledgedAt: unknown;
+                        resolvedAt: unknown;
+                    };
+                };
             };
             /** @description The request is invalid; `message` lists what is wrong */
             400: {
@@ -4314,11 +6370,68 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
+            /** @description OK. Schema and example come from a real response with the demo data; arrays in the example are shortened to 3 items. */
             200: {
                 headers: {
                     [name: string]: unknown;
                 };
-                content?: never;
+                content: {
+                    /**
+                     * @example [
+                     *       {
+                     *         "id": "7b4523cc-29cf-4886-b71b-9fc39e2b38fc",
+                     *         "kind": "first_aid_alert",
+                     *         "status": "open",
+                     *         "createdAt": "2026-11-12T11:16:40.838Z",
+                     *         "detailsShared": false,
+                     *         "symptoms": null,
+                     *         "note": null,
+                     *         "acknowledgedAt": null,
+                     *         "resolvedAt": null
+                     *       },
+                     *       {
+                     *         "id": "68ef9e50-2fb7-4d5a-93a2-a5fa7beae387",
+                     *         "kind": "symptom_report",
+                     *         "status": "open",
+                     *         "createdAt": "2026-11-12T11:16:40.832Z",
+                     *         "detailsShared": true,
+                     *         "symptoms": [
+                     *           "headache",
+                     *           "dizzy"
+                     *         ],
+                     *         "note": "Started after lunch",
+                     *         "acknowledgedAt": null,
+                     *         "resolvedAt": null
+                     *       },
+                     *       {
+                     *         "id": "e7e9eb8b-b2cb-4c99-8e4f-07f016c034d4",
+                     *         "kind": "first_aid_alert",
+                     *         "status": "acknowledged",
+                     *         "createdAt": "2026-11-12T11:16:06.590Z",
+                     *         "detailsShared": false,
+                     *         "symptoms": null,
+                     *         "note": null,
+                     *         "acknowledgedAt": "2026-11-12T11:16:12.684Z",
+                     *         "resolvedAt": null
+                     *       }
+                     *     ]
+                     */
+                    "application/json": {
+                        /** Format: uuid */
+                        id: string;
+                        kind: string;
+                        status: string;
+                        /** Format: date-time */
+                        createdAt: string;
+                        detailsShared: boolean;
+                        symptoms: string[] | null;
+                        note: string | null;
+                        /** Format: date-time */
+                        acknowledgedAt: string | null;
+                        /** Format: date-time */
+                        resolvedAt: string | null;
+                    }[];
+                };
             };
             /** @description Not logged in, or the access token expired (refresh it) */
             401: {
@@ -4349,11 +6462,66 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
+            /** @description OK. Schema and example come from a real response with the demo data; arrays in the example are shortened to 3 items. */
             200: {
                 headers: {
                     [name: string]: unknown;
                 };
-                content?: never;
+                content: {
+                    /**
+                     * @example [
+                     *       {
+                     *         "id": "7b4523cc-29cf-4886-b71b-9fc39e2b38fc",
+                     *         "workerId": "ebafe8e7-e96c-4787-9928-864a8c9ea587",
+                     *         "workerCode": "W-0388",
+                     *         "crewId": "e03b476f-e004-4cb9-80b5-44d2623d550e",
+                     *         "kind": "first_aid_alert",
+                     *         "status": "open",
+                     *         "createdAt": "2026-11-12T11:16:40.838Z",
+                     *         "acknowledgedAt": null,
+                     *         "resolvedAt": null
+                     *       },
+                     *       {
+                     *         "id": "68ef9e50-2fb7-4d5a-93a2-a5fa7beae387",
+                     *         "workerId": "ebafe8e7-e96c-4787-9928-864a8c9ea587",
+                     *         "workerCode": "W-0388",
+                     *         "crewId": "e03b476f-e004-4cb9-80b5-44d2623d550e",
+                     *         "kind": "symptom_report",
+                     *         "status": "open",
+                     *         "createdAt": "2026-11-12T11:16:40.832Z",
+                     *         "acknowledgedAt": null,
+                     *         "resolvedAt": null
+                     *       },
+                     *       {
+                     *         "id": "e7e9eb8b-b2cb-4c99-8e4f-07f016c034d4",
+                     *         "workerId": "ebafe8e7-e96c-4787-9928-864a8c9ea587",
+                     *         "workerCode": "W-0388",
+                     *         "crewId": "e03b476f-e004-4cb9-80b5-44d2623d550e",
+                     *         "kind": "first_aid_alert",
+                     *         "status": "acknowledged",
+                     *         "createdAt": "2026-11-12T11:16:06.590Z",
+                     *         "acknowledgedAt": "2026-11-12T11:16:12.684Z",
+                     *         "resolvedAt": null
+                     *       }
+                     *     ]
+                     */
+                    "application/json": {
+                        /** Format: uuid */
+                        id: string;
+                        /** Format: uuid */
+                        workerId: string;
+                        workerCode: string;
+                        /** Format: uuid */
+                        crewId: string;
+                        kind: string;
+                        status: string;
+                        /** Format: date-time */
+                        createdAt: string;
+                        /** Format: date-time */
+                        acknowledgedAt: string | null;
+                        resolvedAt: unknown;
+                    }[];
+                };
             };
             /** @description Not logged in, or the access token expired (refresh it) */
             401: {
@@ -4389,11 +6557,27 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
+            /** @description OK. Schema and example come from a real response with the demo data; arrays in the example are shortened to 3 items. */
             200: {
                 headers: {
                     [name: string]: unknown;
                 };
-                content?: never;
+                content: {
+                    /**
+                     * @example {
+                     *       "id": "7b4523cc-29cf-4886-b71b-9fc39e2b38fc",
+                     *       "status": "acknowledged",
+                     *       "acknowledgedAt": "2026-11-12T11:16:46.695Z"
+                     *     }
+                     */
+                    "application/json": {
+                        /** Format: uuid */
+                        id: string;
+                        status: string;
+                        /** Format: date-time */
+                        acknowledgedAt: string;
+                    };
+                };
             };
             /** @description The request is invalid; `message` lists what is wrong */
             400: {
@@ -4436,11 +6620,27 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
+            /** @description OK. Schema and example come from a real response with the demo data; arrays in the example are shortened to 3 items. */
             200: {
                 headers: {
                     [name: string]: unknown;
                 };
-                content?: never;
+                content: {
+                    /**
+                     * @example {
+                     *       "id": "68ef9e50-2fb7-4d5a-93a2-a5fa7beae387",
+                     *       "status": "resolved",
+                     *       "resolvedAt": "2026-11-12T11:16:46.701Z"
+                     *     }
+                     */
+                    "application/json": {
+                        /** Format: uuid */
+                        id: string;
+                        status: string;
+                        /** Format: date-time */
+                        resolvedAt: string;
+                    };
+                };
             };
             /** @description The request is invalid; `message` lists what is wrong */
             400: {
@@ -4483,11 +6683,83 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
+            /** @description OK. Schema and example come from a real response with the demo data; arrays in the example are shortened to 3 items. */
             200: {
                 headers: {
                     [name: string]: unknown;
                 };
-                content?: never;
+                content: {
+                    /**
+                     * @example [
+                     *       {
+                     *         "id": "7b4523cc-29cf-4886-b71b-9fc39e2b38fc",
+                     *         "kind": "first_aid_alert",
+                     *         "status": "acknowledged",
+                     *         "createdAt": "2026-11-12T11:16:40.838Z",
+                     *         "detailsShared": false,
+                     *         "symptoms": null,
+                     *         "note": null,
+                     *         "acknowledgedAt": "2026-11-12T11:16:46.695Z",
+                     *         "resolvedAt": null,
+                     *         "workerId": "ebafe8e7-e96c-4787-9928-864a8c9ea587",
+                     *         "crewId": "e03b476f-e004-4cb9-80b5-44d2623d550e",
+                     *         "siteId": "cce99add-f021-4b38-adff-c4f25f803c1b"
+                     *       },
+                     *       {
+                     *         "id": "68ef9e50-2fb7-4d5a-93a2-a5fa7beae387",
+                     *         "kind": "symptom_report",
+                     *         "status": "resolved",
+                     *         "createdAt": "2026-11-12T11:16:40.832Z",
+                     *         "detailsShared": true,
+                     *         "symptoms": [
+                     *           "headache",
+                     *           "dizzy"
+                     *         ],
+                     *         "note": "Started after lunch",
+                     *         "acknowledgedAt": null,
+                     *         "resolvedAt": "2026-11-12T11:16:46.701Z",
+                     *         "workerId": "ebafe8e7-e96c-4787-9928-864a8c9ea587",
+                     *         "crewId": "e03b476f-e004-4cb9-80b5-44d2623d550e",
+                     *         "siteId": "cce99add-f021-4b38-adff-c4f25f803c1b"
+                     *       },
+                     *       {
+                     *         "id": "e7e9eb8b-b2cb-4c99-8e4f-07f016c034d4",
+                     *         "kind": "first_aid_alert",
+                     *         "status": "acknowledged",
+                     *         "createdAt": "2026-11-12T11:16:06.590Z",
+                     *         "detailsShared": false,
+                     *         "symptoms": null,
+                     *         "note": null,
+                     *         "acknowledgedAt": "2026-11-12T11:16:12.684Z",
+                     *         "resolvedAt": null,
+                     *         "workerId": "ebafe8e7-e96c-4787-9928-864a8c9ea587",
+                     *         "crewId": "e03b476f-e004-4cb9-80b5-44d2623d550e",
+                     *         "siteId": "cce99add-f021-4b38-adff-c4f25f803c1b"
+                     *       }
+                     *     ]
+                     */
+                    "application/json": {
+                        /** Format: uuid */
+                        id: string;
+                        kind: string;
+                        status: string;
+                        /** Format: date-time */
+                        createdAt: string;
+                        detailsShared: boolean;
+                        symptoms: string[] | null;
+                        note: string | null;
+                        /** Format: date-time */
+                        acknowledgedAt: string | null;
+                        /** Format: date-time */
+                        resolvedAt: string | null;
+                        /** Format: uuid */
+                        workerId: string;
+                        /** Format: uuid */
+                        crewId: string;
+                        /** Format: uuid */
+                        siteId: string;
+                    }[];
+                };
             };
             /** @description Not logged in, or the access token expired (refresh it) */
             401: {
@@ -4521,11 +6793,678 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
+            /** @description OK. Schema and example come from a real response with the demo data; arrays in the example are shortened to 3 items. */
             200: {
                 headers: {
                     [name: string]: unknown;
                 };
-                content?: never;
+                content: {
+                    /**
+                     * @example {
+                     *       "site": {
+                     *         "id": "cce99add-f021-4b38-adff-c4f25f803c1b",
+                     *         "name": "Abuja Demo Site",
+                     *         "timezone": "Africa/Lagos",
+                     *         "emergencyNumber": "112"
+                     *       },
+                     *       "shift": {
+                     *         "name": "Day shift",
+                     *         "start": "2026-11-12T06:00:00.000Z",
+                     *         "end": "2026-11-12T16:00:00.000Z",
+                     *         "current": true
+                     *       },
+                     *       "shifts": [
+                     *         {
+                     *           "name": "Day shift",
+                     *           "start": "2026-11-12T06:00:00.000Z",
+                     *           "end": "2026-11-12T16:00:00.000Z"
+                     *         }
+                     *       ],
+                     *       "workersOnShift": 29,
+                     *       "updatedAt": "2026-11-12T11:16:35.373Z",
+                     *       "siteHeat": {
+                     *         "reference": {
+                     *           "workload": "moderate",
+                     *           "ppe": "standard"
+                     *         },
+                     *         "now": {
+                     *           "level": 4,
+                     *           "wbgtC": 30.5,
+                     *           "wbgtMethod": "estimated"
+                     *         },
+                     *         "peak": {
+                     *           "level": 4,
+                     *           "possible": false,
+                     *           "from": "2026-11-12T11:00:00.000Z",
+                     *           "to": "2026-11-12T15:00:00.000Z",
+                     *           "confidence": null
+                     *         },
+                     *         "hours": [
+                     *           {
+                     *             "hourStart": "2026-11-12T11:00:00.000Z",
+                     *             "level": 4,
+                     *             "possibleLevel": null,
+                     *             "observed": true,
+                     *             "now": true,
+                     *             "confidence": null
+                     *           },
+                     *           {
+                     *             "hourStart": "2026-11-12T12:00:00.000Z",
+                     *             "level": 4,
+                     *             "possibleLevel": null,
+                     *             "observed": false,
+                     *             "now": false,
+                     *             "confidence": null
+                     *           },
+                     *           {
+                     *             "hourStart": "2026-11-12T13:00:00.000Z",
+                     *             "level": 4,
+                     *             "possibleLevel": null,
+                     *             "observed": false,
+                     *             "now": false,
+                     *             "confidence": null
+                     *           }
+                     *         ]
+                     *       },
+                     *       "distribution": {
+                     *         "low": 0,
+                     *         "elevated": 0,
+                     *         "high": 7,
+                     *         "critical": 22,
+                     *         "noRecentData": 0
+                     *       },
+                     *       "hazards": [],
+                     *       "systemHealth": {
+                     *         "weatherFeed": {
+                     *           "lastAt": "2026-11-12T11:15:00.000Z",
+                     *           "ok": true
+                     *         },
+                     *         "siteSensors": null,
+                     *         "workerApps": {
+                     *           "onShift": 29,
+                     *           "everReported": 1,
+                     *           "reporting": 1,
+                     *           "quiet": 0,
+                     *           "lowBattery": 0
+                     *         },
+                     *         "wearables": {
+                     *           "available": true,
+                     *           "connected": 1
+                     *         },
+                     *         "riskEngine": {
+                     *           "lastRunAt": "2026-11-12T11:16:35.373Z",
+                     *           "ok": true,
+                     *           "fallbackAssessments": 0
+                     *         }
+                     *       },
+                     *       "needsAttention": {
+                     *         "open": 31,
+                     *         "items": [
+                     *           {
+                     *             "kind": "help",
+                     *             "helpRequestId": "7b4523cc-29cf-4886-b71b-9fc39e2b38fc",
+                     *             "helpKind": "first_aid_alert",
+                     *             "workerId": "ebafe8e7-e96c-4787-9928-864a8c9ea587",
+                     *             "workerCode": "W-0388",
+                     *             "crewId": "e03b476f-e004-4cb9-80b5-44d2623d550e",
+                     *             "status": "open",
+                     *             "createdAt": "2026-11-12T11:16:40.838Z",
+                     *             "acknowledgedAt": null
+                     *           },
+                     *           {
+                     *             "kind": "help",
+                     *             "helpRequestId": "68ef9e50-2fb7-4d5a-93a2-a5fa7beae387",
+                     *             "helpKind": "symptom_report",
+                     *             "workerId": "ebafe8e7-e96c-4787-9928-864a8c9ea587",
+                     *             "workerCode": "W-0388",
+                     *             "crewId": "e03b476f-e004-4cb9-80b5-44d2623d550e",
+                     *             "status": "open",
+                     *             "createdAt": "2026-11-12T11:16:40.832Z",
+                     *             "acknowledgedAt": null
+                     *           },
+                     *           {
+                     *             "kind": "help",
+                     *             "helpRequestId": "e7e9eb8b-b2cb-4c99-8e4f-07f016c034d4",
+                     *             "helpKind": "first_aid_alert",
+                     *             "workerId": "ebafe8e7-e96c-4787-9928-864a8c9ea587",
+                     *             "workerCode": "W-0388",
+                     *             "crewId": "e03b476f-e004-4cb9-80b5-44d2623d550e",
+                     *             "status": "acknowledged",
+                     *             "createdAt": "2026-11-12T11:16:06.590Z",
+                     *             "acknowledgedAt": "2026-11-12T11:16:12.684Z"
+                     *           }
+                     *         ]
+                     *       },
+                     *       "actionsToday": {
+                     *         "done": 0,
+                     *         "total": 6,
+                     *         "actions": [
+                     *           {
+                     *             "code": "crew.rotate_and_cool",
+                     *             "status": "pending",
+                     *             "crewIds": [
+                     *               "097bbd11-92d6-471b-8165-7b8f59d757bc",
+                     *               "e03b476f-e004-4cb9-80b5-44d2623d550e",
+                     *               "506a4f1c-9793-46cc-9709-0c5b02eff491"
+                     *             ],
+                     *             "workerCount": 0,
+                     *             "timing": "immediate",
+                     *             "firstAt": "2026-11-12T11:16:06.340Z",
+                     *             "dueAt": "2026-11-12T12:00:00.000Z",
+                     *             "recommendationIds": [
+                     *               "3c0ef6c0-7758-445d-8552-688ad35de71b",
+                     *               "ef5279fc-ab83-4a57-8608-d36c4e1cee19",
+                     *               "7fdd1fe3-5ad7-4784-97c1-a406a38be02d"
+                     *             ]
+                     *           },
+                     *           {
+                     *             "code": "supervisor.suspend_activity",
+                     *             "status": "pending",
+                     *             "crewIds": [
+                     *               "15022cc6-9081-4cc3-99ca-bf79b482eb95",
+                     *               "506a4f1c-9793-46cc-9709-0c5b02eff491",
+                     *               "e03b476f-e004-4cb9-80b5-44d2623d550e"
+                     *             ],
+                     *             "workerCount": 22,
+                     *             "timing": "immediate",
+                     *             "firstAt": "2026-11-12T11:16:06.340Z",
+                     *             "dueAt": null,
+                     *             "recommendationIds": [
+                     *               "7677a6dd-b41f-4141-bced-6820b4cf81f0",
+                     *               "3afa6450-7094-4894-8f61-7f2208108f38",
+                     *               "df8c2563-9efe-46d8-9383-6bd2c083fcac"
+                     *             ]
+                     *           },
+                     *           {
+                     *             "code": "supervisor.extra_breaks_reduce_load",
+                     *             "status": "pending",
+                     *             "crewIds": [
+                     *               "15022cc6-9081-4cc3-99ca-bf79b482eb95"
+                     *             ],
+                     *             "workerCount": 7,
+                     *             "timing": "immediate",
+                     *             "firstAt": "2026-11-12T11:16:06.340Z",
+                     *             "dueAt": null,
+                     *             "recommendationIds": [
+                     *               "3dc49b14-7be1-4d2b-b433-6a7cda95f83b",
+                     *               "55c1110e-8537-42f7-8764-edf5bc6dda86",
+                     *               "7f4190a1-fdb3-4b50-a25d-ba0784a94922"
+                     *             ]
+                     *           }
+                     *         ]
+                     *       },
+                     *       "todaySoFar": {
+                     *         "warningLeadMinutes": null,
+                     *         "warnings": {
+                     *           "periods": 0,
+                     *           "notBorneOut": 0,
+                     *           "provisional": true
+                     *         },
+                     *         "actionsFollowed": {
+                     *           "done": 0,
+                     *           "total": 42,
+                     *           "percent": 0
+                     *         },
+                     *         "symptomReports": 2,
+                     *         "emergencyEscalations": 2,
+                     *         "workTimePausedMinutes": 0
+                     *       },
+                     *       "crews": [
+                     *         {
+                     *           "crewId": "097bbd11-92d6-471b-8165-7b8f59d757bc",
+                     *           "name": "Crew A",
+                     *           "activity": "concrete_work",
+                     *           "activityName": "Concrete work",
+                     *           "workload": "heavy",
+                     *           "ppe": {
+                     *             "engineClass": "standard",
+                     *             "items": [
+                     *               "standard_work_clothing",
+                     *               "hard_hat"
+                     *             ]
+                     *           },
+                     *           "workers": 8,
+                     *           "now": 4,
+                     *           "peak": {
+                     *             "level": 4,
+                     *             "at": "2026-11-12T12:00:00.000Z",
+                     *             "possibleLevel": null
+                     *           },
+                     *           "nextAction": {
+                     *             "code": "supervisor.suspend_activity",
+                     *             "recommendationId": "1bbbee73-6b9a-44be-941b-b00b87af1e16",
+                     *             "dueAt": null
+                     *           }
+                     *         },
+                     *         {
+                     *           "crewId": "e03b476f-e004-4cb9-80b5-44d2623d550e",
+                     *           "name": "Crew B",
+                     *           "activity": "excavation",
+                     *           "activityName": "Manual excavation / digging",
+                     *           "workload": "very_heavy",
+                     *           "ppe": {
+                     *             "engineClass": "coverall",
+                     *             "items": [
+                     *               "cloth_coveralls",
+                     *               "hard_hat"
+                     *             ]
+                     *           },
+                     *           "workers": 7,
+                     *           "now": 4,
+                     *           "peak": {
+                     *             "level": 4,
+                     *             "at": "2026-11-12T12:00:00.000Z",
+                     *             "possibleLevel": null
+                     *           },
+                     *           "nextAction": {
+                     *             "code": "crew.rotate_and_cool",
+                     *             "recommendationId": "ef5279fc-ab83-4a57-8608-d36c4e1cee19",
+                     *             "dueAt": "2026-11-12T12:00:00.000Z"
+                     *           }
+                     *         },
+                     *         {
+                     *           "crewId": "506a4f1c-9793-46cc-9709-0c5b02eff491",
+                     *           "name": "Crew C",
+                     *           "activity": "welding",
+                     *           "activityName": "Welding",
+                     *           "workload": "moderate",
+                     *           "ppe": {
+                     *             "engineClass": "standard",
+                     *             "items": [
+                     *               "standard_work_clothing",
+                     *               "welding_jacket"
+                     *             ]
+                     *           },
+                     *           "workers": 6,
+                     *           "now": 4,
+                     *           "peak": {
+                     *             "level": 4,
+                     *             "at": "2026-11-12T12:00:00.000Z",
+                     *             "possibleLevel": null
+                     *           },
+                     *           "nextAction": {
+                     *             "code": "crew.rotate_and_cool",
+                     *             "recommendationId": "7fdd1fe3-5ad7-4784-97c1-a406a38be02d",
+                     *             "dueAt": "2026-11-12T12:00:00.000Z"
+                     *           }
+                     *         }
+                     *       ],
+                     *       "last7Days": [
+                     *         {
+                     *           "date": "2026-11-06",
+                     *           "dayStart": "2026-11-05T23:00:00.000Z",
+                     *           "hoursAtHighOrAbove": 0,
+                     *           "actions": {
+                     *             "onTime": 0,
+                     *             "total": 0
+                     *           }
+                     *         },
+                     *         {
+                     *           "date": "2026-11-07",
+                     *           "dayStart": "2026-11-06T23:00:00.000Z",
+                     *           "hoursAtHighOrAbove": 0,
+                     *           "actions": {
+                     *             "onTime": 0,
+                     *             "total": 0
+                     *           }
+                     *         },
+                     *         {
+                     *           "date": "2026-11-08",
+                     *           "dayStart": "2026-11-07T23:00:00.000Z",
+                     *           "hoursAtHighOrAbove": 0,
+                     *           "actions": {
+                     *             "onTime": 0,
+                     *             "total": 0
+                     *           }
+                     *         }
+                     *       ],
+                     *       "workers": [
+                     *         {
+                     *           "workerId": "7682d995-486f-442d-b4ef-4e64163898ae",
+                     *           "workerName": "W-0301",
+                     *           "crewId": "097bbd11-92d6-471b-8165-7b8f59d757bc",
+                     *           "assessedAt": "2026-11-12T11:16:35.373Z",
+                     *           "level": 4,
+                     *           "levelName": "Critical",
+                     *           "label": "Critical",
+                     *           "action": {
+                     *             "what": "Stop the activity and move to a cool, shaded area. Follow the site heat emergency procedure.",
+                     *             "when": "immediately"
+                     *           },
+                     *           "language": "en",
+                     *           "dataQuality": "ok",
+                     *           "ppeNotModelled": [],
+                     *           "source": "engine",
+                     *           "forecast": {
+                     *             "firstReached": [
+                     *               {
+                     *                 "level": 2,
+                     *                 "at": "2026-11-12T12:00:00Z"
+                     *               },
+                     *               {
+                     *                 "level": 3,
+                     *                 "at": "2026-11-12T12:00:00Z"
+                     *               },
+                     *               {
+                     *                 "level": 4,
+                     *                 "at": "2026-11-12T12:00:00Z"
+                     *               }
+                     *             ],
+                     *             "peakLevel": 4,
+                     *             "peakAt": "2026-11-12T12:00:00.000Z",
+                     *             "possiblePeakLevel": null,
+                     *             "possiblePeakAt": null,
+                     *             "confidence": null
+                     *           },
+                     *           "appReporting": true,
+                     *           "treatedAsLevel": 4
+                     *         },
+                     *         {
+                     *           "workerId": "2c989bf0-26d2-4e6e-b617-5388640a753b",
+                     *           "workerName": "W-0308",
+                     *           "crewId": "097bbd11-92d6-471b-8165-7b8f59d757bc",
+                     *           "assessedAt": "2026-11-12T11:16:35.373Z",
+                     *           "level": 4,
+                     *           "levelName": "Critical",
+                     *           "label": "Critical",
+                     *           "action": {
+                     *             "what": "Stop the activity and move to a cool, shaded area. Follow the site heat emergency procedure.",
+                     *             "when": "immediately"
+                     *           },
+                     *           "language": "en",
+                     *           "dataQuality": "ok",
+                     *           "ppeNotModelled": [],
+                     *           "source": "engine",
+                     *           "forecast": {
+                     *             "firstReached": [
+                     *               {
+                     *                 "level": 2,
+                     *                 "at": "2026-11-12T12:00:00Z"
+                     *               },
+                     *               {
+                     *                 "level": 3,
+                     *                 "at": "2026-11-12T12:00:00Z"
+                     *               },
+                     *               {
+                     *                 "level": 4,
+                     *                 "at": "2026-11-12T12:00:00Z"
+                     *               }
+                     *             ],
+                     *             "peakLevel": 4,
+                     *             "peakAt": "2026-11-12T12:00:00.000Z",
+                     *             "possiblePeakLevel": null,
+                     *             "possiblePeakAt": null,
+                     *             "confidence": null
+                     *           },
+                     *           "appReporting": true,
+                     *           "treatedAsLevel": 4
+                     *         },
+                     *         {
+                     *           "workerId": "db369d50-329a-47ee-98cf-4224caee21e9",
+                     *           "workerName": "W-0306",
+                     *           "crewId": "097bbd11-92d6-471b-8165-7b8f59d757bc",
+                     *           "assessedAt": "2026-11-12T11:16:35.373Z",
+                     *           "level": 4,
+                     *           "levelName": "Critical",
+                     *           "label": "Critical",
+                     *           "action": {
+                     *             "what": "Stop the activity and move to a cool, shaded area. Follow the site heat emergency procedure.",
+                     *             "when": "immediately"
+                     *           },
+                     *           "language": "en",
+                     *           "dataQuality": "ok",
+                     *           "ppeNotModelled": [],
+                     *           "source": "engine",
+                     *           "forecast": {
+                     *             "firstReached": [
+                     *               {
+                     *                 "level": 2,
+                     *                 "at": "2026-11-12T12:00:00Z"
+                     *               },
+                     *               {
+                     *                 "level": 3,
+                     *                 "at": "2026-11-12T12:00:00Z"
+                     *               },
+                     *               {
+                     *                 "level": 4,
+                     *                 "at": "2026-11-12T12:00:00Z"
+                     *               }
+                     *             ],
+                     *             "peakLevel": 4,
+                     *             "peakAt": "2026-11-12T12:00:00.000Z",
+                     *             "possiblePeakLevel": null,
+                     *             "possiblePeakAt": null,
+                     *             "confidence": null
+                     *           },
+                     *           "appReporting": true,
+                     *           "treatedAsLevel": 4
+                     *         }
+                     *       ]
+                     *     }
+                     */
+                    "application/json": {
+                        site: {
+                            /** Format: uuid */
+                            id: string;
+                            name: string;
+                            timezone: string;
+                            emergencyNumber: string;
+                        };
+                        shift: {
+                            name: string;
+                            /** Format: date-time */
+                            start: string;
+                            /** Format: date-time */
+                            end: string;
+                            current: boolean;
+                        };
+                        shifts: {
+                            name: string;
+                            /** Format: date-time */
+                            start: string;
+                            /** Format: date-time */
+                            end: string;
+                        }[];
+                        workersOnShift: number;
+                        /** Format: date-time */
+                        updatedAt: string;
+                        siteHeat: {
+                            reference: {
+                                workload: string;
+                                ppe: string;
+                            };
+                            now: {
+                                level: number;
+                                wbgtC: number;
+                                wbgtMethod: string;
+                            };
+                            peak: {
+                                level: number;
+                                possible: boolean;
+                                /** Format: date-time */
+                                from: string;
+                                /** Format: date-time */
+                                to: string;
+                                confidence: unknown;
+                            };
+                            hours: {
+                                /** Format: date-time */
+                                hourStart: string;
+                                level: number;
+                                possibleLevel: unknown;
+                                observed: boolean;
+                                now: boolean;
+                                confidence: unknown;
+                            }[];
+                        };
+                        distribution: {
+                            low: number;
+                            elevated: number;
+                            high: number;
+                            critical: number;
+                            noRecentData: number;
+                        };
+                        hazards: unknown[];
+                        systemHealth: {
+                            weatherFeed: {
+                                /** Format: date-time */
+                                lastAt: string;
+                                ok: boolean;
+                            };
+                            siteSensors: unknown;
+                            workerApps: {
+                                onShift: number;
+                                everReported: number;
+                                reporting: number;
+                                quiet: number;
+                                lowBattery: number;
+                            };
+                            wearables: {
+                                available: boolean;
+                                connected: number;
+                            };
+                            riskEngine: {
+                                /** Format: date-time */
+                                lastRunAt: string;
+                                ok: boolean;
+                                fallbackAssessments: number;
+                            };
+                        };
+                        needsAttention: {
+                            open: number;
+                            items: {
+                                kind: string;
+                                /** Format: uuid */
+                                helpRequestId?: string;
+                                helpKind?: string;
+                                /** Format: uuid */
+                                workerId?: string;
+                                workerCode?: string;
+                                /** Format: uuid */
+                                crewId: string;
+                                status: string;
+                                /** Format: date-time */
+                                createdAt: string;
+                                /** Format: date-time */
+                                acknowledgedAt?: string | null;
+                                need?: string | null;
+                                /** Format: uuid */
+                                recommendationId?: string;
+                                level?: number;
+                                highOrAbove?: number;
+                                crewOnShift?: number;
+                                activity?: string;
+                                /** Format: date-time */
+                                dueAt?: string;
+                            }[];
+                        };
+                        actionsToday: {
+                            done: number;
+                            total: number;
+                            actions: {
+                                code: string;
+                                status: string;
+                                crewIds: string[];
+                                workerCount: number;
+                                timing: string;
+                                /** Format: date-time */
+                                firstAt: string;
+                                /** Format: date-time */
+                                dueAt: string | null;
+                                recommendationIds: string[];
+                            }[];
+                        };
+                        todaySoFar: {
+                            warningLeadMinutes: unknown;
+                            warnings: {
+                                periods: number;
+                                notBorneOut: number;
+                                provisional: boolean;
+                            };
+                            actionsFollowed: {
+                                done: number;
+                                total: number;
+                                percent: number;
+                            };
+                            symptomReports: number;
+                            emergencyEscalations: number;
+                            workTimePausedMinutes: number;
+                        };
+                        crews: {
+                            /** Format: uuid */
+                            crewId: string;
+                            name: string;
+                            activity: string;
+                            activityName: string;
+                            workload: string;
+                            ppe: {
+                                engineClass: string;
+                                items: string[];
+                            };
+                            workers: number;
+                            now: number;
+                            peak: {
+                                level: number;
+                                /** Format: date-time */
+                                at: string;
+                                possibleLevel: unknown;
+                            };
+                            nextAction: {
+                                code: string;
+                                /** Format: uuid */
+                                recommendationId: string;
+                                /** Format: date-time */
+                                dueAt: string | null;
+                            };
+                        }[];
+                        last7Days: {
+                            /** Format: date */
+                            date: string;
+                            /** Format: date-time */
+                            dayStart: string;
+                            hoursAtHighOrAbove: number;
+                            actions: {
+                                onTime: number;
+                                total: number;
+                            };
+                        }[];
+                        workers: {
+                            /** Format: uuid */
+                            workerId: string;
+                            workerName: string;
+                            /** Format: uuid */
+                            crewId: string;
+                            /** Format: date-time */
+                            assessedAt: string;
+                            level: number;
+                            levelName: string;
+                            label: string;
+                            action: {
+                                what: string;
+                                when: string;
+                            };
+                            language: string;
+                            dataQuality: string;
+                            ppeNotModelled: unknown[];
+                            source: string;
+                            forecast: {
+                                firstReached: {
+                                    level: number;
+                                    /** Format: date-time */
+                                    at: string;
+                                }[];
+                                peakLevel: number;
+                                /** Format: date-time */
+                                peakAt: string;
+                                possiblePeakLevel: unknown;
+                                possiblePeakAt: unknown;
+                                confidence: unknown;
+                            };
+                            appReporting: boolean;
+                            treatedAsLevel: number;
+                        }[];
+                    };
+                };
             };
             /** @description Not logged in, or the access token expired (refresh it) */
             401: {
@@ -4564,11 +7503,122 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
+            /** @description OK. Schema and example come from a real response with the demo data; arrays in the example are shortened to 3 items. */
             200: {
                 headers: {
                     [name: string]: unknown;
                 };
-                content?: never;
+                content: {
+                    /**
+                     * @example [
+                     *       {
+                     *         "crewId": "097bbd11-92d6-471b-8165-7b8f59d757bc",
+                     *         "name": "Crew A",
+                     *         "activity": "concrete_work",
+                     *         "activityName": "Concrete work",
+                     *         "workload": "heavy",
+                     *         "ppe": {
+                     *           "engineClass": "standard",
+                     *           "items": [
+                     *             "standard_work_clothing",
+                     *             "hard_hat"
+                     *           ]
+                     *         },
+                     *         "workers": 8,
+                     *         "now": 4,
+                     *         "peak": {
+                     *           "level": 4,
+                     *           "at": "2026-11-12T12:00:00.000Z",
+                     *           "possibleLevel": null
+                     *         },
+                     *         "nextAction": {
+                     *           "code": "supervisor.suspend_activity",
+                     *           "recommendationId": "1bbbee73-6b9a-44be-941b-b00b87af1e16",
+                     *           "dueAt": null
+                     *         }
+                     *       },
+                     *       {
+                     *         "crewId": "e03b476f-e004-4cb9-80b5-44d2623d550e",
+                     *         "name": "Crew B",
+                     *         "activity": "excavation",
+                     *         "activityName": "Manual excavation / digging",
+                     *         "workload": "very_heavy",
+                     *         "ppe": {
+                     *           "engineClass": "coverall",
+                     *           "items": [
+                     *             "cloth_coveralls",
+                     *             "hard_hat"
+                     *           ]
+                     *         },
+                     *         "workers": 7,
+                     *         "now": 4,
+                     *         "peak": {
+                     *           "level": 4,
+                     *           "at": "2026-11-12T12:00:00.000Z",
+                     *           "possibleLevel": null
+                     *         },
+                     *         "nextAction": {
+                     *           "code": "crew.rotate_and_cool",
+                     *           "recommendationId": "ef5279fc-ab83-4a57-8608-d36c4e1cee19",
+                     *           "dueAt": "2026-11-12T12:00:00.000Z"
+                     *         }
+                     *       },
+                     *       {
+                     *         "crewId": "506a4f1c-9793-46cc-9709-0c5b02eff491",
+                     *         "name": "Crew C",
+                     *         "activity": "welding",
+                     *         "activityName": "Welding",
+                     *         "workload": "moderate",
+                     *         "ppe": {
+                     *           "engineClass": "standard",
+                     *           "items": [
+                     *             "standard_work_clothing",
+                     *             "welding_jacket"
+                     *           ]
+                     *         },
+                     *         "workers": 6,
+                     *         "now": 4,
+                     *         "peak": {
+                     *           "level": 4,
+                     *           "at": "2026-11-12T12:00:00.000Z",
+                     *           "possibleLevel": null
+                     *         },
+                     *         "nextAction": {
+                     *           "code": "crew.rotate_and_cool",
+                     *           "recommendationId": "7fdd1fe3-5ad7-4784-97c1-a406a38be02d",
+                     *           "dueAt": "2026-11-12T12:00:00.000Z"
+                     *         }
+                     *       }
+                     *     ]
+                     */
+                    "application/json": {
+                        /** Format: uuid */
+                        crewId: string;
+                        name: string;
+                        activity: string;
+                        activityName: string;
+                        workload: string;
+                        ppe: {
+                            engineClass: string;
+                            items: string[];
+                        };
+                        workers: number;
+                        now: number;
+                        peak: {
+                            level: number;
+                            /** Format: date-time */
+                            at: string;
+                            possibleLevel: unknown;
+                        };
+                        nextAction: {
+                            code: string;
+                            /** Format: uuid */
+                            recommendationId: string;
+                            /** Format: date-time */
+                            dueAt: string | null;
+                        };
+                    }[];
+                };
             };
             /** @description Not logged in, or the access token expired (refresh it) */
             401: {
@@ -4606,11 +7656,55 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
+            /** @description OK. Schema and example come from a real response with the demo data; arrays in the example are shortened to 3 items. */
             200: {
                 headers: {
                     [name: string]: unknown;
                 };
-                content?: never;
+                content: {
+                    /**
+                     * @example [
+                     *       {
+                     *         "date": "2026-11-06",
+                     *         "dayStart": "2026-11-05T23:00:00.000Z",
+                     *         "hoursAtHighOrAbove": 0,
+                     *         "actions": {
+                     *           "onTime": 0,
+                     *           "total": 0
+                     *         }
+                     *       },
+                     *       {
+                     *         "date": "2026-11-07",
+                     *         "dayStart": "2026-11-06T23:00:00.000Z",
+                     *         "hoursAtHighOrAbove": 0,
+                     *         "actions": {
+                     *           "onTime": 0,
+                     *           "total": 0
+                     *         }
+                     *       },
+                     *       {
+                     *         "date": "2026-11-08",
+                     *         "dayStart": "2026-11-07T23:00:00.000Z",
+                     *         "hoursAtHighOrAbove": 0,
+                     *         "actions": {
+                     *           "onTime": 0,
+                     *           "total": 0
+                     *         }
+                     *       }
+                     *     ]
+                     */
+                    "application/json": {
+                        /** Format: date */
+                        date: string;
+                        /** Format: date-time */
+                        dayStart: string;
+                        hoursAtHighOrAbove: number;
+                        actions: {
+                            onTime: number;
+                            total: number;
+                        };
+                    }[];
+                };
             };
             /** @description Not logged in, or the access token expired (refresh it) */
             401: {
@@ -4649,11 +7743,195 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
+            /** @description OK. Schema and example come from a real response with the demo data; arrays in the example are shortened to 3 items. */
             200: {
                 headers: {
                     [name: string]: unknown;
                 };
-                content?: never;
+                content: {
+                    /**
+                     * @example {
+                     *       "date": "2026-11-12",
+                     *       "status": "sent",
+                     *       "source": "saved",
+                     *       "sentAt": "2026-11-12T11:16:06.733Z",
+                     *       "hours": [
+                     *         {
+                     *           "label": "07:00",
+                     *           "start": "2026-11-12T06:00:00.000Z",
+                     *           "level": null,
+                     *           "possibleLevel": null
+                     *         },
+                     *         {
+                     *           "label": "08:00",
+                     *           "start": "2026-11-12T07:00:00.000Z",
+                     *           "level": null,
+                     *           "possibleLevel": null
+                     *         },
+                     *         {
+                     *           "label": "09:00",
+                     *           "start": "2026-11-12T08:00:00.000Z",
+                     *           "level": null,
+                     *           "possibleLevel": null
+                     *         }
+                     *       ],
+                     *       "crews": [
+                     *         {
+                     *           "crewId": "097bbd11-92d6-471b-8165-7b8f59d757bc",
+                     *           "name": "Crew A",
+                     *           "activity": "concrete_work",
+                     *           "workers": 8,
+                     *           "ppe": [
+                     *             "standard_work_clothing",
+                     *             "hard_hat"
+                     *           ]
+                     *         },
+                     *         {
+                     *           "crewId": "e03b476f-e004-4cb9-80b5-44d2623d550e",
+                     *           "name": "Crew B",
+                     *           "activity": "excavation",
+                     *           "workers": 7,
+                     *           "ppe": [
+                     *             "cloth_coveralls",
+                     *             "hard_hat"
+                     *           ]
+                     *         },
+                     *         {
+                     *           "crewId": "506a4f1c-9793-46cc-9709-0c5b02eff491",
+                     *           "name": "Crew C",
+                     *           "activity": "welding",
+                     *           "workers": 6,
+                     *           "ppe": [
+                     *             "standard_work_clothing",
+                     *             "welding_jacket"
+                     *           ]
+                     *         }
+                     *       ],
+                     *       "current": {
+                     *         "tasks": {
+                     *           "097bbd11-92d6-471b-8165-7b8f59d757bc": [
+                     *             "H",
+                     *             "H",
+                     *             "H"
+                     *           ],
+                     *           "15022cc6-9081-4cc3-99ca-bf79b482eb95": [
+                     *             "L",
+                     *             "L",
+                     *             "L"
+                     *           ],
+                     *           "506a4f1c-9793-46cc-9709-0c5b02eff491": [
+                     *             "M",
+                     *             "M",
+                     *             "M"
+                     *           ],
+                     *           "e03b476f-e004-4cb9-80b5-44d2623d550e": [
+                     *             "H",
+                     *             "H",
+                     *             "H"
+                     *           ]
+                     *         },
+                     *         "tooHotCells": [
+                     *           {
+                     *             "crewId": "097bbd11-92d6-471b-8165-7b8f59d757bc",
+                     *             "hour": 5
+                     *           },
+                     *           {
+                     *             "crewId": "097bbd11-92d6-471b-8165-7b8f59d757bc",
+                     *             "hour": 6
+                     *           },
+                     *           {
+                     *             "crewId": "097bbd11-92d6-471b-8165-7b8f59d757bc",
+                     *             "hour": 8
+                     *           }
+                     *         ],
+                     *         "tooHotCrewHours": 10,
+                     *         "workingCrewHours": 31
+                     *       },
+                     *       "suggested": {
+                     *         "tasks": {
+                     *           "097bbd11-92d6-471b-8165-7b8f59d757bc": [
+                     *             "H",
+                     *             "H",
+                     *             "H"
+                     *           ],
+                     *           "15022cc6-9081-4cc3-99ca-bf79b482eb95": [
+                     *             "L",
+                     *             "L",
+                     *             "L"
+                     *           ],
+                     *           "506a4f1c-9793-46cc-9709-0c5b02eff491": [
+                     *             "M",
+                     *             "M",
+                     *             "M"
+                     *           ],
+                     *           "e03b476f-e004-4cb9-80b5-44d2623d550e": [
+                     *             "H",
+                     *             "H",
+                     *             "H"
+                     *           ]
+                     *         },
+                     *         "tooHotCells": [],
+                     *         "tooHotCrewHours": 0,
+                     *         "workingCrewHours": 31
+                     *       },
+                     *       "workersNeedingReducedExposure": 1,
+                     *       "rule": {
+                     *         "heavyFrom": 3,
+                     *         "moderateFrom": 4
+                     *       }
+                     *     }
+                     */
+                    "application/json": {
+                        /** Format: date */
+                        date: string;
+                        status: string;
+                        source: string;
+                        /** Format: date-time */
+                        sentAt: string;
+                        hours: {
+                            label: string;
+                            /** Format: date-time */
+                            start: string;
+                            level: number | null;
+                            possibleLevel: unknown;
+                        }[];
+                        crews: {
+                            /** Format: uuid */
+                            crewId: string;
+                            name: string;
+                            activity: string;
+                            workers: number;
+                            ppe: string[];
+                        }[];
+                        current: {
+                            /** @description Keyed by ID */
+                            tasks: {
+                                [key: string]: string[];
+                            };
+                            tooHotCells: {
+                                /** Format: uuid */
+                                crewId: string;
+                                hour: number;
+                            }[];
+                            tooHotCrewHours: number;
+                            workingCrewHours: number;
+                        };
+                        suggested: {
+                            /** @description Keyed by ID */
+                            tasks: {
+                                [key: string]: string[];
+                            };
+                            tooHotCells: unknown[];
+                            tooHotCrewHours: number;
+                            workingCrewHours: number;
+                        };
+                        workersNeedingReducedExposure: number;
+                        rule: {
+                            heavyFrom: number;
+                            moderateFrom: number;
+                        };
+                    };
+                };
             };
             /** @description Not logged in, or the access token expired (refresh it) */
             401: {
@@ -4693,11 +7971,195 @@ export interface operations {
             };
         };
         responses: {
+            /** @description OK. Schema and example come from a real response with the demo data; arrays in the example are shortened to 3 items. */
             200: {
                 headers: {
                     [name: string]: unknown;
                 };
-                content?: never;
+                content: {
+                    /**
+                     * @example {
+                     *       "date": "2026-11-12",
+                     *       "status": "draft",
+                     *       "source": "saved",
+                     *       "sentAt": "2026-11-12T11:16:06.733Z",
+                     *       "hours": [
+                     *         {
+                     *           "label": "07:00",
+                     *           "start": "2026-11-12T06:00:00.000Z",
+                     *           "level": null,
+                     *           "possibleLevel": null
+                     *         },
+                     *         {
+                     *           "label": "08:00",
+                     *           "start": "2026-11-12T07:00:00.000Z",
+                     *           "level": null,
+                     *           "possibleLevel": null
+                     *         },
+                     *         {
+                     *           "label": "09:00",
+                     *           "start": "2026-11-12T08:00:00.000Z",
+                     *           "level": null,
+                     *           "possibleLevel": null
+                     *         }
+                     *       ],
+                     *       "crews": [
+                     *         {
+                     *           "crewId": "097bbd11-92d6-471b-8165-7b8f59d757bc",
+                     *           "name": "Crew A",
+                     *           "activity": "concrete_work",
+                     *           "workers": 8,
+                     *           "ppe": [
+                     *             "standard_work_clothing",
+                     *             "hard_hat"
+                     *           ]
+                     *         },
+                     *         {
+                     *           "crewId": "e03b476f-e004-4cb9-80b5-44d2623d550e",
+                     *           "name": "Crew B",
+                     *           "activity": "excavation",
+                     *           "workers": 7,
+                     *           "ppe": [
+                     *             "cloth_coveralls",
+                     *             "hard_hat"
+                     *           ]
+                     *         },
+                     *         {
+                     *           "crewId": "506a4f1c-9793-46cc-9709-0c5b02eff491",
+                     *           "name": "Crew C",
+                     *           "activity": "welding",
+                     *           "workers": 6,
+                     *           "ppe": [
+                     *             "standard_work_clothing",
+                     *             "welding_jacket"
+                     *           ]
+                     *         }
+                     *       ],
+                     *       "current": {
+                     *         "tasks": {
+                     *           "097bbd11-92d6-471b-8165-7b8f59d757bc": [
+                     *             "H",
+                     *             "H",
+                     *             "H"
+                     *           ],
+                     *           "15022cc6-9081-4cc3-99ca-bf79b482eb95": [
+                     *             "L",
+                     *             "L",
+                     *             "L"
+                     *           ],
+                     *           "506a4f1c-9793-46cc-9709-0c5b02eff491": [
+                     *             "M",
+                     *             "M",
+                     *             "M"
+                     *           ],
+                     *           "e03b476f-e004-4cb9-80b5-44d2623d550e": [
+                     *             "H",
+                     *             "H",
+                     *             "H"
+                     *           ]
+                     *         },
+                     *         "tooHotCells": [
+                     *           {
+                     *             "crewId": "097bbd11-92d6-471b-8165-7b8f59d757bc",
+                     *             "hour": 5
+                     *           },
+                     *           {
+                     *             "crewId": "097bbd11-92d6-471b-8165-7b8f59d757bc",
+                     *             "hour": 6
+                     *           },
+                     *           {
+                     *             "crewId": "097bbd11-92d6-471b-8165-7b8f59d757bc",
+                     *             "hour": 8
+                     *           }
+                     *         ],
+                     *         "tooHotCrewHours": 10,
+                     *         "workingCrewHours": 31
+                     *       },
+                     *       "suggested": {
+                     *         "tasks": {
+                     *           "097bbd11-92d6-471b-8165-7b8f59d757bc": [
+                     *             "H",
+                     *             "H",
+                     *             "H"
+                     *           ],
+                     *           "15022cc6-9081-4cc3-99ca-bf79b482eb95": [
+                     *             "L",
+                     *             "L",
+                     *             "L"
+                     *           ],
+                     *           "506a4f1c-9793-46cc-9709-0c5b02eff491": [
+                     *             "M",
+                     *             "M",
+                     *             "M"
+                     *           ],
+                     *           "e03b476f-e004-4cb9-80b5-44d2623d550e": [
+                     *             "H",
+                     *             "H",
+                     *             "H"
+                     *           ]
+                     *         },
+                     *         "tooHotCells": [],
+                     *         "tooHotCrewHours": 0,
+                     *         "workingCrewHours": 31
+                     *       },
+                     *       "workersNeedingReducedExposure": 1,
+                     *       "rule": {
+                     *         "heavyFrom": 3,
+                     *         "moderateFrom": 4
+                     *       }
+                     *     }
+                     */
+                    "application/json": {
+                        /** Format: date */
+                        date: string;
+                        status: string;
+                        source: string;
+                        /** Format: date-time */
+                        sentAt: string;
+                        hours: {
+                            label: string;
+                            /** Format: date-time */
+                            start: string;
+                            level: number | null;
+                            possibleLevel: unknown;
+                        }[];
+                        crews: {
+                            /** Format: uuid */
+                            crewId: string;
+                            name: string;
+                            activity: string;
+                            workers: number;
+                            ppe: string[];
+                        }[];
+                        current: {
+                            /** @description Keyed by ID */
+                            tasks: {
+                                [key: string]: string[];
+                            };
+                            tooHotCells: {
+                                /** Format: uuid */
+                                crewId: string;
+                                hour: number;
+                            }[];
+                            tooHotCrewHours: number;
+                            workingCrewHours: number;
+                        };
+                        suggested: {
+                            /** @description Keyed by ID */
+                            tasks: {
+                                [key: string]: string[];
+                            };
+                            tooHotCells: unknown[];
+                            tooHotCrewHours: number;
+                            workingCrewHours: number;
+                        };
+                        workersNeedingReducedExposure: number;
+                        rule: {
+                            heavyFrom: number;
+                            moderateFrom: number;
+                        };
+                    };
+                };
             };
             /** @description The request is invalid; `message` lists what is wrong */
             400: {
@@ -4744,11 +8206,195 @@ export interface operations {
             };
         };
         responses: {
+            /** @description OK. Schema and example come from a real response with the demo data; arrays in the example are shortened to 3 items. */
             200: {
                 headers: {
                     [name: string]: unknown;
                 };
-                content?: never;
+                content: {
+                    /**
+                     * @example {
+                     *       "date": "2026-11-12",
+                     *       "status": "sent",
+                     *       "source": "saved",
+                     *       "sentAt": "2026-11-12T11:16:40.942Z",
+                     *       "hours": [
+                     *         {
+                     *           "label": "07:00",
+                     *           "start": "2026-11-12T06:00:00.000Z",
+                     *           "level": null,
+                     *           "possibleLevel": null
+                     *         },
+                     *         {
+                     *           "label": "08:00",
+                     *           "start": "2026-11-12T07:00:00.000Z",
+                     *           "level": null,
+                     *           "possibleLevel": null
+                     *         },
+                     *         {
+                     *           "label": "09:00",
+                     *           "start": "2026-11-12T08:00:00.000Z",
+                     *           "level": null,
+                     *           "possibleLevel": null
+                     *         }
+                     *       ],
+                     *       "crews": [
+                     *         {
+                     *           "crewId": "097bbd11-92d6-471b-8165-7b8f59d757bc",
+                     *           "name": "Crew A",
+                     *           "activity": "concrete_work",
+                     *           "workers": 8,
+                     *           "ppe": [
+                     *             "standard_work_clothing",
+                     *             "hard_hat"
+                     *           ]
+                     *         },
+                     *         {
+                     *           "crewId": "e03b476f-e004-4cb9-80b5-44d2623d550e",
+                     *           "name": "Crew B",
+                     *           "activity": "excavation",
+                     *           "workers": 7,
+                     *           "ppe": [
+                     *             "cloth_coveralls",
+                     *             "hard_hat"
+                     *           ]
+                     *         },
+                     *         {
+                     *           "crewId": "506a4f1c-9793-46cc-9709-0c5b02eff491",
+                     *           "name": "Crew C",
+                     *           "activity": "welding",
+                     *           "workers": 6,
+                     *           "ppe": [
+                     *             "standard_work_clothing",
+                     *             "welding_jacket"
+                     *           ]
+                     *         }
+                     *       ],
+                     *       "current": {
+                     *         "tasks": {
+                     *           "097bbd11-92d6-471b-8165-7b8f59d757bc": [
+                     *             "H",
+                     *             "H",
+                     *             "H"
+                     *           ],
+                     *           "15022cc6-9081-4cc3-99ca-bf79b482eb95": [
+                     *             "L",
+                     *             "L",
+                     *             "L"
+                     *           ],
+                     *           "506a4f1c-9793-46cc-9709-0c5b02eff491": [
+                     *             "M",
+                     *             "M",
+                     *             "M"
+                     *           ],
+                     *           "e03b476f-e004-4cb9-80b5-44d2623d550e": [
+                     *             "H",
+                     *             "H",
+                     *             "H"
+                     *           ]
+                     *         },
+                     *         "tooHotCells": [
+                     *           {
+                     *             "crewId": "097bbd11-92d6-471b-8165-7b8f59d757bc",
+                     *             "hour": 5
+                     *           },
+                     *           {
+                     *             "crewId": "097bbd11-92d6-471b-8165-7b8f59d757bc",
+                     *             "hour": 6
+                     *           },
+                     *           {
+                     *             "crewId": "097bbd11-92d6-471b-8165-7b8f59d757bc",
+                     *             "hour": 8
+                     *           }
+                     *         ],
+                     *         "tooHotCrewHours": 10,
+                     *         "workingCrewHours": 31
+                     *       },
+                     *       "suggested": {
+                     *         "tasks": {
+                     *           "097bbd11-92d6-471b-8165-7b8f59d757bc": [
+                     *             "H",
+                     *             "H",
+                     *             "H"
+                     *           ],
+                     *           "15022cc6-9081-4cc3-99ca-bf79b482eb95": [
+                     *             "L",
+                     *             "L",
+                     *             "L"
+                     *           ],
+                     *           "506a4f1c-9793-46cc-9709-0c5b02eff491": [
+                     *             "M",
+                     *             "M",
+                     *             "M"
+                     *           ],
+                     *           "e03b476f-e004-4cb9-80b5-44d2623d550e": [
+                     *             "H",
+                     *             "H",
+                     *             "H"
+                     *           ]
+                     *         },
+                     *         "tooHotCells": [],
+                     *         "tooHotCrewHours": 0,
+                     *         "workingCrewHours": 31
+                     *       },
+                     *       "workersNeedingReducedExposure": 1,
+                     *       "rule": {
+                     *         "heavyFrom": 3,
+                     *         "moderateFrom": 4
+                     *       }
+                     *     }
+                     */
+                    "application/json": {
+                        /** Format: date */
+                        date: string;
+                        status: string;
+                        source: string;
+                        /** Format: date-time */
+                        sentAt: string;
+                        hours: {
+                            label: string;
+                            /** Format: date-time */
+                            start: string;
+                            level: number | null;
+                            possibleLevel: unknown;
+                        }[];
+                        crews: {
+                            /** Format: uuid */
+                            crewId: string;
+                            name: string;
+                            activity: string;
+                            workers: number;
+                            ppe: string[];
+                        }[];
+                        current: {
+                            /** @description Keyed by ID */
+                            tasks: {
+                                [key: string]: string[];
+                            };
+                            tooHotCells: {
+                                /** Format: uuid */
+                                crewId: string;
+                                hour: number;
+                            }[];
+                            tooHotCrewHours: number;
+                            workingCrewHours: number;
+                        };
+                        suggested: {
+                            /** @description Keyed by ID */
+                            tasks: {
+                                [key: string]: string[];
+                            };
+                            tooHotCells: unknown[];
+                            tooHotCrewHours: number;
+                            workingCrewHours: number;
+                        };
+                        workersNeedingReducedExposure: number;
+                        rule: {
+                            heavyFrom: number;
+                            moderateFrom: number;
+                        };
+                    };
+                };
             };
             /** @description The request is invalid; `message` lists what is wrong */
             400: {
@@ -4793,11 +8439,152 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
+            /** @description OK. Schema and example come from a real response with the demo data; arrays in the example are shortened to 3 items. */
             200: {
                 headers: {
                     [name: string]: unknown;
                 };
-                content?: never;
+                content: {
+                    /**
+                     * @example {
+                     *       "period": "30d",
+                     *       "from": "2026-10-13T11:16:46.670Z",
+                     *       "to": "2026-11-12T11:16:46.670Z",
+                     *       "warningLeadTime": {
+                     *         "medianMinutes": null,
+                     *         "provisional": true
+                     *       },
+                     *       "falseAlarms": {
+                     *         "count": 0,
+                     *         "of": 0,
+                     *         "percent": null,
+                     *         "provisional": true
+                     *       },
+                     *       "missedWarnings": {
+                     *         "count": 0,
+                     *         "ofHighPeriods": 0,
+                     *         "provisional": true
+                     *       },
+                     *       "leadTimeHistogram": [
+                     *         {
+                     *           "bucket": "under_30m",
+                     *           "count": 0
+                     *         },
+                     *         {
+                     *           "bucket": "30_60m",
+                     *           "count": 0
+                     *         },
+                     *         {
+                     *           "bucket": "1_2h",
+                     *           "count": 0
+                     *         }
+                     *       ],
+                     *       "actionsFollowed": {
+                     *         "done": 0,
+                     *         "total": 42,
+                     *         "percent": 0,
+                     *         "byCrew": [
+                     *           {
+                     *             "crewId": "097bbd11-92d6-471b-8165-7b8f59d757bc",
+                     *             "grouped": false,
+                     *             "done": 0,
+                     *             "total": 9,
+                     *             "percent": 0
+                     *           },
+                     *           {
+                     *             "crewId": "e03b476f-e004-4cb9-80b5-44d2623d550e",
+                     *             "grouped": false,
+                     *             "done": 0,
+                     *             "total": 9,
+                     *             "percent": 0
+                     *           },
+                     *           {
+                     *             "crewId": "506a4f1c-9793-46cc-9709-0c5b02eff491",
+                     *             "grouped": false,
+                     *             "done": 0,
+                     *             "total": 8,
+                     *             "percent": 0
+                     *           }
+                     *         ]
+                     *       },
+                     *       "symptomsAndIncidents": {
+                     *         "symptomReports": 2,
+                     *         "heatIncidents": null
+                     *       },
+                     *       "emergencyEscalations": {
+                     *         "count": 2,
+                     *         "acknowledgedWithin10Min": 1
+                     *       },
+                     *       "lostWorkTime": {
+                     *         "pausedMinutes": 0,
+                     *         "scheduledMinutes": 9187
+                     *       },
+                     *       "compliance": {
+                     *         "shiftsMeetingPlan": 0,
+                     *         "shifts": 0,
+                     *         "percent": null,
+                     *         "provisional": true
+                     *       }
+                     *     }
+                     */
+                    "application/json": {
+                        period: string;
+                        /** Format: date-time */
+                        from: string;
+                        /** Format: date-time */
+                        to: string;
+                        warningLeadTime: {
+                            medianMinutes: unknown;
+                            provisional: boolean;
+                        };
+                        falseAlarms: {
+                            count: number;
+                            of: number;
+                            percent: unknown;
+                            provisional: boolean;
+                        };
+                        missedWarnings: {
+                            count: number;
+                            ofHighPeriods: number;
+                            provisional: boolean;
+                        };
+                        leadTimeHistogram: {
+                            bucket: string;
+                            count: number;
+                        }[];
+                        actionsFollowed: {
+                            done: number;
+                            total: number;
+                            percent: number;
+                            byCrew: {
+                                /** Format: uuid */
+                                crewId: string;
+                                grouped: boolean;
+                                done: number;
+                                total: number;
+                                percent: number;
+                            }[];
+                        };
+                        symptomsAndIncidents: {
+                            symptomReports: number;
+                            heatIncidents: unknown;
+                        };
+                        emergencyEscalations: {
+                            count: number;
+                            acknowledgedWithin10Min: number;
+                        };
+                        lostWorkTime: {
+                            pausedMinutes: number;
+                            scheduledMinutes: number;
+                        };
+                        compliance: {
+                            shiftsMeetingPlan: number;
+                            shifts: number;
+                            percent: unknown;
+                            provisional: boolean;
+                        };
+                    };
+                };
             };
             /** @description Not logged in, or the access token expired (refresh it) */
             401: {
@@ -4831,11 +8618,34 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
+            /** @description OK. Schema and example come from a real response with the demo data; arrays in the example are shortened to 3 items. */
             200: {
                 headers: {
                     [name: string]: unknown;
                 };
-                content?: never;
+                content: {
+                    /**
+                     * @example {
+                     *       "enabled": true,
+                     *       "paired": true,
+                     *       "deviceId": "band-docs-0388",
+                     *       "model": "HeatGuard band simulator",
+                     *       "lastSeenAt": "2026-11-12T11:16:40.826Z",
+                     *       "batteryPercent": 81,
+                     *       "connected": true
+                     *     }
+                     */
+                    "application/json": {
+                        enabled: boolean;
+                        paired: boolean;
+                        deviceId: string;
+                        model: string;
+                        /** Format: date-time */
+                        lastSeenAt: string;
+                        batteryPercent: number;
+                        connected: boolean;
+                    };
+                };
             };
             /** @description Not logged in, or the access token expired (refresh it) */
             401: {
@@ -4866,11 +8676,33 @@ export interface operations {
             };
         };
         responses: {
+            /** @description OK. Schema and example come from a real response with the demo data; arrays in the example are shortened to 3 items. */
             200: {
                 headers: {
                     [name: string]: unknown;
                 };
-                content?: never;
+                content: {
+                    /**
+                     * @example {
+                     *       "enabled": true,
+                     *       "paired": true,
+                     *       "deviceId": "band-docs-0388",
+                     *       "model": "HeatGuard band simulator",
+                     *       "lastSeenAt": null,
+                     *       "batteryPercent": null,
+                     *       "connected": false
+                     *     }
+                     */
+                    "application/json": {
+                        enabled: boolean;
+                        paired: boolean;
+                        deviceId: string;
+                        model: string;
+                        lastSeenAt: unknown;
+                        batteryPercent: unknown;
+                        connected: boolean;
+                    };
+                };
             };
             /** @description The request is invalid; `message` lists what is wrong */
             400: {
@@ -4904,11 +8736,21 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
+            /** @description OK. Schema and example come from a real response with the demo data; arrays in the example are shortened to 3 items. */
             200: {
                 headers: {
                     [name: string]: unknown;
                 };
-                content?: never;
+                content: {
+                    /**
+                     * @example {
+                     *       "paired": false
+                     *     }
+                     */
+                    "application/json": {
+                        paired: boolean;
+                    };
+                };
             };
             /** @description Not logged in, or the access token expired (refresh it) */
             401: {
@@ -4937,11 +8779,61 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
+            /** @description OK. Schema and example come from a real response with the demo data; arrays in the example are shortened to 3 items. */
             200: {
                 headers: {
                     [name: string]: unknown;
                 };
-                content?: never;
+                content: {
+                    /**
+                     * @example {
+                     *       "summary": {
+                     *         "measuredAt": "2026-11-12T11:16:40.826Z",
+                     *         "heartRateBpm": 130,
+                     *         "heartRateAvg10MinBpm": 124,
+                     *         "minutesHeartRateAtOrAbove120": 4,
+                     *         "skinTempC": 35.5,
+                     *         "skinTempChange30MinC": 0.4,
+                     *         "minutesOfData": 5
+                     *       },
+                     *       "readings": [
+                     *         {
+                     *           "at": "2026-11-12T11:12:40.826Z",
+                     *           "heartRateBpm": 118,
+                     *           "skinTempC": 35.1
+                     *         },
+                     *         {
+                     *           "at": "2026-11-12T11:13:40.826Z",
+                     *           "heartRateBpm": 121,
+                     *           "skinTempC": 35.2
+                     *         },
+                     *         {
+                     *           "at": "2026-11-12T11:14:40.826Z",
+                     *           "heartRateBpm": 124,
+                     *           "skinTempC": 35.300000000000004
+                     *         }
+                     *       ]
+                     *     }
+                     */
+                    "application/json": {
+                        summary: {
+                            /** Format: date-time */
+                            measuredAt: string;
+                            heartRateBpm: number;
+                            heartRateAvg10MinBpm: number;
+                            minutesHeartRateAtOrAbove120: number;
+                            skinTempC: number;
+                            skinTempChange30MinC: number;
+                            minutesOfData: number;
+                        };
+                        readings: {
+                            /** Format: date-time */
+                            at: string;
+                            heartRateBpm: number;
+                            skinTempC: number;
+                        }[];
+                    };
+                };
             };
             /** @description Not logged in, or the access token expired (refresh it) */
             401: {
@@ -4972,11 +8864,21 @@ export interface operations {
             };
         };
         responses: {
+            /** @description OK. Schema and example come from a real response with the demo data; arrays in the example are shortened to 3 items. */
             201: {
                 headers: {
                     [name: string]: unknown;
                 };
-                content?: never;
+                content: {
+                    /**
+                     * @example {
+                     *       "accepted": 5
+                     *     }
+                     */
+                    "application/json": {
+                        accepted: number;
+                    };
+                };
             };
             /** @description The request is invalid; `message` lists what is wrong */
             400: {
@@ -5014,11 +8916,61 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
+            /** @description OK. Schema and example come from a real response with the demo data; arrays in the example are shortened to 3 items. */
             200: {
                 headers: {
                     [name: string]: unknown;
                 };
-                content?: never;
+                content: {
+                    /**
+                     * @example {
+                     *       "summary": {
+                     *         "measuredAt": "2026-11-12T11:16:40.826Z",
+                     *         "heartRateBpm": 130,
+                     *         "heartRateAvg10MinBpm": 124,
+                     *         "minutesHeartRateAtOrAbove120": 4,
+                     *         "skinTempC": 35.5,
+                     *         "skinTempChange30MinC": 0.4,
+                     *         "minutesOfData": 5
+                     *       },
+                     *       "readings": [
+                     *         {
+                     *           "at": "2026-11-12T11:12:40.826Z",
+                     *           "heartRateBpm": 118,
+                     *           "skinTempC": 35.1
+                     *         },
+                     *         {
+                     *           "at": "2026-11-12T11:13:40.826Z",
+                     *           "heartRateBpm": 121,
+                     *           "skinTempC": 35.2
+                     *         },
+                     *         {
+                     *           "at": "2026-11-12T11:14:40.826Z",
+                     *           "heartRateBpm": 124,
+                     *           "skinTempC": 35.300000000000004
+                     *         }
+                     *       ]
+                     *     }
+                     */
+                    "application/json": {
+                        summary: {
+                            /** Format: date-time */
+                            measuredAt: string;
+                            heartRateBpm: number;
+                            heartRateAvg10MinBpm: number;
+                            minutesHeartRateAtOrAbove120: number;
+                            skinTempC: number;
+                            skinTempChange30MinC: number;
+                            minutesOfData: number;
+                        };
+                        readings: {
+                            /** Format: date-time */
+                            at: string;
+                            heartRateBpm: number;
+                            skinTempC: number;
+                        }[];
+                    };
+                };
             };
             /** @description Not logged in, or the access token expired (refresh it) */
             401: {

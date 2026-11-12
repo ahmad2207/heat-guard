@@ -64,7 +64,7 @@ describe('error parsing', () => {
     expect(error.kind).toBe('conflict')
     expect(error.message).toBe('Already clocked in.')
   })
-  it('reads an array of messages', () => {
+  it('shows only the first of an array of messages', () => {
     const error = toApiError(400, {
       statusCode: 400,
       message: ['pin must be a string', 'loginId should not be empty'],
@@ -72,7 +72,7 @@ describe('error parsing', () => {
     })
     expect(error.kind).toBe('validation')
     expect(error.details).toEqual(['pin must be a string', 'loginId should not be empty'])
-    expect(error.message).toBe('pin must be a string. loginId should not be empty.')
+    expect(error.message).toBe('pin must be a string.')
   })
   it('works without the error field (as seen on a live 401)', () => {
     const error = toApiError(401, { statusCode: 401, message: 'Invalid ID or PIN' })
