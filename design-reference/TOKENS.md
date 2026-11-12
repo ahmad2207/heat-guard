@@ -20,7 +20,7 @@ Use these exact values. Add them to the Tailwind theme with the names below so c
 | `info-bg` / `info-text` | #E3EDF7 / #1D4E80 | Info chips, "Acknowledged" pills, selected rows |
 | `warn-bg` | #FDF0E6 | Selected tiles and checkboxes |
 | `danger-bg` / `danger-text` | #FBE9EA / #7A1219 | Warning-sign boxes |
-| `oh-header` | #1D3A57 | Occupational health header (sets that role apart) |
+| ~~`oh-header`~~ | #1D3A57 | Removed: occupational health not built |
 
 ## Additional colours
 
@@ -35,11 +35,11 @@ These appear in `html/` but were not in the core list. They are in the Tailwind 
 | `warn` | #C2410C | Status dot for rows marked "Check" in System health |
 | `warn-text` | #7A3510 | Text on "Check" pills in System health (on `warn-bg`) |
 | `warn-strong` | #9A4310 | Dashed outline of saved level 3 hours in field mode, and the supervisor shield icon in "Who looked at your data" |
-| `oh-header-raised` | #2B4E71 | "Confidential" badge on the occupational health header |
-| `oh-header-muted` | #D5E2EF | "Occupational health" role label on the navy header |
-| `oh-header-line` | #5A7896 | Divider before the role label on the navy header |
-| `oh-selected` | #F4F7FA | Selected precaution level option on the occupational health profile |
-| `oh-accent` | #F4C542 | Thermometer logo on the occupational health header. Same value as `risk-2`, kept separate so the logo never reads as a risk level |
+| ~~`oh-header-raised`~~ | #2B4E71 | Removed: occupational health not built |
+| ~~`oh-header-muted`~~ | #D5E2EF | Removed: occupational health not built |
+| ~~`oh-header-line`~~ | #5A7896 | Removed: occupational health not built |
+| ~~`oh-selected`~~ | #F4F7FA | Removed: occupational health not built |
+| ~~`oh-accent`~~ | #F4C542 | Removed: occupational health not built |
 | `ink-accent` | #F4C542 | Icons and headings on `ink` panels: field mode status icons, the "Our promise" heading and the health profile lock. Same value as `risk-2`, kept separate so these never read as a risk level |
 | `link` | #2F6FB0 | Text links on the supervisor pages, for example "All safety and productivity measures". Hover uses `info-text` |
 | `chart-primary` | #2F6FB0 | Bars in neutral charts, for example "How early warnings came" on Measures. Same value as `risk-1`, kept separate so a chart never reads as a risk level |

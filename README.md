@@ -55,7 +55,6 @@ src/
   features/
     worker/               Worker screens: consent, health profile, Home and field mode, What to do, Report, My data
     supervisor/           Supervisor screens: Today, Shift plan, Measures
-    occupational-health/  Not routed any more; kept until it is cleared for deletion
   i18n/         Translations (next phase)
   layouts/      Worker and supervisor page shells
   lib/          Helpers: risk levels, demo clock, speech, online status, battery

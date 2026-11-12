@@ -12,18 +12,15 @@ import type {
   CrewRow,
   DataAccessEntry,
   DayBar,
-  Escalation,
   FieldModeContent,
   Figure,
   ForecastHour,
   Language,
   MeasureCard,
   NeedsAttentionAlert,
-  OhProfile,
   PlanCrew,
   PrecautionLevelDefinition,
   PrecautionLevelId,
-  ProfileToReview,
   Site,
   SymptomReportContent,
   SystemHealthRow,
@@ -33,7 +30,6 @@ import type {
   Worker,
   WorkerStatus,
   CrewId,
-  OhOutcome,
   PrecautionRecord,
   HealthProfileAnswers,
   HealthProfileContent,
@@ -57,30 +53,23 @@ export const SITE: Site = {
   workersOnShift: 29,
 }
 
-/** From design-reference/source/OccHealth.dc.html. */
+/** Precaution level names and the worker's restriction text. */
 export const PRECAUTION_LEVELS: Record<PrecautionLevelId, PrecautionLevelDefinition> = {
   standard: {
     id: 'standard',
     name: 'Standard precautions',
-    hint: 'Same advice as the rest of the crew.',
-    supervisorText: 'No extra action needed.',
     workerText: 'You follow your crew’s heat plan.',
     restriction: 'None.',
   },
   enhanced: {
     id: 'enhanced',
     name: 'Enhanced precautions',
-    hint: 'Earlier warnings and extra breaks.',
-    supervisorText: 'Earlier breaks at level 3 and above.',
     workerText: 'You will get warnings earlier and extra break reminders.',
     restriction: 'Extra 10 min break each hour at level 3 and above.',
   },
   high: {
     id: 'high',
     name: 'High-priority precautions',
-    hint: 'Conservative exposure, set by a professional.',
-    supervisorText:
-      'Reduce exposure today: shaded or lighter duty at level 3 and above, break every 30 min.',
     workerText:
       'Your plan includes lighter or shaded work in hot hours and a break every 30 minutes.',
     restriction:
@@ -104,7 +93,6 @@ export const WORKER: Worker = {
   language: 'English',
   precaution: {
     level: 'high',
-    setBy: 'occupational health',
     setOn: '12 Oct',
     nextReview: '9 Nov',
     restrictions: [
@@ -419,9 +407,6 @@ export const MY_DATA = {
   deleted: 'Your health answers have been deleted.',
 } as const
 
-/** Shown after "Request a review" on My data or the health profile. */
-export const REVIEW_REQUESTED = 'Review requested. A nurse will contact you.'
-
 /** Short codes for the language button. Language choice is visual only for now. */
 export const LANGUAGE_CODES: Record<Language, string> = {
   English: 'EN',
@@ -626,7 +611,6 @@ export const TODAY_TEXT = {
   nothingNeedsAttention: 'Nothing needs attention for these filters.',
   resolvedToday: 'Resolved today',
   onMyWay: 'On my way',
-  occupationalHealth: 'Occupational health',
   reassignedTo: 'Reassigned to',
   reassignTo: 'Reassign to',
   cancel: 'Cancel',
@@ -1083,85 +1067,8 @@ export const MEASURES_TEXT = {
 }
 
 /* =========================================================================
- * Occupational health (screen 11)
+ * Precaution levels
  * ========================================================================= */
-
-export const OH_ESCALATION: Escalation = {
-  workerId: 'W-0388',
-  crew: 'Crew B',
-  reportedAt: 'Reported 10:21',
-  symptoms: 'Dizzy, very thirsty',
-  conditions: 'Level 3 · heavy digging · coveralls',
-  firstAid: 'Attended 10:24 · resting in shade',
-  outcomes: ['Fit to return later today', 'Rest for the shift', 'Refer to clinic'],
-  outcomeNote:
-    'The supervisor will only see the outcome: back at work, resting, or referred. Never the symptoms or this note.',
-}
-
-export const PROFILES_TO_REVIEW: ProfileToReview[] = [
-  {
-    workerId: 'W-0412',
-    crew: 'Crew C',
-    reason: 'Worker updated health information · today',
-    open: true,
-  },
-  { workerId: 'W-0384', crew: 'Crew A', reason: 'Worker requested a review · yesterday' },
-  {
-    workerId: 'W-0456',
-    crew: 'Crew B',
-    reason: 'New starter, not yet acclimatised · day 3 of 14',
-  },
-  { workerId: 'W-0307', crew: 'Crew D', reason: 'Restriction due to end · Friday' },
-]
-export const PROFILES_WAITING = '4 waiting'
-
-const RECORDED_NOTE = 'Only factors with a clear link to heat risk are collected.'
-
-/**
- * Profiles for the "Profiles to review" rows. W-0412 is the design. W-0384, W-0456 and W-0307 are
- * SAMPLE profiles written for the prototype to match their row text.
- */
-export const OH_PROFILES: Record<string, OhProfile> = {
-  'W-0412': {
-    workerId: 'W-0412',
-    crew: 'Crew C',
-    task: 'welding',
-    consent:
-      'Consent: health information yes · wearable band yes, since 01 Nov · can be withdrawn by the worker',
-    recorded: [
-      'Heart condition on file',
-      'Medicine that affects hydration',
-      'Acclimatised',
-      'No past heat illness',
-    ],
-    recordedNote: RECORDED_NOTE,
-  },
-  'W-0384': {
-    workerId: 'W-0384',
-    crew: 'Crew A',
-    task: 'concrete work',
-    consent: 'Consent: health information yes · wearable band no · can be withdrawn by the worker',
-    recorded: ['Breathing condition on file', 'Acclimatised', 'No past heat illness'],
-    recordedNote: RECORDED_NOTE,
-  },
-  'W-0456': {
-    workerId: 'W-0456',
-    crew: 'Crew B',
-    task: 'excavation',
-    consent:
-      'Consent: health information yes · wearable band yes, since 04 Nov · can be withdrawn by the worker',
-    recorded: ['New starter: day 3 of 14 getting used to the heat', 'No conditions reported'],
-    recordedNote: RECORDED_NOTE,
-  },
-  'W-0307': {
-    workerId: 'W-0307',
-    crew: 'Crew D',
-    task: 'site logistics',
-    consent: 'Consent: health information yes · wearable band no · can be withdrawn by the worker',
-    recorded: ['Heat illness in the last 12 months', 'Acclimatised'],
-    recordedNote: RECORDED_NOTE,
-  },
-}
 
 /**
  * SAMPLE: precaution levels by worker, matching the backend demo data (W-0412 high_priority,
@@ -1191,86 +1098,4 @@ export const PRECAUTION_ALERTS = {
     title: (workerId: string) => `Worker ${workerId} needs reduced exposure today`,
     do: 'reassign to shaded or lighter duty until 15:00 and add a recovery break every 30 min.',
   },
-}
-
-/** Outcome buttons on the escalation card. The supervisor only ever sees the supervisorSees line. */
-export const OH_OUTCOMES: OhOutcome[] = [
-  {
-    id: 'fit',
-    label: 'Fit to return later today',
-    supervisorSees: 'Back at work later today',
-    variant: 'primary',
-  },
-  {
-    id: 'rest',
-    label: 'Rest for the shift',
-    supervisorSees: 'Resting for the shift',
-    variant: 'secondary',
-  },
-  {
-    id: 'clinic',
-    label: 'Refer to clinic',
-    supervisorSees: 'Referred to clinic',
-    variant: 'danger',
-  },
-]
-
-/**
- * How the worker's own health profile answers appear in "What you record", as categories. Used
- * only when the worker has sent their answers with health sharing switched on.
- */
-export const RECORDED_CATEGORIES = {
-  conditions: {
-    heart: 'Heart or blood pressure condition',
-    lungs: 'Breathing condition',
-    kidney: 'Kidney condition',
-    meta: 'Diabetes, thyroid or weight-related condition',
-    other: 'Other condition that affects heat',
-    none: 'No conditions reported',
-  } as Record<string, string>,
-  heatIllness: {
-    no: 'No past heat illness',
-    recent: 'Heat illness in the last 12 months',
-    old: 'Heat illness, longer ago',
-    unsure: 'Not sure about past heat illness',
-  } as Record<string, string>,
-  medicines: {
-    water: 'Water tablets',
-    bp: 'Blood pressure medicine',
-    allergy: 'Allergy or sleep medicine',
-    mood: 'Medicine for mood, nerves or seizures',
-    unsure: 'Not sure about medicines, nurse to check',
-    none: 'No relevant medicines',
-  } as Record<string, string>,
-  acclimatisation: {
-    new: 'Less than 1 week in this heat',
-    adjusting: '1 to 2 weeks in this heat',
-    over2: 'Acclimatised',
-    back: 'Returning after time away',
-  } as Record<string, string>,
-  age: (range: string) => `Age ${range}`,
-  updatedByWorker: 'Updated by the worker',
-  notShared: 'The worker chose not to share health information. Only work details are used.',
-}
-
-export const OH_TEXT = {
-  title: 'Cases and profiles',
-  subtitle: '[SITE NAME] · health details on this page are never shown to supervisors or employers',
-  clinicalNoteLabel: 'Clinical note (occupational health only)',
-  clinicalNotePlaceholder: 'Assessment and advice',
-  outcome: 'Outcome',
-  supervisorSees: 'The supervisor sees',
-  reviewTitle: 'Profiles to review',
-  selected: 'Open',
-  whatYouRecord: 'What you record',
-  precautionLevel: 'Precaution level',
-  workRestrictions: 'Work restrictions',
-  preview: 'Preview: what others see',
-  supervisorDashboard: 'Supervisor dashboard',
-  noHealthDetails: 'No conditions, medicines or symptoms.',
-  workerApp: 'Worker app',
-  save: 'Save and notify worker',
-  savedText: 'Saved. The worker can see this decision and ask for a review.',
-  privacy:
-    'Every view of a health record is logged and visible to the worker. Health information cannot be exported to HR systems or used for discipline, productivity rankings or employment decisions.',
 }

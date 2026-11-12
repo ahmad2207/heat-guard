@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Button } from '../../components/Button'
 import { Card } from '../../components/Card'
-import { CheckIcon, LockIcon, PlusIcon, ShieldIcon } from '../../components/icons'
+import { CheckIcon, LockIcon, ShieldIcon } from '../../components/icons'
 import { SectionLabel } from '../../components/SectionLabel'
 import { Switch } from '../../components/Switch'
 import { MY_DATA, PRECAUTION_LEVELS, precautionFor, WORKER } from '../../data/mock'
@@ -12,9 +12,8 @@ import { useWorkerPreferences } from './workerPreferences'
 
 const focusRing = 'focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-ink'
 
-// The nurse row uses a plus on blue, the supervisor row a shield on warm orange (06-my-data.html).
+// The supervisor row uses a shield on warm orange (06-my-data.html).
 const ACCESS_ICONS = {
-  nurse: { Icon: PlusIcon, className: 'bg-info-bg text-risk-1' },
   supervisor: { Icon: ShieldIcon, className: 'bg-warn-bg text-warn-strong' },
 } as const
 
@@ -157,7 +156,7 @@ export function MyDataScreen() {
           <ul className="m-0 flex list-none flex-col gap-3 p-0">
             {MY_DATA.accessLog.map((entry) => {
               const { Icon, className } =
-                ACCESS_ICONS[entry.id as keyof typeof ACCESS_ICONS] ?? ACCESS_ICONS.nurse
+                ACCESS_ICONS[entry.id as keyof typeof ACCESS_ICONS] ?? ACCESS_ICONS.supervisor
               return (
                 <li key={entry.id} className="flex items-start gap-3">
                   <span

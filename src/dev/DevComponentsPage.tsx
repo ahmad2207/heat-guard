@@ -60,9 +60,7 @@ const PILLS: PillStatus[] = [
   'ok',
   'check',
   'act-now',
-  'escalation',
   'sample-data',
-  'precaution',
   'hazard-moderate',
   'hazard-possible',
 ]
@@ -86,7 +84,6 @@ export default function DevComponentsPage() {
   const [switches, setSwitches] = useState({ health: true, band: false, reports: true })
   const [ticks, setTicks] = useState({ headache: false, dizzy: true, heart: true, kidney: false })
   const [history, setHistory] = useState('no')
-  const [precaution, setPrecaution] = useState('high')
 
   return (
     <div className="min-h-screen bg-ground text-ink">
@@ -250,33 +247,6 @@ export default function DevComponentsPage() {
               ))}
             </div>
           </Card>
-          <Card as="fieldset" className="m-0 flex flex-col gap-2 border-0">
-            <legend className="float-left mb-1 p-0">
-              <SectionLabel as="span">Occupational health (precaution level)</SectionLabel>
-            </legend>
-            <div className="clear-both flex flex-col gap-2">
-              {[
-                ['standard', 'Standard precautions', 'Same advice as the rest of the crew.'],
-                ['enhanced', 'Enhanced precautions', 'Earlier warnings and extra breaks.'],
-                [
-                  'high',
-                  'High-priority precautions',
-                  'Conservative exposure, set by a professional.',
-                ],
-              ].map(([value, label, hint]) => (
-                <RadioTile
-                  key={value}
-                  variant="oh"
-                  name="dev-precaution"
-                  value={value}
-                  label={label}
-                  hint={hint}
-                  checked={precaution === value}
-                  onChange={setPrecaution}
-                />
-              ))}
-            </div>
-          </Card>
         </Group>
 
         <Group title="Chip">
@@ -299,9 +269,7 @@ export default function DevComponentsPage() {
         <Group title="StatusPill">
           <Card className="flex flex-wrap gap-2">
             {PILLS.map((status) => (
-              <StatusPill key={status} status={status}>
-                {status === 'precaution' ? 'Precaution (text passed in)' : undefined}
-              </StatusPill>
+              <StatusPill key={status} status={status} />
             ))}
           </Card>
         </Group>

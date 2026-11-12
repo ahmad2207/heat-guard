@@ -14,7 +14,6 @@ export interface WorkerPreferences {
   profileSent: boolean
   /** True once the worker leaves the health profile with Send or "Skip for now" on first run. */
   onboardingComplete: boolean
-  reviewRequested: boolean
 }
 
 export interface WorkerPreferencesValue extends WorkerPreferences {
@@ -25,7 +24,6 @@ export interface WorkerPreferencesValue extends WorkerPreferences {
   sendProfile: () => void
   /** Leaves first run without sending ("Skip for now"). */
   skipProfile: () => void
-  requestReview: () => void
   /** Clears the health profile answers only. Consent choices stay. */
   deleteHealthAnswers: () => void
   /** Fills in W-0412's sample answers (dev panel, for demos). */
@@ -43,7 +41,6 @@ export const DEFAULT_PREFERENCES: WorkerPreferences = {
   profile: EMPTY_HEALTH_PROFILE,
   profileSent: false,
   onboardingComplete: false,
-  reviewRequested: false,
 }
 
 const isBool = (value: unknown): value is boolean => typeof value === 'boolean'
@@ -81,7 +78,6 @@ function sanitise(saved: unknown): WorkerPreferences {
     },
     profileSent: isBool(s.profileSent) ? s.profileSent : d.profileSent,
     onboardingComplete: isBool(s.onboardingComplete) ? s.onboardingComplete : d.onboardingComplete,
-    reviewRequested: isBool(s.reviewRequested) ? s.reviewRequested : d.reviewRequested,
   }
 }
 

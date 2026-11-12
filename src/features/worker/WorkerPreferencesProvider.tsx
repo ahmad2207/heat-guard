@@ -42,7 +42,6 @@ export function WorkerPreferencesProvider({ children }: { children: ReactNode })
           onboardingComplete: true,
         })),
       skipProfile: () => update((p) => ({ ...p, onboardingComplete: true })),
-      requestReview: () => update((p) => ({ ...p, reviewRequested: true })),
       deleteHealthAnswers: () =>
         update((p) => ({
           ...p,

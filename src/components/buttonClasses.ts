@@ -6,11 +6,11 @@ export type ButtonSize = 'sm' | 'md' | 'lg'
 const VARIANTS: Record<ButtonVariant, string> = {
   primary: 'bg-ink text-surface border border-ink',
   secondary: 'bg-surface text-ink border border-field',
-  // "Refer to clinic" in 11-occupational-health.html
+  // Destructive actions, for example "Delete my health information" on My data
   danger: 'bg-surface text-risk-4 border border-field',
 }
 
-// sm: supervisor and OH pages (44px). md: secondary worker buttons (48px).
+// sm: supervisor pages (44px). md: secondary worker buttons (48px).
 // lg: main worker actions at the bottom of a screen (54px).
 const SIZES: Record<ButtonSize, string> = {
   sm: 'min-h-11 px-[18px] rounded-[10px] text-[15px]',

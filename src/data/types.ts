@@ -15,12 +15,9 @@ export type PrecautionLevelId = 'standard' | 'enhanced' | 'high'
 export interface PrecautionLevelDefinition {
   id: PrecautionLevelId
   name: string
-  hint: string
-  /** What the supervisor dashboard shows. */
-  supervisorText: string
   /** What the worker app shows. */
   workerText: string
-  /** Work restrictions recorded by occupational health. */
+  /** The worker's restriction text for this level. */
   restriction: string
 }
 
@@ -44,7 +41,6 @@ export interface Worker {
   language: Language
   precaution: {
     level: PrecautionLevelId
-    setBy: string
     setOn: string
     nextReview: string
     restrictions: string[]
@@ -258,49 +254,14 @@ export interface Bar {
   value: number
 }
 
-/* ---------- Occupational health ---------- */
+/* ---------- Precaution levels ---------- */
 
-export interface Escalation {
-  workerId: string
-  crew: string
-  reportedAt: string
-  symptoms: string
-  conditions: string
-  firstAid: string
-  outcomes: string[]
-  outcomeNote: string
-}
-
-export interface ProfileToReview {
-  workerId: string
-  crew: string
-  reason: string
-  open?: boolean
-}
-
-/** A worker's precaution level as set by occupational health. */
+/** A worker's precaution level. */
 export interface PrecautionRecord {
   level: PrecautionLevelId
-  /** Shown as "Set by occupational health · 12 Oct". */
+  /** Shown as "Set on 12 Oct". Empty when the worker is on standard precautions by default. */
   setOn: string
   nextReview?: string
-}
-
-export interface OhOutcome {
-  id: string
-  label: string
-  /** The only thing the supervisor sees about the case. */
-  supervisorSees: string
-  variant: 'primary' | 'secondary' | 'danger'
-}
-
-export interface OhProfile {
-  workerId: string
-  crew: string
-  task: string
-  consent: string
-  recorded: string[]
-  recordedNote: string
 }
 
 /* ---------- Consent, health profile and My data (screens 1, 2 and 6) ---------- */
