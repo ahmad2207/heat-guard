@@ -38,59 +38,16 @@ export type SiteHelpRequest = ResponseOf<'/api/v1/sites/{siteId}/help-requests',
 /* ---------- GET /me ---------- */
 
 /**
- * GET /me: from captured samples, schema missing in spec. The spec documents it only as "object"
- * with no example, so this type is built from docs/backend/samples/me-worker-W-0301.json and
- * me-supervisor-S-001.json (12 Nov 2026). Read it defensively; ask the backend team to document it.
+ * GET /me: the signed-in person, their worker record, site, today's assignment, consent choices
+ * and their own precaution summary. The captured samples in docs/backend/samples/ are kept as
+ * reference.
  */
-export type UserRole = 'worker' | 'supervisor' | 'admin' | 'occupational_health'
+export type MeResponse = ResponseOf<'/api/v1/me', 'get'>
 
-export interface MeResponse {
-  user: { id: string; loginId: string; role: UserRole }
-  /** null for supervisors. */
-  worker: {
-    /** A UUID. Show employeeCode (for example W-0301), never this. */
-    id: string
-    employeeCode: string
-    displayName: string
-    crew: { id: string; name: string } | null
-    /** App language code: en, ha, yo, ig or pcm. */
-    language: string
-    readAloud: boolean
-    acclimatization: {
-      acclimatized: boolean
-      startedOn: string | null
-      daysSinceStart: number | null
-    }
-  } | null
-  /** null for the supervisor sample: supervisors find their site with GET /sites. */
-  site: {
-    id: string
-    name: string
-    timezone: string
-    emergencyNumber: string | null
-    shifts: Array<{ name: string; start: string; end: string }>
-  } | null
-  /** Today's work assignment, or null. */
-  assignment: {
-    id: string
-    siteId: string
-    activity: { code: string; name: string }
-    workload: string
-    workEnvironment: string
-    startsAt: string
-    endsAt: string
-    plannedBreaks: string[]
-    breakMinutes: number
-    clockedInAt: string | null
-    clockedOutAt: string | null
-    onBreakSince: string | null
-    lastBreakEndedAt: string | null
-  } | null
-  /** The worker's own consent choices; null for supervisors. */
-  consents: { healthPrecautions: boolean; wearableBand: boolean; symptomReports: boolean } | null
-  /**
-   * null in both samples, so the shape is not known yet. Only the demo workers W-0412 and W-0384
-   * have one, and they are never used for captures. Ask the backend team before reading it.
-   */
-  precaution: unknown
-}
+export type UserRole = MeResponse['user']['role']
+
+/**
+ * The worker's own precaution summary. null when they have no health profile, and for
+ * non-workers. Never shown to supervisors.
+ */
+export type MePrecaution = NonNullable<MeResponse['precaution']>

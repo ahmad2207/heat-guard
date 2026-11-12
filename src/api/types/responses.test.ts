@@ -2,6 +2,8 @@ import { describe, expectTypeOf, it } from 'vitest'
 import type {
   AuthTokensResponse,
   HealthCheckResponse,
+  MePrecaution,
+  MeResponse,
   MyHelpRequest,
   MyRiskResponse,
   SiteHelpRequest,
@@ -21,5 +23,8 @@ describe('generated response types', () => {
     expectTypeOf<SiteTodayResponse['workersOnShift']>().toEqualTypeOf<number>()
     expectTypeOf<MyHelpRequest['detailsShared']>().toEqualTypeOf<boolean>()
     expectTypeOf<SiteHelpRequest['workerCode']>().toEqualTypeOf<string>()
+    expectTypeOf<MeResponse['user']['loginId']>().toEqualTypeOf<string>()
+    expectTypeOf<MePrecaution['level']>().toEqualTypeOf<'standard' | 'enhanced' | 'high_priority'>()
+    expectTypeOf<MePrecaution['restrictions']>().toEqualTypeOf<string[]>()
   })
 })
