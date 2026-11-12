@@ -19,8 +19,8 @@ import { router } from './router.tsx'
 // import.meta.env.DEV is false in production builds, so Vite drops the panel and its import.
 const DevPanel = import.meta.env.DEV ? lazy(() => import('./dev/DevPanel.tsx')) : null
 
-// The occupational health role was removed. Clear the saved precaution levels and escalation
-// outcomes it left behind, so old demo state cannot leak into the worker or supervisor screens.
+// Clear saved precaution levels and escalation outcomes from an earlier version of the demo,
+// so old demo state cannot leak into the worker or supervisor screens.
 for (const key of ['heatguard.precautions.v1', 'heatguard.outcomes.v1']) {
   try {
     window.localStorage.removeItem(key)

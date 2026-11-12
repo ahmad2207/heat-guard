@@ -1,15 +1,19 @@
+import { isMockMode } from '../api/config'
 import { SITE_TIME } from '../data/mock'
+import { formatTime } from './format'
 
 // When this module first loads, which is when the page loads.
 const pageLoadedAt = Date.now()
 
 /**
- * Demo clock: the sample site time (10:32) plus the real minutes since the page loaded, as HH:MM.
- * Used for every time the app shows after an action, so it matches the sample data.
+ * The current time as HH:MM, used for every time the app shows after an action.
  *
- * Replace with the real device time when the backend is connected.
+ * Mock mode: a demo clock, the sample site time (10:32) plus the real minutes since the page
+ * loaded, so it matches the sample data.
+ * API mode: the device clock, shown in the site timezone.
  */
 export function now(): string {
+  if (!isMockMode) return formatTime(new Date())
   const [hours, minutes] = SITE_TIME.split(':').map(Number)
   const elapsed = Math.floor((Date.now() - pageLoadedAt) / 60_000)
   const total = (hours * 60 + minutes + elapsed) % (24 * 60)

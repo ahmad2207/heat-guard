@@ -23,9 +23,22 @@ npm run dev          # development server (includes the dev panel)
 npm run build        # type-check and build into dist/
 npm run preview      # serve the production build locally
 npm run lint         # check the code with ESLint
+npm test             # run the unit tests (Vitest)
 npm run format       # format the code with Prettier
 npm run generate-icons  # regenerate the PWA icons from public/logo.svg
+npm run generate-api-types  # regenerate src/api/schema.d.ts from docs/backend/openapi.json
 ```
+
+### Environment
+
+Copy `.env.example` to `.env.local` (`.env` and `.env.local` are not committed).
+
+| Variable           | Value                              | Meaning                                                                                  |
+| ------------------ | ---------------------------------- | ---------------------------------------------------------------------------------------- |
+| `VITE_API_URL`     | `https://health-heat.onrender.com` | Backend host only. Routes are under `/api/v1`                                            |
+| `VITE_DATA_SOURCE` | `mock` or `api`                    | Sample data or the backend. If empty: `api` when `VITE_API_URL` is set, otherwise `mock` |
+
+With `mock`, the app runs on the sample data in `src/data/mock.ts` and the demo clock (10:32). With `api`, data comes from the backend, times use the device clock shown in the site timezone, and requests wait up to 90 seconds (the free server can take close to a minute to wake).
 
 The service worker is off in development. To test it in development, set `DEV_PWA=true`:
 
@@ -41,7 +54,8 @@ $env:DEV_PWA="true"; npm run dev    # Windows PowerShell
 1. Push the repository to GitHub.
 2. In [Vercel](https://vercel.com), choose **Add New Project** and import the repository.
 3. Vercel detects Vite: build command `npm run build`, output directory `dist`.
-4. Deploy. Pushes to `main` deploy automatically.
+4. Under **Settings > Environment Variables**, set `VITE_API_URL` and `VITE_DATA_SOURCE` (see Environment above). Vite reads them at build time, so redeploy after changing them.
+5. Deploy. Pushes to `main` deploy automatically.
 
 `vercel.json` sends every route to `index.html`, so links such as `/supervisor/plan` work on reload. Real files such as `/sw.js` and the assets are served first.
 
@@ -49,6 +63,8 @@ $env:DEV_PWA="true"; npm run dev    # Windows PowerShell
 
 ```
 src/
+  api/          Backend access: client.ts (the only module that calls fetch), data.ts (api or mock),
+                converters/ (backend codes to app types), schema.d.ts (generated), types/provisional.ts
   components/   Shared UI: Button, Card, RiskBadge, RiskCard, ForecastStrip, Switch, tiles, headers, icons
   data/         Sample data (mock.ts) and its types (types.ts)
   dev/          Developer panel and component library, development builds only
@@ -57,7 +73,7 @@ src/
     supervisor/           Supervisor screens: Today, Shift plan, Measures
   i18n/         Translations (next phase)
   layouts/      Worker and supervisor page shells
-  lib/          Helpers: risk levels, demo clock, speech, online status, battery
+  lib/          Helpers: risk levels, clock, time formatting, speech, online status, battery
   pages/        Not-found page
   router.tsx    Every route, with its page title
   index.css     Tailwind theme tokens and base styles
@@ -97,6 +113,6 @@ In sample mode the levels come from `src/data/mock.ts` and match the backend dem
 
 ## Notes
 
-- All data is sample data from `src/data/mock.ts`. Nothing is sent to a server.
+- Screens still use the sample data from `src/data/mock.ts`. The API client and data layer are in place; screens are connected to the backend phase by phase.
 - `src/lib/heat-risk/types.ts` belongs to the risk engine work and is not used by the frontend.
 - The language choice is saved but visual only. Translations for Hausa, Yoruba, Igbo and Pidgin are the next phase.

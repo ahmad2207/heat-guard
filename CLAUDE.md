@@ -1,6 +1,6 @@
 # HeatGuard AI
 
-Heat-risk warning PWA for outdoor workers, supervisors and occupational health. React 19, TypeScript (strict), Vite, Tailwind CSS v4, vite-plugin-pwa. Deployed on Vercel at https://heat-guard-nine.vercel.app.
+Heat-risk warning PWA for outdoor workers and supervisors. React 19, TypeScript (strict), Vite, Tailwind CSS v4, vite-plugin-pwa. Deployed on Vercel at https://heat-guard-nine.vercel.app.
 
 - `npm run dev` to develop, `npm run build` to type-check and build, `npm run lint` to lint.
 - `design-reference/` is the source of truth for the UI. Start with `design-reference/README.md`, `TOKENS.md` and `SCREENS.md`. The phased plan is in `design-reference/BUILD-PROMPTS.md`.

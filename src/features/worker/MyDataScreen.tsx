@@ -121,7 +121,7 @@ export function MyDataScreen() {
               <span className="text-[14px] text-muted">{MY_DATA.setOn(record.setOn)}</span>
             )}
           </div>
-          {/* "Request a review" is hidden: there is no occupational health service to review it. */}
+          {/* "Request a review" is hidden: no one reviews precaution levels yet. */}
           <Link
             to="/worker/health-profile"
             className={cn(

@@ -305,7 +305,7 @@ export function HealthProfileScreen() {
               </p>
             )}
           </div>
-          {/* "Request a review" is hidden: there is no occupational health service to review it. */}
+          {/* "Request a review" is hidden: no one reviews precaution levels yet. */}
         </Question>
       </div>
 

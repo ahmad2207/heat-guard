@@ -18,6 +18,7 @@ dev-dist
 
 # Local env files
 *.local
+.env
 .env.local
 .env.*.local
 

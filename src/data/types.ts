@@ -8,7 +8,8 @@ import type { ForecastHour } from '../components/ForecastStrip'
 
 export type Language = 'English' | 'Hausa' | 'Yoruba' | 'Igbo' | 'Pidgin'
 
-export type CrewId = 'A' | 'B' | 'C' | 'D'
+/** A crew ID. Sample data uses A to D; in api mode IDs and names come from the backend. */
+export type CrewId = string
 
 export type PrecautionLevelId = 'standard' | 'enhanced' | 'high'
 
