@@ -175,7 +175,7 @@ export default function DevComponentsPage() {
           <Card className="py-1">
             <Switch
               label="Health precautions"
-              description="Lets occupational health set extra care for you. Without it you get standard advice."
+              description="Lets HeatGuard give you extra care based on your health answers. Without it you get standard advice."
               checked={switches.health}
               onChange={(health) => setSwitches((s) => ({ ...s, health }))}
               divider
@@ -299,7 +299,9 @@ export default function DevComponentsPage() {
         <Group title="StatusPill">
           <Card className="flex flex-wrap gap-2">
             {PILLS.map((status) => (
-              <StatusPill key={status} status={status} />
+              <StatusPill key={status} status={status}>
+                {status === 'precaution' ? 'Precaution (text passed in)' : undefined}
+              </StatusPill>
             ))}
           </Card>
         </Group>

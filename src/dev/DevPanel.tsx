@@ -4,8 +4,6 @@ import { RadioTile } from '../components/RadioTile'
 import { Switch } from '../components/Switch'
 import { RISK_LEVELS, riskLabel, type RiskLevel } from '../lib/risk'
 import { CURRENT_RISK_LEVEL } from '../data/mock'
-import { useEscalationOutcomes } from '../features/occupational-health/escalationOutcomes'
-import { usePrecautionLevels } from '../features/occupational-health/precautionLevels'
 import { useWorkerPreferences } from '../features/worker/workerPreferences'
 import { useDevSettings } from './devSettings'
 
@@ -16,13 +14,9 @@ import { useDevSettings } from './devSettings'
 export default function DevPanel() {
   const { riskLevel, setRiskLevel, forceFieldMode, setForceFieldMode } = useDevSettings()
   const { resetOnboarding, consentGiven, loadSampleAnswers } = useWorkerPreferences()
-  const precautions = usePrecautionLevels()
-  const escalationOutcomes = useEscalationOutcomes()
-  /** Clears all saved demo state across the three roles, and resets this panel. */
+  /** Clears the saved worker state and resets this panel. */
   const resetDemoData = () => {
     resetOnboarding()
-    precautions.reset()
-    escalationOutcomes.reset()
     setRiskLevel(CURRENT_RISK_LEVEL)
     setForceFieldMode(false)
   }
@@ -90,8 +84,7 @@ export default function DevPanel() {
             </Button>
             <p className="m-0 text-[12px] text-muted">
               Reset onboarding clears consent and the health profile. Reset demo data also resets
-              precaution levels, escalation outcomes and this panel.{' '}
-              {consentGiven ? 'Consent is saved.' : 'No consent saved.'}
+              this panel. {consentGiven ? 'Consent is saved.' : 'No consent saved.'}
             </p>
           </div>
         </section>

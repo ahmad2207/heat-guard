@@ -9,11 +9,9 @@ import { PrivacyNoticePage } from './features/worker/PrivacyNoticePage'
 import { ReportScreen } from './features/worker/ReportScreen'
 import { RequireConsent } from './features/worker/RequireConsent'
 import { WhatToDoScreen } from './features/worker/WhatToDoScreen'
-import { CasesScreen } from './features/occupational-health/CasesScreen'
 import { MeasuresScreen } from './features/supervisor/MeasuresScreen'
 import { PlanScreen } from './features/supervisor/PlanScreen'
 import { TodayScreen } from './features/supervisor/TodayScreen'
-import { OccupationalHealthLayout } from './layouts/OccupationalHealthLayout'
 import type { RouteHandle } from './layouts/routeHandle'
 import { SupervisorLayout } from './layouts/SupervisorLayout'
 import { WorkerLayout } from './layouts/WorkerLayout'
@@ -120,19 +118,6 @@ export const router = createBrowserRouter([
         // The Measures design shows the header without role, status or account.
         handle: page('Safety and productivity measures', { supervisorHeader: { showRole: false } }),
         element: <MeasuresScreen />,
-      },
-    ],
-  },
-
-  // Occupational health (screen 11)
-  {
-    path: '/occupational-health',
-    element: <OccupationalHealthLayout />,
-    children: [
-      {
-        index: true,
-        handle: page('Cases and profiles'),
-        element: <CasesScreen />,
       },
     ],
   },

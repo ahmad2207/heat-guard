@@ -17,7 +17,6 @@ export function downloadMyData(preferences: WorkerPreferences): void {
     },
     language: preferences.language,
     healthProfile: preferences.profile,
-    reviewRequested: preferences.reviewRequested,
   }
 
   const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' })

@@ -1,6 +1,6 @@
 # HeatGuard AI
 
-HeatGuard AI is a heat-risk warning and decision support app for outdoor workers, built for Population Health Challenge 07. Workers see their heat risk, what to do about it and how to report symptoms, even without a connection. Supervisors plan shifts and breaks around the heat, and occupational health sets personal precautions. Health details stay with occupational health: supervisors only ever see risk levels and actions.
+HeatGuard AI is a heat-risk warning and decision support app for outdoor workers, built for Population Health Challenge 07. Workers see their heat risk, what to do about it and how to report symptoms, even without a connection. Supervisors plan shifts and breaks around the heat. Health answers stay private: supervisors only ever see risk levels and actions, never health reasons.
 
 Live site: https://heat-guard-nine.vercel.app
 
@@ -55,9 +55,9 @@ src/
   features/
     worker/               Worker screens: consent, health profile, Home and field mode, What to do, Report, My data
     supervisor/           Supervisor screens: Today, Shift plan, Measures
-    occupational-health/  Cases and profiles, plus the shared precaution levels and escalation outcomes
+    occupational-health/  Not routed any more; kept until it is cleared for deletion
   i18n/         Translations (next phase)
-  layouts/      Worker, supervisor and occupational health page shells
+  layouts/      Worker and supervisor page shells
   lib/          Helpers: risk levels, demo clock, speech, online status, battery
   pages/        Not-found page
   router.tsx    Every route, with its page title
@@ -72,7 +72,7 @@ src/
 
 ### Role switcher
 
-The home page (`/`) has three buttons: **Worker**, **Supervisor** and **Occupational health**. There is no login in the prototype.
+The home page (`/`) has two buttons: **Worker** and **Supervisor**. There is no login in the prototype.
 
 ### Developer panel
 
@@ -82,19 +82,11 @@ In development builds (`npm run dev`) a **Dev** button sits at the bottom right.
 - force field mode on, to see the offline layout while online
 - load W-0412's sample health profile answers
 - reset onboarding (clears the worker's consent and health profile)
-- reset demo data (clears everything saved across all three roles, and resets the panel)
+- reset demo data (clears the worker's saved state and resets the panel)
 
-### Cross-role demo
+### Precaution levels
 
-The three roles share saved demo state in the browser:
-
-1. Open **Occupational health**, change W-0412's precaution level (for example to Standard) and press **Save and notify worker**.
-2. Open the worker **Home**: the "Extra precautions on your profile" reason shows only on Enhanced or High-priority.
-3. Open **My data**: it shows the new level and the date it was set.
-4. Open supervisor **Today**: the alert for W-0412 follows the new level (none on Standard), without any health reasons.
-5. Back in occupational health, choose an outcome for W-0388 (for example **Refer to clinic**). Supervisor **Today** then shows "Occupational health: Referred to clinic" on the W-0388 card, and never the symptoms or the clinical note.
-
-If the worker sends health profile answers in the same browser, occupational health sees them as categories in "What you record".
+In sample mode the levels come from `src/data/mock.ts` and match the backend demo: W-0412 is on High-priority precautions and W-0384 on Enhanced. The worker **Home** and **My data** show W-0412's level. Supervisor **Today** shows only the action for each worker, for example "Worker W-0412 needs reduced exposure today", never the level name or any health reason.
 
 ### Field mode on a phone
 

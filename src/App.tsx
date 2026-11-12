@@ -7,7 +7,6 @@ import { useOnlineStatus } from './lib/useOnlineStatus'
 const ROLES = [
   { label: 'Worker', to: '/worker' },
   { label: 'Supervisor', to: '/supervisor' },
-  { label: 'Occupational health', to: '/occupational-health' },
 ]
 
 /**

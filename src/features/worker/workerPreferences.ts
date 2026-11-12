@@ -10,10 +10,8 @@ export interface WorkerPreferences {
   /** Shared by the consent screen and My data. */
   sharing: SharingChoices
   profile: HealthProfileAnswers
-  /** True after "Send to occupational health", until the answers change again. */
+  /** True after "Save my answers", until the answers change again. */
   profileSent: boolean
-  /** The answers last sent to occupational health, and when. Cleared by Delete. */
-  sentProfile?: { answers: HealthProfileAnswers; sentAt: string }
   /** True once the worker leaves the health profile with Send or "Skip for now" on first run. */
   onboardingComplete: boolean
   reviewRequested: boolean
@@ -54,25 +52,6 @@ const isStringArray = (value: unknown): value is string[] =>
 const isStringOrNull = (value: unknown): value is string | null =>
   value === null || typeof value === 'string'
 
-/** A saved copy of the sent answers, if it is well formed. */
-function sanitiseSent(value: unknown): WorkerPreferences['sentProfile'] {
-  if (!value || typeof value !== 'object') return undefined
-  const v = value as { answers?: Record<string, unknown>; sentAt?: unknown }
-  const a = v.answers
-  if (!a || typeof v.sentAt !== 'string') return undefined
-  if (!isStringArray(a.conditions) || !isStringArray(a.medicines)) return undefined
-  return {
-    sentAt: v.sentAt,
-    answers: {
-      ageRange: typeof a.ageRange === 'string' ? a.ageRange : '',
-      conditions: a.conditions,
-      heatIllness: isStringOrNull(a.heatIllness) ? a.heatIllness : null,
-      medicines: a.medicines,
-      acclimatisation: isStringOrNull(a.acclimatisation) ? a.acclimatisation : null,
-    },
-  }
-}
-
 /** Keeps only well-formed saved values, so an old or edited entry cannot break the app. */
 function sanitise(saved: unknown): WorkerPreferences {
   const d = DEFAULT_PREFERENCES
@@ -101,7 +80,6 @@ function sanitise(saved: unknown): WorkerPreferences {
         : d.profile.acclimatisation,
     },
     profileSent: isBool(s.profileSent) ? s.profileSent : d.profileSent,
-    sentProfile: sanitiseSent(s.sentProfile),
     onboardingComplete: isBool(s.onboardingComplete) ? s.onboardingComplete : d.onboardingComplete,
     reviewRequested: isBool(s.reviewRequested) ? s.reviewRequested : d.reviewRequested,
   }

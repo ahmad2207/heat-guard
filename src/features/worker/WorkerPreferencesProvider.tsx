@@ -40,7 +40,6 @@ export function WorkerPreferencesProvider({ children }: { children: ReactNode })
           ...p,
           profileSent: true,
           onboardingComplete: true,
-          sentProfile: { answers: p.profile, sentAt: new Date().toISOString() },
         })),
       skipProfile: () => update((p) => ({ ...p, onboardingComplete: true })),
       requestReview: () => update((p) => ({ ...p, reviewRequested: true })),
@@ -49,7 +48,6 @@ export function WorkerPreferencesProvider({ children }: { children: ReactNode })
           ...p,
           profile: EMPTY_HEALTH_PROFILE,
           profileSent: false,
-          sentProfile: undefined,
         })),
       loadSampleAnswers: () =>
         update((p) => ({ ...p, profile: HEALTH_PROFILE_SAMPLE, profileSent: false })),

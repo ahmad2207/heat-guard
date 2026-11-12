@@ -3,14 +3,13 @@ import { Link } from 'react-router-dom'
 import { Button } from '../../components/Button'
 import { Card } from '../../components/Card'
 import { CheckTile } from '../../components/CheckTile'
-import { CheckIcon, ChevronLeftIcon, LockIcon } from '../../components/icons'
+import { ChevronLeftIcon, LockIcon } from '../../components/icons'
 import { ListenButton } from '../../components/ListenButton'
 import { RadioTile } from '../../components/RadioTile'
-import { HEALTH_PROFILE, PRECAUTION_LEVELS, REVIEW_REQUESTED, WORKER } from '../../data/mock'
+import { HEALTH_PROFILE, PRECAUTION_LEVELS, precautionFor, WORKER } from '../../data/mock'
 import type { ChoiceOption, HealthProfileAnswers } from '../../data/types'
 import { cn } from '../../lib/cn'
 import { useSpeech } from '../../lib/useSpeech'
-import { usePrecautionLevels } from '../occupational-health/precautionLevels'
 import { useWorkerPreferences } from './workerPreferences'
 
 const focusRing = 'focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-ink'
@@ -30,21 +29,37 @@ function Question({
   title,
   intro,
   footnote,
+  tag,
+  notice,
   children,
   group = true,
 }: {
   title: string
   intro?: string
   footnote?: string
+  /** A visible tag next to the title, for example "Shared with your work record" (decision D4). */
+  tag?: string
+  /** A short line under the intro explaining how the answer is used. */
+  notice?: string
   children: ReactNode
   group?: boolean
 }) {
   const introId = useId()
-  const heading = <span className="text-[17px] font-extrabold">{title}</span>
-  const introText = intro && (
-    <p id={introId} className="m-0 text-[14px] leading-[1.4] text-muted">
-      {intro}
-    </p>
+  const heading = (
+    <span className="flex flex-wrap items-center gap-2">
+      <span className="text-[17px] font-extrabold">{title}</span>
+      {tag && (
+        <span className="rounded-full bg-info-bg px-2.5 py-1 text-[12px] font-extrabold text-info-text">
+          {tag}
+        </span>
+      )}
+    </span>
+  )
+  const introText = (intro || notice) && (
+    <div id={introId} className="flex flex-col gap-1">
+      {intro && <p className="m-0 text-[14px] leading-[1.4] text-muted">{intro}</p>}
+      {notice && <p className="m-0 text-[14px] leading-[1.4] font-semibold">{notice}</p>}
+    </div>
   )
   const foot = footnote && <p className="m-0 text-[13px] text-muted">{footnote}</p>
 
@@ -137,14 +152,12 @@ export function HealthProfileScreen() {
     sendProfile,
     skipProfile,
     onboardingComplete,
-    reviewRequested,
-    requestReview,
   } = useWorkerPreferences()
   // During first run the back arrow returns to the consent screen; afterwards to My data.
   const back = onboardingComplete
     ? { to: '/worker/my-data', label: 'Back to my data' }
     : { to: '/worker/welcome', label: 'Back to your choices' }
-  const record = usePrecautionLevels().recordFor(WORKER.id)
+  const record = precautionFor(WORKER.id)
   const precaution = PRECAUTION_LEVELS[record.level]
   // High-priority uses the design's two lines; other levels show their restriction text.
   const restrictions =
@@ -157,15 +170,10 @@ export function HealthProfileScreen() {
 
   // Buttons that disappear when pressed hand focus to what replaces them.
   const sentRef = useRef<HTMLDivElement>(null)
-  const reviewRef = useRef<HTMLParagraphElement>(null)
   const [justSent, setJustSent] = useState(false)
-  const [justRequested, setJustRequested] = useState(false)
   useEffect(() => {
     if (justSent && profileSent) sentRef.current?.focus()
   }, [justSent, profileSent])
-  useEffect(() => {
-    if (justRequested && reviewRequested) reviewRef.current?.focus()
-  }, [justRequested, reviewRequested])
 
   const listen = speak ? () => speak(`${content.title}. ${content.intro}`) : undefined
 
@@ -267,6 +275,8 @@ export function HealthProfileScreen() {
           title={content.acclimatisation.title}
           intro={content.acclimatisation.intro}
           footnote={content.acclimatisation.footnote}
+          tag={content.acclimatisation.sharedTag}
+          notice={content.acclimatisation.sharedNote}
         >
           <SingleChoice
             name="acclimatisation"
@@ -288,36 +298,14 @@ export function HealthProfileScreen() {
                 {item}
               </p>
             ))}
-            <p className="m-0 text-[13px] text-muted">
-              Set {record.setOn}
-              {record.nextReview && ` · next review ${record.nextReview}`}
-            </p>
+            {record.setOn && (
+              <p className="m-0 text-[13px] text-muted">
+                Set {record.setOn}
+                {record.nextReview && ` · next review ${record.nextReview}`}
+              </p>
+            )}
           </div>
-          {reviewRequested ? (
-            <p
-              ref={reviewRef}
-              role="status"
-              tabIndex={-1}
-              className={cn(
-                'm-0 flex items-center gap-2 rounded-xl bg-ok-bg px-3.5 py-3 text-[15px] font-bold text-ok-text',
-                focusRing,
-              )}
-            >
-              <CheckIcon size={20} strokeWidth={2.4} className="shrink-0" />
-              {REVIEW_REQUESTED}
-            </p>
-          ) : (
-            <Button
-              variant="secondary"
-              fullWidth
-              onClick={() => {
-                requestReview()
-                setJustRequested(true)
-              }}
-            >
-              Request a review
-            </Button>
-          )}
+          {/* "Request a review" is hidden: there is no occupational health service to review it. */}
         </Question>
       </div>
 

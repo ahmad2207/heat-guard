@@ -93,8 +93,8 @@ export const PRECAUTION_LEVELS: Record<PrecautionLevelId, PrecautionLevelDefinit
  * ========================================================================= */
 
 /*
- * W-0412 is on High-priority precautions on every screen. Screens read the level from
- * the shared precaution store (defaults in PRECAUTION_DEFAULTS) and the wording from PRECAUTION_LEVELS.
+ * W-0412 is on High-priority precautions on every screen. In mock mode screens read the level
+ * from PRECAUTION_DEFAULTS (via precautionFor) and the wording from PRECAUTION_LEVELS.
  */
 export const WORKER: Worker = {
   id: 'W-0412',
@@ -328,8 +328,9 @@ export const SYMPTOM_REPORT: SymptomReportContent = {
   sentTitle: 'Report sent',
   sentText:
     'Stop work and rest in the shade now. Your supervisor has been asked to check on you. If you feel worse, use the emergency buttons above.',
-  privacy:
-    'Your supervisor sees that you need help, not which symptoms you ticked. Details go to occupational health only.',
+  // Decision D5: the alert always goes through; details are kept only with symptom sharing on.
+  sentTextNoDetails: 'Your supervisor and first aider were alerted. No symptom details were kept.',
+  privacy: 'Details stay private; your supervisor only sees that you need help.',
 }
 
 /** From design-reference/source/Offline.dc.html. */
@@ -360,7 +361,7 @@ export const FIELD_MODE: FieldModeContent = {
     '15 min break in shade every 45 min',
     'Drink water at every break',
     'Avoid the heaviest work between 12:00 and 15:00',
-    'Break alarms work offline. Critical alerts also come by SMS.',
+    'Break reminders still work offline',
   ],
   savedForecast: {
     title: 'Saved forecast',
@@ -376,7 +377,7 @@ export const FIELD_MODE: FieldModeContent = {
 
 /**
  * From design-reference/source/Privacy.dc.html. The precaution level shown on My data comes from
- * the shared precaution store, the same as every other screen.
+ * precautionFor, the same as every other screen.
  */
 export const MY_DATA = {
   title: 'My data and privacy',
@@ -384,23 +385,26 @@ export const MY_DATA = {
   healthProfileLink: 'Health profile',
   sharingTitle: 'What you share',
   sharing: [
-    { id: 'health', label: 'Health precautions', description: 'Seen by occupational health only' },
+    {
+      id: 'health',
+      label: 'Health precautions',
+      description: 'Kept private, never shown to your supervisor',
+    },
     {
       id: 'band',
       label: 'Wearable band',
       description: 'Heart rate and skin temperature. Pause any time.',
     },
-    { id: 'reports', label: 'Symptom reports', description: 'Details to occupational health only' },
+    {
+      id: 'reports',
+      label: 'Share symptom details',
+      description: 'Kept private; your supervisor only sees that you need help',
+    },
     { id: 'voice', label: 'Read warnings aloud', description: 'In your chosen language' },
   ] satisfies SwitchContent[],
   accessTitle: 'Who looked at your data',
   accessPeriod: 'Last 30 days',
   accessLog: [
-    {
-      id: 'nurse',
-      who: 'Occupational health nurse',
-      detail: 'Health details · 12 Oct · reviewed your precaution level',
-    },
     { id: 'supervisor', who: 'Your supervisor', detail: 'Risk level and actions only · today' },
   ] satisfies DataAccessEntry[],
   promise:
@@ -408,8 +412,8 @@ export const MY_DATA = {
   download: 'Download my data',
   downloadFileName: 'heatguard-my-data.json',
   delete: 'Delete my health information',
-  deleteConfirm:
-    'Delete your health answers? Occupational health will be told your profile was removed. This cannot be undone.',
+  deleteConfirm: 'Delete your health answers? This cannot be undone.',
+  setOn: (date: string) => `Set on ${date}`,
   deleteConfirmButton: 'Delete',
   deleteCancel: 'Cancel',
   deleted: 'Your health answers have been deleted.',
@@ -443,7 +447,7 @@ export const ONBOARDING: OnboardingContent = {
       id: 'health',
       label: 'Health precautions',
       description:
-        'Lets occupational health set extra care for you. Without it you get standard advice.',
+        'Lets HeatGuard give you extra care based on your health answers. Without it you get standard advice.',
     },
     {
       id: 'band',
@@ -453,8 +457,8 @@ export const ONBOARDING: OnboardingContent = {
     },
     {
       id: 'reports',
-      label: 'Symptom reports to occupational health',
-      description: 'So a nurse can follow up. Supervisors only see that you need help.',
+      label: 'Share symptom details',
+      description: 'Kept private; your supervisor only sees that you need help',
     },
   ],
   promiseTitle: 'Our promise',
@@ -468,7 +472,7 @@ export const ONBOARDING: OnboardingContent = {
 export const HEALTH_PROFILE: HealthProfileContent = {
   title: 'My health profile',
   intro:
-    'Every question is optional. Answers go to occupational health only and help them decide if you need extra care in the heat. Your supervisor never sees them.',
+    'Your health answers stay private and are never shown to your supervisor. Your answer about getting used to the heat is part of your work record.',
   sharingOffNote: {
     before: 'You chose not to share health information. You can turn it on in ',
     link: 'My data',
@@ -501,7 +505,7 @@ export const HEALTH_PROFILE: HealthProfileContent = {
       {
         id: 'other',
         label: 'Something else that affects heat',
-        hint: 'A nurse will ask you about it in private',
+        hint: 'Your answer stays private and is never shown to your supervisor',
       },
       { id: 'none', label: 'None of these' },
     ],
@@ -528,10 +532,10 @@ export const HEALTH_PROFILE: HealthProfileContent = {
         label: 'Medicine for mood, nerves or seizures',
         hint: 'Some affect body temperature',
       },
-      { id: 'unsure', label: 'Not sure', hint: 'A nurse can check with you' },
+      { id: 'unsure', label: 'Not sure', hint: 'You can leave this and update it later' },
       { id: 'none', label: 'None of these' },
     ],
-    footnote: 'Not sure? Choose "Not sure" and a nurse can check with you.',
+    footnote: 'Not sure? You can leave this and update it later.',
   },
   acclimatisation: {
     title: '5. Getting used to the heat',
@@ -544,16 +548,18 @@ export const HEALTH_PROFILE: HealthProfileContent = {
     ],
     footnote:
       'New or returning workers need about 1 to 2 weeks to adjust, so they get extra care at first.',
+    sharedTag: 'Shared with your work record',
+    sharedNote: 'This answer helps plan your breaks and is part of your work record.',
   },
   precautions: {
     title: '6. Precautions set for you',
     intro:
-      'Set by occupational health from your answers. You cannot change these here, but you can ask for a review.',
+      'Extra care HeatGuard gives you based on your answers. Your supervisor only sees the actions, never the reason.',
   },
-  send: 'Send to occupational health',
+  send: 'Save my answers',
   skip: 'Skip for now',
   footnote: 'You can change or delete these answers at any time in My data.',
-  sentText: 'Sent. A nurse will review it and you will see any change to your precautions here.',
+  sentText: 'Saved. Your answers stay private.',
   goToStatus: 'Go to my status',
 }
 
@@ -725,7 +731,7 @@ export const NEEDS_ATTENTION: NeedsAttentionAlert[] = [
     workerId: 'W-0388',
     title: 'Worker W-0388 reported feeling unwell',
     meta: 'Crew B · 10:21',
-    text: 'Check on them now, move them to shade and stop their work. First aider notified and case escalated to the occupational health nurse.',
+    text: 'Check on them now, move them to shade and stop their work. First aider notified.',
     actions: ['I am on my way', 'Mark resolved'],
   },
   {
@@ -747,7 +753,19 @@ export const NEEDS_ATTENTION: NeedsAttentionAlert[] = [
     title: 'Worker W-0412 needs reduced exposure today',
     meta: 'Crew C · Now',
     do: 'reassign to shaded or lighter duty until 15:00 and add a recovery break every 30 min.',
-    note: 'Health reasons are visible to occupational health only.',
+    note: 'Health reasons are never shown.',
+    actions: ['Reassign', 'Acknowledge'],
+  },
+  {
+    // SAMPLE: W-0384 is enhanced in the backend demo. Crew A is a guess until the backend data is used.
+    id: 'w0384-precaution',
+    kind: 'precaution',
+    crew: 'A',
+    workerId: 'W-0384',
+    title: 'Worker W-0384 needs earlier breaks today',
+    meta: 'Crew A · Now',
+    do: 'add an extra 10 min break each hour at level 3 and above.',
+    note: 'Health reasons are never shown.',
     actions: ['Reassign', 'Acknowledge'],
   },
 ]
@@ -927,7 +945,7 @@ export const PLAN_CHANGES = [
 
 export const PLAN_SEND = {
   text: 'Each worker gets their own timings and breaks in their language, with an audio option. Workers on reduced exposure get their adjusted plan without anyone else seeing why.',
-  sentText: 'Plan sent to 29 workers. Changes are tracked under Actions today.',
+  sentText: 'Plan applied for today. Let your crews know about the changes.',
   note: 'HeatGuard suggests, you decide. Plans never require removing protective equipment, and are not used to judge individual productivity.',
 }
 
@@ -946,7 +964,7 @@ export const PLAN_TEXT = {
   workingNoteSame: 'Across all crews, same in both plans',
   workingNoteDifferent: 'Across all crews',
   reducedTitle: 'Workers needing reduced exposure',
-  reducedNote: 'Reasons visible to occupational health only',
+  reducedNote: 'Health reasons are never shown',
   fewerHours: (hours: number) =>
     `This plan has ${hours} fewer working ${hours === 1 ? 'hour' : 'hours'} than the current plan.`,
   timelineNote: 'Red outline: work that is too strenuous for the forecast heat',
@@ -1016,7 +1034,7 @@ export const MEASURES: MeasureCard[] = [
     title: 'Emergency escalations',
     value: '3',
     summary: 'All reached a first aider within 10 min',
-    detail: 'Emergency button use, first-aider alerts and clinical referrals.',
+    detail: 'Emergency button use, first-aider alerts and emergency calls.',
   },
   {
     id: 'lost-time',
@@ -1087,20 +1105,20 @@ export const PROFILES_TO_REVIEW: ProfileToReview[] = [
     reason: 'Worker updated health information · today',
     open: true,
   },
-  { workerId: 'W-0377', crew: 'Crew A', reason: 'Worker requested a review · yesterday' },
+  { workerId: 'W-0384', crew: 'Crew A', reason: 'Worker requested a review · yesterday' },
   {
-    workerId: 'W-0451',
+    workerId: 'W-0456',
     crew: 'Crew B',
     reason: 'New starter, not yet acclimatised · day 3 of 14',
   },
-  { workerId: 'W-0290', crew: 'Crew D', reason: 'Restriction due to end · Friday' },
+  { workerId: 'W-0307', crew: 'Crew D', reason: 'Restriction due to end · Friday' },
 ]
 export const PROFILES_WAITING = '4 waiting'
 
 const RECORDED_NOTE = 'Only factors with a clear link to heat risk are collected.'
 
 /**
- * Profiles for the "Profiles to review" rows. W-0412 is the design. W-0377, W-0451 and W-0290 are
+ * Profiles for the "Profiles to review" rows. W-0412 is the design. W-0384, W-0456 and W-0307 are
  * SAMPLE profiles written for the prototype to match their row text.
  */
 export const OH_PROFILES: Record<string, OhProfile> = {
@@ -1118,16 +1136,16 @@ export const OH_PROFILES: Record<string, OhProfile> = {
     ],
     recordedNote: RECORDED_NOTE,
   },
-  'W-0377': {
-    workerId: 'W-0377',
+  'W-0384': {
+    workerId: 'W-0384',
     crew: 'Crew A',
     task: 'concrete work',
     consent: 'Consent: health information yes · wearable band no · can be withdrawn by the worker',
     recorded: ['Breathing condition on file', 'Acclimatised', 'No past heat illness'],
     recordedNote: RECORDED_NOTE,
   },
-  'W-0451': {
-    workerId: 'W-0451',
+  'W-0456': {
+    workerId: 'W-0456',
     crew: 'Crew B',
     task: 'excavation',
     consent:
@@ -1135,8 +1153,8 @@ export const OH_PROFILES: Record<string, OhProfile> = {
     recorded: ['New starter: day 3 of 14 getting used to the heat', 'No conditions reported'],
     recordedNote: RECORDED_NOTE,
   },
-  'W-0290': {
-    workerId: 'W-0290',
+  'W-0307': {
+    workerId: 'W-0307',
     crew: 'Crew D',
     task: 'site logistics',
     consent: 'Consent: health information yes · wearable band no · can be withdrawn by the worker',
@@ -1146,14 +1164,17 @@ export const OH_PROFILES: Record<string, OhProfile> = {
 }
 
 /**
- * SAMPLE: precaution levels set by occupational health, by worker. The shared store starts from
- * these, and "Save and notify worker" on screen 11 changes them.
+ * SAMPLE: precaution levels by worker, matching the backend demo data (W-0412 high_priority,
+ * W-0384 enhanced). In mock mode this is the only source of precaution levels.
  */
 export const PRECAUTION_DEFAULTS: Record<string, PrecautionRecord> = {
   'W-0412': { level: 'high', setOn: '12 Oct', nextReview: '9 Nov' },
-  'W-0377': { level: 'enhanced', setOn: '28 Sep' },
-  'W-0451': { level: 'enhanced', setOn: '4 Nov', nextReview: '18 Nov' },
-  'W-0290': { level: 'high', setOn: '10 Oct', nextReview: '7 Nov' },
+  'W-0384': { level: 'enhanced', setOn: '28 Oct' },
+}
+
+/** A worker's precaution level in mock mode. Workers not listed are on standard precautions. */
+export function precautionFor(workerId: string): PrecautionRecord {
+  return PRECAUTION_DEFAULTS[workerId] ?? { level: 'standard', setOn: '' }
 }
 
 /**

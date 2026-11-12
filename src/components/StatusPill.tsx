@@ -28,10 +28,9 @@ const STYLES: Record<PillStatus, { className: string; label: string }> = {
   'act-now': { className: cn(LOUD, 'bg-risk-4 text-risk-4-text'), label: 'Act now' },
   escalation: { className: cn(LOUD, 'bg-risk-4 text-risk-4-text'), label: 'Escalation' },
   'sample-data': { className: cn(LOUD, 'bg-risk-2 text-risk-2-text'), label: 'Sample data' },
-  precaution: {
-    className: cn(NORMAL, 'bg-ink text-surface'),
-    label: 'High-priority precautions',
-  },
+  // No default wording: supervisors never see a precaution level name (decision D1). Pass the
+  // text as children where a level name is allowed.
+  precaution: { className: cn(NORMAL, 'bg-ink text-surface'), label: '' },
   'hazard-moderate': { className: cn(COMPACT, 'bg-risk-2 text-risk-2-text'), label: 'Moderate' },
   'hazard-possible': { className: cn(COMPACT, 'bg-risk-3 text-risk-3-text'), label: 'Possible' },
 }

@@ -35,9 +35,6 @@ function answersAsCategories(answers: HealthProfileAnswers): string[] {
   return chips.filter((chip): chip is string => Boolean(chip))
 }
 
-const shortDate = (iso: string) =>
-  new Date(iso).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' })
-
 interface ProfilePanelProps {
   workerId: string
   /** Move focus to the heading when the panel opens, after a row is chosen. */
@@ -77,8 +74,9 @@ export function ProfilePanel({ workerId, focusOnOpen }: ProfilePanelProps) {
   // W-0412 is the worker using the worker app in this browser, so their own choices show here.
   const isDemoWorker = workerId === WORKER.id
   const healthNotShared = isDemoWorker && worker.consentGiven && !worker.sharing.health
-  const sent = isDemoWorker && !healthNotShared ? worker.sentProfile : undefined
-  const recorded = sent ? answersAsCategories(sent.answers) : profile.recorded
+  // Not routed any more (occupational health was removed). Uses the worker's saved answers.
+  const sent = isDemoWorker && !healthNotShared && worker.profileSent ? worker.profile : undefined
+  const recorded = sent ? answersAsCategories(sent) : profile.recorded
   const consent =
     isDemoWorker && worker.consentGiven
       ? `Consent: health information ${worker.sharing.health ? 'yes' : 'no'} · wearable band ${worker.sharing.band ? 'yes' : 'no'} · can be withdrawn by the worker`
@@ -116,7 +114,7 @@ export function ProfilePanel({ workerId, focusOnOpen }: ProfilePanelProps) {
                 </ul>
                 {sent && (
                   <p className="m-0 text-[13px] font-bold text-info-text">
-                    {RECORDED_CATEGORIES.updatedByWorker} · {shortDate(sent.sentAt)}
+                    {RECORDED_CATEGORIES.updatedByWorker}
                   </p>
                 )}
               </>

@@ -13,28 +13,32 @@ import '@fontsource/ibm-plex-mono/latin-600.css'
 import './index.css'
 import { RouterProvider } from 'react-router-dom'
 import { DevSettingsProvider } from './dev/DevSettingsProvider.tsx'
-import { EscalationOutcomesProvider } from './features/occupational-health/EscalationOutcomesProvider.tsx'
-import { PrecautionLevelsProvider } from './features/occupational-health/PrecautionLevelsProvider.tsx'
 import { WorkerPreferencesProvider } from './features/worker/WorkerPreferencesProvider.tsx'
 import { router } from './router.tsx'
 
 // import.meta.env.DEV is false in production builds, so Vite drops the panel and its import.
 const DevPanel = import.meta.env.DEV ? lazy(() => import('./dev/DevPanel.tsx')) : null
 
+// The occupational health role was removed. Clear the saved precaution levels and escalation
+// outcomes it left behind, so old demo state cannot leak into the worker or supervisor screens.
+for (const key of ['heatguard.precautions.v1', 'heatguard.outcomes.v1']) {
+  try {
+    window.localStorage.removeItem(key)
+  } catch {
+    // Storage blocked (for example private browsing): nothing to clear.
+  }
+}
+
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <DevSettingsProvider>
       <WorkerPreferencesProvider>
-        <PrecautionLevelsProvider>
-          <EscalationOutcomesProvider>
-            <RouterProvider router={router} />
-            {DevPanel && (
-              <Suspense fallback={null}>
-                <DevPanel />
-              </Suspense>
-            )}
-          </EscalationOutcomesProvider>
-        </PrecautionLevelsProvider>
+        <RouterProvider router={router} />
+        {DevPanel && (
+          <Suspense fallback={null}>
+            <DevPanel />
+          </Suspense>
+        )}
       </WorkerPreferencesProvider>
     </DevSettingsProvider>
   </StrictMode>,

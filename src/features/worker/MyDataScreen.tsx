@@ -5,9 +5,8 @@ import { Card } from '../../components/Card'
 import { CheckIcon, LockIcon, PlusIcon, ShieldIcon } from '../../components/icons'
 import { SectionLabel } from '../../components/SectionLabel'
 import { Switch } from '../../components/Switch'
-import { MY_DATA, PRECAUTION_LEVELS, REVIEW_REQUESTED, WORKER } from '../../data/mock'
+import { MY_DATA, PRECAUTION_LEVELS, precautionFor, WORKER } from '../../data/mock'
 import { cn } from '../../lib/cn'
-import { usePrecautionLevels } from '../occupational-health/precautionLevels'
 import { downloadMyData } from './downloadMyData'
 import { useWorkerPreferences } from './workerPreferences'
 
@@ -102,15 +101,9 @@ function YourDataSection() {
 
 /** Screen 6: My data and privacy. Values from design-reference/html/06-my-data.html. */
 export function MyDataScreen() {
-  const { sharing, setSharing, reviewRequested, requestReview } = useWorkerPreferences()
-  const record = usePrecautionLevels().recordFor(WORKER.id)
+  const { sharing, setSharing } = useWorkerPreferences()
+  const record = precautionFor(WORKER.id)
   const precaution = PRECAUTION_LEVELS[record.level]
-
-  const reviewRef = useRef<HTMLParagraphElement>(null)
-  const [justRequested, setJustRequested] = useState(false)
-  useEffect(() => {
-    if (justRequested && reviewRequested) reviewRef.current?.focus()
-  }, [justRequested, reviewRequested])
 
   return (
     <>
@@ -125,46 +118,20 @@ export function MyDataScreen() {
             <span className="rounded-full bg-ink px-3 py-1.5 text-[15px] font-bold text-surface">
               {precaution.name}
             </span>
-            <span className="text-[14px] text-muted">
-              Set by {WORKER.precaution.setBy} · {record.setOn}
-            </span>
-          </div>
-          <div className="grid grid-cols-2 gap-2">
-            <Link
-              to="/worker/health-profile"
-              className={cn(
-                'flex h-12 items-center justify-center rounded-xl bg-ink text-[15px] font-bold text-surface no-underline',
-                focusRing,
-                reviewRequested && 'col-span-2',
-              )}
-            >
-              {MY_DATA.healthProfileLink}
-            </Link>
-            {reviewRequested ? (
-              <p
-                ref={reviewRef}
-                role="status"
-                tabIndex={-1}
-                className={cn(
-                  'col-span-2 m-0 flex items-center gap-2 rounded-xl bg-ok-bg px-3.5 py-3 text-[15px] font-bold text-ok-text',
-                  focusRing,
-                )}
-              >
-                <CheckIcon size={20} strokeWidth={2.4} className="shrink-0" />
-                {REVIEW_REQUESTED}
-              </p>
-            ) : (
-              <Button
-                variant="secondary"
-                onClick={() => {
-                  requestReview()
-                  setJustRequested(true)
-                }}
-              >
-                Request a review
-              </Button>
+            {record.setOn && (
+              <span className="text-[14px] text-muted">{MY_DATA.setOn(record.setOn)}</span>
             )}
           </div>
+          {/* "Request a review" is hidden: there is no occupational health service to review it. */}
+          <Link
+            to="/worker/health-profile"
+            className={cn(
+              'flex h-12 items-center justify-center rounded-xl bg-ink text-[15px] font-bold text-surface no-underline',
+              focusRing,
+            )}
+          >
+            {MY_DATA.healthProfileLink}
+          </Link>
         </Card>
 
         <Card aria-label={MY_DATA.sharingTitle} className="flex flex-col pt-3 pb-1">

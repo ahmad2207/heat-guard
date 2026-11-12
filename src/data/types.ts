@@ -116,6 +116,8 @@ export interface SymptomReportContent {
   sendDisabledLabel: string
   sentTitle: string
   sentText: string
+  /** Shown instead of sentText when symptom sharing is off (decision D5). */
+  sentTextNoDetails: string
   privacy: string
 }
 
@@ -198,8 +200,6 @@ export type NeedsAttentionAlert =
       crew: CrewId
       /** The worker whose saved precaution level this alert follows. */
       workerId: string
-      /** Pill text, the precaution level name. Set from the saved level. */
-      levelName?: string
       title: string
       meta: string
       do: string
@@ -354,7 +354,15 @@ export interface HealthProfileContent {
   conditions: { title: string; intro: string; options: ChoiceOption[] }
   heatIllness: { title: string; intro: string; options: ChoiceOption[] }
   medicines: { title: string; intro: string; options: ChoiceOption[]; footnote: string }
-  acclimatisation: { title: string; intro: string; options: ChoiceOption[]; footnote: string }
+  acclimatisation: {
+    title: string
+    intro: string
+    options: ChoiceOption[]
+    footnote: string
+    /** Decision D4: this answer feeds the work record, so it is tagged and explained. */
+    sharedTag: string
+    sharedNote: string
+  }
   precautions: { title: string; intro: string }
   send: string
   skip: string

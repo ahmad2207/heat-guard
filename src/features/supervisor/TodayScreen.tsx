@@ -18,7 +18,7 @@ import {
   LAST_7_DAYS_SUMMARY,
   NEEDS_ATTENTION,
   PRECAUTION_ALERTS,
-  PRECAUTION_LEVELS,
+  precautionFor,
   SITE,
   SITE_HEAT_BY_HOUR,
   SITE_HEAT_NOTE,
@@ -32,7 +32,6 @@ import {
 import type { CrewId, NeedsAttentionAlert } from '../../data/types'
 import { cn } from '../../lib/cn'
 import { riskClasses, riskLabel, riskName } from '../../lib/risk'
-import { usePrecautionLevels } from '../occupational-health/precautionLevels'
 import { CrewsTable } from './CrewsTable'
 import { NeedsAttention } from './NeedsAttention'
 
@@ -344,7 +343,6 @@ export function TodayScreen() {
   const [crewFilter, setCrewFilter] = useState(0)
   const [activityFilter, setActivityFilter] = useState(0)
   const [shiftFilter, setShiftFilter] = useState(0)
-  const { recordFor } = usePrecautionLevels()
 
   // A crew shows when it matches both filters. null means "all".
   const allowed = (crew: CrewId) =>
@@ -352,11 +350,11 @@ export function TodayScreen() {
       (list) => list === null || list.includes(crew),
     )
   const crews = CREWS.filter((crew) => allowed(crew.id))
-  // Individual precaution alerts follow the level occupational health has saved. Standard has no
-  // alert. The supervisor sees the level and the action only, never the health reasons.
+  // Individual precaution alerts follow the worker's precaution level. Standard has no alert.
+  // Decision D1: the supervisor sees the action only, never the level name or health reasons.
   const alerts = NEEDS_ATTENTION.flatMap((alert): NeedsAttentionAlert[] => {
     if (alert.kind !== 'precaution') return [alert]
-    const { level } = recordFor(alert.workerId)
+    const { level } = precautionFor(alert.workerId)
     if (level === 'standard') return []
     const copy = PRECAUTION_ALERTS[level]
     return [
@@ -364,7 +362,6 @@ export function TodayScreen() {
         ...alert,
         title: copy.title(alert.workerId),
         do: copy.do,
-        levelName: PRECAUTION_LEVELS[level].name,
       },
     ]
   }).filter((alert) => allowed(alert.crew))

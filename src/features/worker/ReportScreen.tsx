@@ -4,12 +4,14 @@ import { CheckTile } from '../../components/CheckTile'
 import { CheckIcon, LockIcon } from '../../components/icons'
 import { SYMPTOM_REPORT } from '../../data/mock'
 import { cn } from '../../lib/cn'
+import { useWorkerPreferences } from './workerPreferences'
 
 const focusRing = 'focus-visible:outline-3 focus-visible:outline-offset-2'
 
 /** Screen 5: Report symptoms. Values from design-reference/html/05-report-symptoms.html. */
 export function ReportScreen() {
   const { emergency } = SYMPTOM_REPORT
+  const { sharing } = useWorkerPreferences()
   const noteId = useId()
   const [ticked, setTicked] = useState<Record<string, boolean>>({})
   const [note, setNote] = useState('')
@@ -108,7 +110,9 @@ export function ReportScreen() {
             <h2 id={`${noteId}-sent`} className="m-0 text-[20px] font-extrabold">
               {SYMPTOM_REPORT.sentTitle}
             </h2>
-            <p className="m-0 text-[15px] leading-[1.45]">{SYMPTOM_REPORT.sentText}</p>
+            <p className="m-0 text-[15px] leading-[1.45]">
+              {sharing.reports ? SYMPTOM_REPORT.sentText : SYMPTOM_REPORT.sentTextNoDetails}
+            </p>
             <ButtonLink to="/worker" variant="secondary" className="mt-1 self-start">
               Back to Status
             </ButtonLink>
