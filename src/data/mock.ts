@@ -333,6 +333,12 @@ export const LIVE_TEXT = {
   alertFailed: 'The alert could not be sent. Call for help with the button above.',
   reportFailed: 'The report could not be sent. Try again, or use the emergency buttons above.',
   cupFailed: 'That cup was not saved. Try again.',
+  // Shift card on Home
+  shiftTitle: 'Your shift',
+  endShiftConfirm: 'End your shift for today?',
+  endShiftCancel: 'Cancel',
+  shiftConflict: 'Your shift had already changed. This is how it is now.',
+  shiftFailed: 'That was not saved. Try again.',
 }
 
 /** From design-reference/source/Offline.dc.html. */

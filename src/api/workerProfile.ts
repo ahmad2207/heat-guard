@@ -25,6 +25,8 @@ export interface WorkerAccount {
   hasChosen: boolean
   /** null: no health profile, so no precaution card. */
   precaution: MePrecaution | null
+  /** Today's work assignment, or null when there is none. */
+  assignment: MeResponse['assignment']
 }
 
 type ConsentHistory = ResponseOf<'/api/v1/workers/{workerId}/consents', 'get'>
@@ -42,6 +44,7 @@ function accountFromMe(me: MeResponse, hasChosen: boolean): WorkerAccount {
     consents: consentFromApi(me.consents),
     hasChosen,
     precaution: me.precaution ?? null,
+    assignment: me.assignment ?? null,
   }
 }
 

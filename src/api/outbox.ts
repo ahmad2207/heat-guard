@@ -1,6 +1,7 @@
 /**
  * Actions a worker takes while offline, kept on the device and sent in order once the app is
- * online and signed in: "+ Cup", "I understand", first-aid alerts and symptom reports.
+ * online and signed in: "+ Cup", "I understand", first-aid alerts, symptom reports and the shift
+ * buttons.
  *
  * - Sent oldest first. A 409 (already done) drops the item quietly, as does any other refusal
  *   (4xx) that could never succeed.
@@ -15,7 +16,7 @@ import { ApiError, isUnreachable } from './errors'
 
 export const OUTBOX_KEY = 'heatguard.outbox.v1'
 
-export type OutboxKind = 'water' | 'acknowledge' | 'first-aid-alert' | 'symptom-report'
+export type OutboxKind = 'water' | 'acknowledge' | 'first-aid-alert' | 'symptom-report' | 'shift'
 
 export interface OutboxItem {
   id: string
@@ -32,7 +33,7 @@ export type OutboxOutcome =
   /** Waiting for a connection. */
   | { status: 'queued' }
 
-const KINDS: OutboxKind[] = ['water', 'acknowledge', 'first-aid-alert', 'symptom-report']
+const KINDS: OutboxKind[] = ['water', 'acknowledge', 'first-aid-alert', 'symptom-report', 'shift']
 
 function read(): OutboxItem[] {
   try {

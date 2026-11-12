@@ -5,6 +5,7 @@ import { HomeRoute, RequireRole } from './features/session/guards'
 import { LoginScreen } from './features/session/LoginScreen'
 import { WorkerAccountProvider } from './features/worker/account/WorkerAccountProvider'
 import { ConsentScreen } from './features/worker/ConsentScreen'
+import { Heartbeat } from './features/worker/live/Heartbeat'
 import { MyRiskProvider } from './features/worker/live/MyRiskProvider'
 import { HealthProfileScreen } from './features/worker/HealthProfileScreen'
 import { HomeScreen } from './features/worker/HomeScreen'
@@ -52,6 +53,7 @@ export const router = createBrowserRouter([
       <RequireRole role="worker">
         <WorkerAccountProvider>
           <MyRiskProvider>
+            <Heartbeat />
             <WorkerLayout />
           </MyRiskProvider>
         </WorkerAccountProvider>

@@ -4,6 +4,7 @@
  */
 import { apiRequest, type RequestOptions } from './client'
 import { savedRiskFromApi, type SavedRisk } from './converters/myRisk'
+import { SHIFT_PATHS, type ShiftAction } from './converters/shift'
 import { submit, type OutboxOutcome } from './outbox'
 import type { MyRiskResponse, ResponseOf } from './types/responses'
 
@@ -94,4 +95,25 @@ export function sendSymptomReport(
   const note = report.note.trim()
   const body = shareDetails ? { symptoms: report.symptoms, ...(note ? { note } : {}) } : {}
   return submit({ kind: 'symptom-report', path: '/me/symptom-reports', body })
+}
+
+/* ---------- Shift buttons and heartbeat ---------- */
+
+/** "Start shift", "Start break", "End break" and "End shift". Queued when offline. */
+export function sendShiftAction(assignmentId: string, action: ShiftAction): Promise<OutboxOutcome> {
+  return submit({
+    kind: 'shift',
+    path: `/assignments/${encodeURIComponent(assignmentId)}/${SHIFT_PATHS[action]}`,
+  })
+}
+
+/**
+ * POST /me/heartbeat: tells the backend the app is open, with the battery when the browser
+ * reports it. Never queued: an old heartbeat means nothing. Failures are ignored.
+ */
+export async function sendHeartbeat(
+  battery: { percent: number; charging: boolean } | null,
+): Promise<void> {
+  const body = battery ? { batteryPercent: battery.percent, charging: battery.charging } : {}
+  await apiRequest('/me/heartbeat', { method: 'POST', body }).catch(() => {})
 }

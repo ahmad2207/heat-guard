@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useState, type ReactNode } from 'react'
 import type { DataSource, HazardRow, RiskView } from '../../api/converters/myRisk'
 import { addCup, loadWater } from '../../api/liveWorker'
 import { useApiData } from '../../api/useApiData'
@@ -23,6 +23,7 @@ import { useSpeech } from '../../lib/useSpeech'
 import { ScreenStatus } from './account/WithWorkerAccount'
 import { FieldModeView } from './FieldModeView'
 import { useMyRisk, usePendingCount } from './live/myRisk'
+import { ShiftCard } from './live/ShiftCard'
 import { useFieldMode, type ReconnectStatus } from './useFieldMode'
 import { WorkerHomeHeader } from './WorkerHomeHeader'
 
@@ -146,13 +147,15 @@ function ApiStatus({ view, showBackOnline }: { view: RiskView; showBackOnline: b
   const queued = usePendingCount(['water'])
   const [serverCups, setServerCups] = useState<number | null>(null)
   const [error, setError] = useState<string | null>(null)
+  /** A cup is being sent from this screen (not a replay of cups queued earlier). */
+  const [sending, setSending] = useState(false)
   const loaded = water.status === 'ready' ? water.data.cupsToday : null
 
-  // When queued cups are sent later (back online), load the count again from the server.
+  // When cups queued earlier are sent (back online), load the count again from the server.
   const [lastQueued, setLastQueued] = useState(queued)
   if (queued !== lastQueued) {
     setLastQueued(queued)
-    if (queued < lastQueued) {
+    if (queued < lastQueued && !sending) {
       setServerCups(null)
       water.retry()
     }
@@ -161,7 +164,9 @@ function ApiStatus({ view, showBackOnline }: { view: RiskView; showBackOnline: b
 
   const onAddCup = useCallback(async () => {
     setError(null)
+    setSending(true)
     const outcome = await addCup()
+    setSending(false)
     if (outcome.status === 'sent') {
       const body = outcome.response as { cupsToday?: unknown } | undefined
       if (typeof body?.cupsToday === 'number') setServerCups(body.cupsToday)
@@ -183,11 +188,13 @@ function ApiStatus({ view, showBackOnline }: { view: RiskView; showBackOnline: b
         forecast: view.forecast,
         hazards: view.hazards,
       }}
+      shift={<ShiftCard />}
       water={{
         // Cups waiting to be sent are counted, so the number goes up as soon as it is pressed.
         cups: cups === null ? null : cups + queued,
         onAddCup: () => void onAddCup(),
-        queued,
+        // Not while a cup is being sent: only when it is really waiting for signal.
+        queued: sending ? 0 : queued,
         error,
       }}
     />
@@ -198,10 +205,13 @@ function ApiStatus({ view, showBackOnline }: { view: RiskView; showBackOnline: b
 function StatusView({
   data,
   water,
+  shift,
   showBackOnline,
 }: {
   data: StatusData
   water: WaterData
+  /** Api mode: the shift card, shown below the risk card. */
+  shift?: ReactNode
   showBackOnline: boolean
 }) {
   const { speak } = useSpeech()
@@ -245,6 +255,8 @@ function StatusView({
         </div>
 
         <RiskCard level={level} message={message} onListen={listen} />
+
+        {shift}
 
         <Card aria-label="Breaks and water" className="flex flex-col gap-3.5">
           {nextBreak && (
