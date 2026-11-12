@@ -1,6 +1,8 @@
 import { createBrowserRouter, type RouteObject } from 'react-router-dom'
 import App from './App.tsx'
 import { SUPERVISOR_HEADER_STATUS } from './data/mock'
+import { HomeRoute, RequireRole } from './features/session/guards'
+import { LoginScreen } from './features/session/LoginScreen'
 import { ConsentScreen } from './features/worker/ConsentScreen'
 import { HealthProfileScreen } from './features/worker/HealthProfileScreen'
 import { HomeScreen } from './features/worker/HomeScreen'
@@ -34,13 +36,21 @@ const devRoutes: RouteObject[] = import.meta.env.DEV
   : []
 
 export const router = createBrowserRouter([
-  // Role switcher
-  { path: '/', element: <App /> },
+  // Mock mode: the role switcher. Api mode: /login or the person's home.
+  { path: '/', element: <HomeRoute roleSwitcher={<App />} /> },
+
+  // Sign in (api mode). In mock mode it goes back to the role switcher.
+  { path: '/login', handle: page('Sign in'), element: <LoginScreen /> },
 
   // Worker app (screens 1 to 7). Field mode (7) is shown inside /worker.
   {
     path: '/worker',
-    element: <WorkerLayout />,
+    // Api mode: workers only. Report stays reachable without consent (RequireConsent is on Home).
+    element: (
+      <RequireRole role="worker">
+        <WorkerLayout />
+      </RequireRole>
+    ),
     children: [
       {
         // Home switches to field mode (screen 7) itself. Workers with no saved consent go to
@@ -91,7 +101,11 @@ export const router = createBrowserRouter([
   // Supervisor (screens 8 to 10)
   {
     path: '/supervisor',
-    element: <SupervisorLayout />,
+    element: (
+      <RequireRole role="supervisor">
+        <SupervisorLayout />
+      </RequireRole>
+    ),
     children: [
       {
         index: true,
@@ -115,7 +129,8 @@ export const router = createBrowserRouter([
       },
       {
         path: 'measures',
-        // The Measures design shows the header without role, status or account.
+        // The Measures design shows the header without role, status or account. When signed in
+        // (api mode) the account button is added so supervisors can sign out here too.
         handle: page('Safety and productivity measures', { supervisorHeader: { showRole: false } }),
         element: <MeasuresScreen />,
       },

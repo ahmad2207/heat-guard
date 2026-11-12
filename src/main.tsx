@@ -13,6 +13,7 @@ import '@fontsource/ibm-plex-mono/latin-600.css'
 import './index.css'
 import { RouterProvider } from 'react-router-dom'
 import { DevSettingsProvider } from './dev/DevSettingsProvider.tsx'
+import { SessionProvider } from './features/session/SessionProvider.tsx'
 import { WorkerPreferencesProvider } from './features/worker/WorkerPreferencesProvider.tsx'
 import { router } from './router.tsx'
 
@@ -29,16 +30,23 @@ for (const key of ['heatguard.precautions.v1', 'heatguard.outcomes.v1']) {
   }
 }
 
+/** After sign out, or when the session cannot be renewed. */
+const goToLogin = () => {
+  void router.navigate('/login', { replace: true })
+}
+
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <DevSettingsProvider>
       <WorkerPreferencesProvider>
-        <RouterProvider router={router} />
-        {DevPanel && (
-          <Suspense fallback={null}>
-            <DevPanel />
-          </Suspense>
-        )}
+        <SessionProvider onSignedOut={goToLogin}>
+          <RouterProvider router={router} />
+          {DevPanel && (
+            <Suspense fallback={null}>
+              <DevPanel />
+            </Suspense>
+          )}
+        </SessionProvider>
       </WorkerPreferencesProvider>
     </DevSettingsProvider>
   </StrictMode>,

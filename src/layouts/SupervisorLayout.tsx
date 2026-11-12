@@ -1,17 +1,42 @@
 import { Outlet } from 'react-router-dom'
 import { SupervisorHeader } from '../components/SupervisorHeader'
+import { useSession } from '../features/session/session'
+import { SESSION_TEXT } from '../features/session/text'
 import { useRouteHandle } from './routeHandle'
+
+/** First letter of the login ID, for the account button ("S-001" shows "S"). */
+const initialsFor = (loginId: string) =>
+  loginId
+    .replace(/[^A-Za-z]/g, '')
+    .slice(0, 1)
+    .toUpperCase()
 
 /** Dark header with Today, Plan and Measures, then a content area up to 1360px wide. */
 export function SupervisorLayout() {
   const { supervisorHeader } = useRouteHandle()
+  const { state, signOut } = useSession()
+  const session = state.status === 'signed-in' ? state.session : null
+  // Signed in (api mode): every page shows the account button with Sign out, Measures included.
+  // Mock mode keeps the design: no account button on Measures.
+  const initials = session
+    ? initialsFor(session.loginId) || SESSION_TEXT.account.slice(0, 1)
+    : supervisorHeader?.initials
 
   return (
     <div className="min-h-dvh bg-ground text-ink">
       <SupervisorHeader
         status={supervisorHeader?.status}
         showRole={supervisorHeader?.showRole ?? true}
-        initials={supervisorHeader?.initials}
+        initials={initials}
+        account={
+          session
+            ? {
+                signedInAs: SESSION_TEXT.signedInAs(session.loginId),
+                signOutLabel: SESSION_TEXT.signOut,
+                onSignOut: signOut,
+              }
+            : undefined
+        }
       />
       {/* 1360px of content plus 24px padding each side, as in the design HTML. */}
       <main className="mx-auto flex max-w-[1408px] flex-col gap-5 p-6">

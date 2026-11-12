@@ -1,3 +1,4 @@
+import { useEffect, useId, useRef, useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { cn } from '../lib/cn'
 import { ThermometerIcon } from './icons'
@@ -27,6 +28,11 @@ interface SupervisorHeaderProps {
   /** Account initials. The account button is hidden when empty. */
   initials?: string
   onAccountClick?: () => void
+  /**
+   * When set, the account button opens a small menu with "Signed in as ..." and Sign out
+   * (api mode). Without it the button does nothing, as in the design.
+   */
+  account?: { signedInAs: string; signOutLabel: string; onSignOut: () => void }
   className?: string
 }
 
@@ -37,9 +43,33 @@ export function SupervisorHeader({
   showRole = true,
   initials,
   onAccountClick,
+  account,
   className,
 }: SupervisorHeaderProps) {
   const { pathname } = useLocation()
+  const menuId = useId()
+  const [menuOpen, setMenuOpen] = useState(false)
+  const accountRef = useRef<HTMLDivElement>(null)
+  const buttonRef = useRef<HTMLButtonElement>(null)
+
+  // Escape or a click outside closes the menu; Escape returns focus to the button.
+  useEffect(() => {
+    if (!menuOpen) return
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key !== 'Escape') return
+      setMenuOpen(false)
+      buttonRef.current?.focus()
+    }
+    const onPointer = (event: PointerEvent) => {
+      if (!accountRef.current?.contains(event.target as Node)) setMenuOpen(false)
+    }
+    window.addEventListener('keydown', onKey)
+    window.addEventListener('pointerdown', onPointer)
+    return () => {
+      window.removeEventListener('keydown', onKey)
+      window.removeEventListener('pointerdown', onPointer)
+    }
+  }, [menuOpen])
   const current = active ?? tabFromPath(pathname)
   const focus =
     'focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-surface'
@@ -84,17 +114,40 @@ export function SupervisorHeader({
               </span>
             )}
             {initials && (
-              <button
-                type="button"
-                aria-label="Account"
-                onClick={onAccountClick}
-                className={cn(
-                  'size-11 rounded-full border border-muted bg-ink-control text-[14px] font-bold text-surface',
-                  focus,
+              <div ref={accountRef} className="relative">
+                <button
+                  ref={buttonRef}
+                  type="button"
+                  aria-label="Account"
+                  aria-expanded={account ? menuOpen : undefined}
+                  aria-controls={account ? menuId : undefined}
+                  onClick={() => {
+                    onAccountClick?.()
+                    if (account) setMenuOpen((open) => !open)
+                  }}
+                  className={cn(
+                    'size-11 rounded-full border border-muted bg-ink-control text-[14px] font-bold text-surface',
+                    focus,
+                  )}
+                >
+                  {initials}
+                </button>
+                {account && menuOpen && (
+                  <div
+                    id={menuId}
+                    className="absolute top-full right-0 z-20 mt-2 flex w-60 flex-col gap-2 rounded-2xl border border-line bg-surface p-3 text-ink shadow-lg"
+                  >
+                    <p className="m-0 text-[14px] text-muted">{account.signedInAs}</p>
+                    <button
+                      type="button"
+                      onClick={account.onSignOut}
+                      className="flex min-h-11 items-center justify-center rounded-[10px] border border-field bg-surface text-[15px] font-bold text-ink focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-ink"
+                    >
+                      {account.signOutLabel}
+                    </button>
+                  </div>
                 )}
-              >
-                {initials}
-              </button>
+              </div>
             )}
           </div>
         )}

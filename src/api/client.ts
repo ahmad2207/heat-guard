@@ -103,17 +103,19 @@ let refreshing: Promise<boolean> | null = null
 /**
  * Tries POST /auth/refresh once. Resolves false when the server refuses it. A network failure or
  * timeout throws instead, so the session is kept: field mode must keep working offline with an
- * expired token.
+ * expired token. Also used on app start to restore a saved session.
  */
-function refreshSession(): Promise<boolean> {
+export function refreshSession(options: Pick<RequestOptions, 'onSlow'> = {}): Promise<boolean> {
   refreshing ??= (async () => {
     const refreshToken = getRefreshToken()
     if (!refreshToken) return false
     const response = await send(
       '/auth/refresh',
-      { method: 'POST', body: { refreshToken }, auth: false },
+      { method: 'POST', body: { refreshToken }, auth: false, onSlow: options.onSlow },
       null,
     )
+    // A server error (for example 502 while Render wakes up) is not a refusal: keep the session.
+    if (response.status >= 500) throw toApiError(response.status, await readBody(response))
     if (!response.ok) return false
     const tokens = readTokens(await readBody(response))
     if (!tokens) return false

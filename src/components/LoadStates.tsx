@@ -13,16 +13,19 @@ export const TRY_AGAIN = 'Try again'
  */
 export function LoadingState({
   slow,
+  label = LOADING_TEXT,
   variant = 'worker',
 }: {
   slow: boolean
+  /** What is loading, shown until the wait gets slow. Defaults to "Loading...". */
+  label?: string
   variant?: CardVariant
 }) {
   return (
     <Card variant={variant} role="status" className="flex items-start gap-3">
       <ClockIcon size={22} strokeWidth={2.2} className="mt-px shrink-0 text-muted" />
       <span className="flex flex-col gap-0.5">
-        <span className="text-[16px] font-bold">{slow ? WAKING_TEXT : LOADING_TEXT}</span>
+        <span className="text-[16px] font-bold">{slow ? WAKING_TEXT : label}</span>
         {slow && <span className="text-[14px] text-muted">{WAKING_NOTE}</span>}
       </span>
     </Card>

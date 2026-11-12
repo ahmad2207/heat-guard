@@ -7,6 +7,7 @@ import { SectionLabel } from '../../components/SectionLabel'
 import { Switch } from '../../components/Switch'
 import { MY_DATA, PRECAUTION_LEVELS, precautionFor, WORKER } from '../../data/mock'
 import { cn } from '../../lib/cn'
+import { SignOutSection } from '../session/SignOutSection'
 import { downloadMyData } from './downloadMyData'
 import { useWorkerPreferences } from './workerPreferences'
 
@@ -186,6 +187,7 @@ export function MyDataScreen() {
         </section>
 
         <YourDataSection />
+        <SignOutSection />
       </div>
     </>
   )
