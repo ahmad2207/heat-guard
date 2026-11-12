@@ -250,6 +250,8 @@ export interface MeasureCard {
   value: string
   summary: string
   detail: string
+  /** The backend marks this figure provisional: shown with a "Provisional" badge. */
+  provisional?: boolean
 }
 
 export interface Bar {

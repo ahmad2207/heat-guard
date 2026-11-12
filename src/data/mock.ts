@@ -951,24 +951,6 @@ export const TASK_LABELS: Record<TaskType, string> = {
   B: 'Break',
 }
 
-/** The "too hot" rule: heavy work at level 3 or above, or moderate work at level 4. */
-export function isTooHot(task: TaskType, level: RiskLevel): boolean {
-  return (task === 'H' && level >= 3) || (task === 'M' && level >= 4)
-}
-
-/** Crew-hours that are too hot, and crew-hours of work (not breaks), for a plan. */
-export function countPlan(plan: Record<CrewId, string>): { tooHot: number; working: number } {
-  let tooHot = 0
-  let working = 0
-  for (const crew of PLAN_CREWS) {
-    plan[crew.id].split('').forEach((task, i) => {
-      if (isTooHot(task as TaskType, PLAN_HEAT[i])) tooHot++
-      if (task !== 'B') working++
-    })
-  }
-  return { tooHot, working }
-}
-
 export const WORKERS_NEEDING_REDUCED_EXPOSURE = 2
 
 export const PLAN_CHANGES = [
@@ -1031,6 +1013,16 @@ export const PLAN_TEXT = {
   adjustFirst: 'Adjust first',
   useThis: 'Use this plan',
   cancelChanges: 'Cancel changes',
+}
+
+/** Shift plan wording for the connected app (api mode). */
+export const PLAN_LIVE_TEXT = {
+  subtitleEnd: 'plan breaks, rotation and task timing around the heat',
+  previewNote: 'Preview: the saved numbers come from HeatGuard when you send the plan.',
+  noChanges: 'The suggested plan is the same as the current plan.',
+  noCrews: "No crews are in today's plan yet.",
+  sending: 'Sending...',
+  lastSent: (time: string) => `Last sent at ${time}.`,
 }
 
 /* =========================================================================
@@ -1127,6 +1119,15 @@ export const MEASURES_TEXT = {
     'Crew B is lowest: heavy digging was rarely moved to cooler hours. Consider earlier shift starts.',
   privacy:
     'Measures are shown for crews and sites only. Individual workers are never ranked or shown here. Results from simulated scenarios are labelled, and no real-world safety benefit is claimed without field evidence.',
+}
+
+/** Measures wording for the connected app (api mode). */
+export const MEASURES_LIVE_TEXT = {
+  subtitleEnd: 'all crews',
+  provisional: 'Provisional',
+  leadTimesNote: (period: string) => `Number of warnings by lead time, ${period}`,
+  noWarnings: 'No warnings in this period.',
+  noCrewActions: 'No crew actions in this period.',
 }
 
 /* =========================================================================
