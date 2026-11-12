@@ -1,11 +1,15 @@
-import type { ComponentType } from 'react'
+import { useState, type ComponentType } from 'react'
+import { forecastHours } from '../../api/converters/myRisk'
+import { loadSavedRisk } from '../../api/liveWorker'
 import { Card } from '../../components/Card'
-import { ForecastStrip } from '../../components/ForecastStrip'
+import { ForecastStrip, type ForecastHour } from '../../components/ForecastStrip'
 import { BandOffIcon, BatteryLowIcon, CheckIcon, NoSignalIcon } from '../../components/icons'
-import { FIELD_MODE } from '../../data/mock'
+import { FIELD_MODE, LIVE_TEXT } from '../../data/mock'
+import { formatRelative, formatTime } from '../../lib/format'
 import { cn } from '../../lib/cn'
 import { riskClasses, riskName } from '../../lib/risk'
 import { useBattery, type BatteryState } from '../../lib/useBattery'
+import { useMyRisk } from './live/myRisk'
 import type { ReconnectStatus } from './useFieldMode'
 import { WorkerHomeHeader } from './WorkerHomeHeader'
 
@@ -46,9 +50,53 @@ interface FieldModeViewProps {
   status: ReconnectStatus
 }
 
+interface LastUpdate {
+  connectionDetail: string
+  lastKnown: string | null
+  forecastNote: string
+  hours: ForecastHour[]
+}
+
+const MOCK_LAST_UPDATE: LastUpdate = {
+  connectionDetail: FIELD_MODE.connection.detail,
+  lastKnown: FIELD_MODE.lastKnown,
+  forecastNote: FIELD_MODE.savedForecast.note,
+  hours: FIELD_MODE.savedForecast.hours,
+}
+
+/** Api mode: the risk saved on the device the last time it loaded. Read when field mode opens. */
+function savedLastUpdate(): LastUpdate {
+  const saved = loadSavedRisk()
+  if (!saved) {
+    return {
+      connectionDetail: LIVE_TEXT.noSavedUpdate,
+      lastKnown: null,
+      forecastNote: '',
+      hours: [],
+    }
+  }
+  const time = formatTime(saved.assessedAt)
+  // Only the current hour and the hours still ahead are useful.
+  const from = Date.now() - 60 * 60_000
+  return {
+    connectionDetail: LIVE_TEXT.lastUpdate(time, formatRelative(saved.assessedAt)),
+    lastKnown: LIVE_TEXT.lastKnown(riskName(saved.level), time),
+    forecastNote: LIVE_TEXT.savedFrom(time),
+    hours: forecastHours(saved.hours.filter((h) => Date.parse(h.at) > from)),
+  }
+}
+
+/** What field mode shows about the last update: sample text, or the risk saved on the device. */
+function useLastUpdate(): LastUpdate {
+  const { status } = useMyRisk()
+  const [saved] = useState(savedLastUpdate)
+  return status === 'mock' ? MOCK_LAST_UPDATE : saved
+}
+
 /** Screen 7: field mode, shown inside /worker. Values from design-reference/html/07-field-mode.html. */
 export function FieldModeView({ reconnect, status }: FieldModeViewProps) {
   const battery = batteryRow(useBattery())
+  const last = useLastUpdate()
   const level = FIELD_MODE.assumedLevel
   const { bg, text, border } = riskClasses(level)
 
@@ -63,7 +111,11 @@ export function FieldModeView({ reconnect, status }: FieldModeViewProps) {
           className="flex flex-col rounded-2xl bg-ink px-3.5 pt-1.5 pb-2.5 text-surface"
         >
           <ul className="m-0 list-none p-0">
-            <StatusRow icon={NoSignalIcon} {...FIELD_MODE.connection} />
+            <StatusRow
+              icon={NoSignalIcon}
+              title={FIELD_MODE.connection.title}
+              detail={last.connectionDetail}
+            />
             <StatusRow icon={BandOffIcon} {...FIELD_MODE.band} />
             <StatusRow icon={BatteryLowIcon} {...battery} />
           </ul>
@@ -107,7 +159,7 @@ export function FieldModeView({ reconnect, status }: FieldModeViewProps) {
             <span className="text-[17px] font-bold">Level {level} of 4</span>
           </p>
           <p className="m-0 text-[16px] leading-[1.45]">{FIELD_MODE.safetyText}</p>
-          <p className="m-0 text-[14px] text-muted">{FIELD_MODE.lastKnown}</p>
+          {last.lastKnown && <p className="m-0 text-[14px] text-muted">{last.lastKnown}</p>}
         </section>
 
         <Card aria-label="Standard heat plan" className="flex flex-col gap-3">
@@ -122,13 +174,15 @@ export function FieldModeView({ reconnect, status }: FieldModeViewProps) {
           </ul>
         </Card>
 
-        <Card aria-label={FIELD_MODE.savedForecast.title} className="flex flex-col gap-3">
-          <div className="flex items-baseline justify-between gap-2">
-            <h2 className="m-0 text-[16px] font-bold">{FIELD_MODE.savedForecast.title}</h2>
-            <span className="text-[13px] text-muted">{FIELD_MODE.savedForecast.note}</span>
-          </div>
-          <ForecastStrip hours={FIELD_MODE.savedForecast.hours} saved />
-        </Card>
+        {last.hours.length > 0 && (
+          <Card aria-label={FIELD_MODE.savedForecast.title} className="flex flex-col gap-3">
+            <div className="flex items-baseline justify-between gap-2">
+              <h2 className="m-0 text-[16px] font-bold">{FIELD_MODE.savedForecast.title}</h2>
+              <span className="text-[13px] text-muted">{last.forecastNote}</span>
+            </div>
+            <ForecastStrip hours={last.hours} saved />
+          </Card>
+        )}
       </div>
     </>
   )

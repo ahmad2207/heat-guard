@@ -1,10 +1,20 @@
 import { useEffect, useId, useRef, useState } from 'react'
+import { isMockMode } from '../../api/config'
+import { sendFirstAidAlert, sendSymptomReport } from '../../api/liveWorker'
+import type { OutboxOutcome } from '../../api/outbox'
 import { Button, ButtonLink } from '../../components/Button'
 import { CheckTile } from '../../components/CheckTile'
 import { CheckIcon, LockIcon } from '../../components/icons'
-import { SYMPTOM_REPORT } from '../../data/mock'
+import { LIVE_TEXT, SYMPTOM_REPORT } from '../../data/mock'
 import { cn } from '../../lib/cn'
+import { useCurrentSession } from '../session/session'
 import { useWorkerPreferences } from './workerPreferences'
+
+type SendState = 'idle' | 'sending' | 'sent' | 'queued'
+
+/** Api mode: what an outbox outcome means for the screen. A refusal is shown as an error. */
+const stateFor = (outcome: OutboxOutcome): SendState | 'failed' =>
+  outcome.status === 'sent' ? 'sent' : outcome.status === 'queued' ? 'queued' : 'failed'
 
 const focusRing = 'focus-visible:outline-3 focus-visible:outline-offset-2'
 
@@ -12,11 +22,43 @@ const focusRing = 'focus-visible:outline-3 focus-visible:outline-offset-2'
 export function ReportScreen() {
   const { emergency } = SYMPTOM_REPORT
   const { sharing } = useWorkerPreferences()
+  // Api mode: the site's emergency number from /me. The call link always shows.
+  const siteNumber = useCurrentSession()?.site?.emergencyNumber
+  const phoneNumber = isMockMode ? emergency.phoneNumber : siteNumber || emergency.phoneNumber
+  const phoneLabel = isMockMode ? emergency.phoneLabel : phoneNumber
   const noteId = useId()
   const [ticked, setTicked] = useState<Record<string, boolean>>({})
   const [note, setNote] = useState('')
-  const [firstAiderAlerted, setFirstAiderAlerted] = useState(false)
-  const [sent, setSent] = useState(false)
+  const [alertState, setAlertState] = useState<SendState>('idle')
+  const [reportState, setReportState] = useState<SendState>('idle')
+  const [error, setError] = useState<string | null>(null)
+  const firstAiderAlerted = alertState === 'sent' || alertState === 'queued'
+  const sent = reportState === 'sent' || reportState === 'queued'
+
+  /** "Alert first aider": always sent; queued when offline. */
+  async function alertFirstAider() {
+    setError(null)
+    if (isMockMode) return setAlertState('sent')
+    setAlertState('sending')
+    const next = stateFor(await sendFirstAidAlert())
+    if (next === 'failed') {
+      setAlertState('idle')
+      setError(LIVE_TEXT.alertFailed)
+    } else setAlertState(next)
+  }
+
+  /** "Send report": details only when the worker shares symptom details (D5). */
+  async function sendReport() {
+    setError(null)
+    if (isMockMode) return setReportState('sent')
+    setReportState('sending')
+    const symptoms = Object.keys(ticked).filter((id) => ticked[id])
+    const next = stateFor(await sendSymptomReport({ symptoms, note }, sharing.reports))
+    if (next === 'failed') {
+      setReportState('idle')
+      setError(LIVE_TEXT.reportFailed)
+    } else setReportState(next)
+  }
 
   const count = Object.values(ticked).filter(Boolean).length
   const canSend = count > 0 || note.trim() !== ''
@@ -63,12 +105,18 @@ export function ReportScreen() {
                 )}
               >
                 <CheckIcon size={20} strokeWidth={2.4} className="shrink-0 text-ok" />
-                {SYMPTOM_REPORT.alertedText}
+                <span className="flex flex-col">
+                  {SYMPTOM_REPORT.alertedText}
+                  {alertState === 'queued' && (
+                    <span className="text-[13px] font-bold text-warn-text">{LIVE_TEXT.queued}</span>
+                  )}
+                </span>
               </div>
             ) : (
               <button
                 type="button"
-                onClick={() => setFirstAiderAlerted(true)}
+                onClick={alertFirstAider}
+                disabled={alertState === 'sending'}
                 className={cn(
                   'h-[50px] rounded-xl bg-surface px-2 text-[15px] font-extrabold text-danger-text',
                   focusRing,
@@ -79,7 +127,7 @@ export function ReportScreen() {
               </button>
             )}
             <a
-              href={`tel:${emergency.phoneNumber}`}
+              href={`tel:${phoneNumber}`}
               className={cn(
                 'flex min-h-[50px] items-center justify-center rounded-xl border-2 border-surface px-2 text-center text-[15px] leading-tight font-extrabold text-surface no-underline',
                 firstAiderAlerted && 'col-span-2',
@@ -87,7 +135,7 @@ export function ReportScreen() {
                 'focus-visible:outline-surface',
               )}
             >
-              Call {emergency.phoneLabel}
+              Call {phoneLabel}
             </a>
           </div>
         </section>
@@ -113,6 +161,9 @@ export function ReportScreen() {
             <p className="m-0 text-[15px] leading-[1.45]">
               {sharing.reports ? SYMPTOM_REPORT.sentText : SYMPTOM_REPORT.sentTextNoDetails}
             </p>
+            {reportState === 'queued' && (
+              <p className="m-0 text-[15px] font-bold text-warn-text">{LIVE_TEXT.queued}</p>
+            )}
             <ButtonLink to="/worker" variant="secondary" className="mt-1 self-start">
               Back to Status
             </ButtonLink>
@@ -151,6 +202,15 @@ export function ReportScreen() {
           </fieldset>
         )}
 
+        {error && (
+          <p
+            role="alert"
+            className="m-0 rounded-xl border-2 border-risk-4 bg-danger-bg px-3.5 py-3 text-[15px] leading-[1.4] font-bold text-danger-text"
+          >
+            {error}
+          </p>
+        )}
+
         <div className="flex items-start gap-2.5 px-1 pt-1">
           <LockIcon size={20} className="mt-px shrink-0 text-muted" />
           <p className="m-0 text-[13px] leading-[1.45] text-muted">{SYMPTOM_REPORT.privacy}</p>
@@ -161,7 +221,12 @@ export function ReportScreen() {
         // Pinned above the bottom nav: the nav is 63px plus its bottom padding of 10px or the
         // safe-area inset, whichever is larger.
         <div className="sticky bottom-[calc(63px_+_max(10px,env(safe-area-inset-bottom)))] z-10 bg-ground px-4 pt-3 pb-2">
-          <Button size="lg" fullWidth disabled={!canSend} onClick={() => setSent(true)}>
+          <Button
+            size="lg"
+            fullWidth
+            disabled={!canSend || reportState === 'sending'}
+            onClick={sendReport}
+          >
             {sendLabel}
           </Button>
         </div>

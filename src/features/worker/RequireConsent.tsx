@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react'
 import { Navigate } from 'react-router-dom'
+import { isUnreachable } from '../../api/errors'
 import { ErrorState, LoadingState } from '../../components/LoadStates'
 import { useWorkerAccount } from './account/workerAccount'
 import { ScreenStatus } from './account/WithWorkerAccount'
@@ -32,7 +33,7 @@ export function RequireConsent({ children }: { children: ReactNode }) {
     )
   }
   // Offline or the server is down: never block field mode.
-  if (['network', 'timeout', 'server'].includes(state.error.kind)) return children
+  if (isUnreachable(state.error)) return children
   return (
     <ScreenStatus>
       <ErrorState message={state.error.message} onRetry={reload} />

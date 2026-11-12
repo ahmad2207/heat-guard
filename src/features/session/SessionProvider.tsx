@@ -1,6 +1,8 @@
 import { useCallback, useEffect, useMemo, useState, type ReactNode } from 'react'
 import { restoreSession, signIn as apiSignIn, signOutTokens, type Session } from '../../api/auth'
 import { setSessionExpiredHandler } from '../../api/client'
+import { clearSavedRisk } from '../../api/liveWorker'
+import { clearOutbox } from '../../api/outbox'
 import { isMockMode } from '../../api/config'
 import { FALLBACK_MESSAGES } from '../../api/errors'
 import { setSiteTimeZone } from '../../lib/format'
@@ -36,6 +38,9 @@ export function SessionProvider({
   const clearLocal = useCallback(() => {
     signOutTokens()
     clearCachedSession()
+    // The saved forecast and any actions still waiting to be sent belong to this person.
+    clearSavedRisk()
+    clearOutbox()
     resetOnboarding()
     setState({ status: 'signed-out' })
   }, [resetOnboarding])

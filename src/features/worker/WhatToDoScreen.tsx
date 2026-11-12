@@ -1,4 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
+import type { RiskView } from '../../api/converters/myRisk'
+import { acknowledgeRecommendation } from '../../api/liveWorker'
 import { Link } from 'react-router-dom'
 import { Button } from '../../components/Button'
 import { Card } from '../../components/Card'
@@ -14,14 +16,17 @@ import {
   WarningIcon,
 } from '../../components/icons'
 import { ListenButton } from '../../components/ListenButton'
+import { ErrorState, LoadingState } from '../../components/LoadStates'
 import { SectionLabel } from '../../components/SectionLabel'
-import { CREWS, WHAT_TO_DO, WORKER } from '../../data/mock'
+import { CREWS, LIVE_TEXT, WHAT_TO_DO, WORKER } from '../../data/mock'
 import type { WhatToDoAction } from '../../data/types'
 import { useDevSettings } from '../../dev/devSettings'
 import { cn } from '../../lib/cn'
-import { riskClasses, riskName } from '../../lib/risk'
+import { riskClasses, riskName, type RiskLevel } from '../../lib/risk'
 import { useSpeech } from '../../lib/useSpeech'
+import { ScreenStatus } from './account/WithWorkerAccount'
 import { useActionConfirmation } from './actionConfirmation'
+import { useMyRisk } from './live/myRisk'
 
 const ACTION_ICONS: Record<WhatToDoAction['icon'], typeof DropIcon> = {
   rest: ClockIcon,
@@ -83,24 +88,86 @@ function ActionRow({ action }: { action: WhatToDoAction }) {
   return <li className="flex items-start gap-3">{content}</li>
 }
 
-/** Screen 4: What to do. Values from design-reference/html/04-what-to-do.html. */
-export function WhatToDoScreen() {
+/** "Who" depends on the worker's level compared with their crew's current level. */
+function whoText(level: RiskLevel, crewLevel: RiskLevel | null): string {
+  const crew = crewLevel ?? level
+  if (level > crew) return WHAT_TO_DO.who.above
+  if (level < crew) return WHAT_TO_DO.who.below
+  return WHAT_TO_DO.who.same
+}
+
+/** Sample data: the dev panel sets the level, and the crew level comes from the sample crews. */
+function MockWhatToDo() {
   const { riskLevel } = useDevSettings()
+  const crewLevel = CREWS.find((crew) => crew.name === WORKER.crew)?.now ?? null
+  return <WhatToDoView level={riskLevel} who={whoText(riskLevel, crewLevel)} />
+}
+
+/**
+ * Api mode: our per-level copy, with the engine's action as the headline and its timing as When.
+ * "I understand" acknowledges the first recommendation from /me/risk.
+ */
+function ApiWhatToDo({ view }: { view: RiskView }) {
+  const content = WHAT_TO_DO.byLevel[view.level]
+  return (
+    <WhatToDoView
+      level={view.level}
+      headline={view.instruction || content.headline}
+      when={view.when || content.when}
+      who={whoText(view.level, view.crewLevel)}
+      onConfirm={async () => {
+        if (!view.recommendationId) return 'sent'
+        const outcome = await acknowledgeRecommendation(view.recommendationId)
+        // A 409 (already acknowledged) counts as done.
+        return outcome.status === 'queued' ? 'queued' : 'sent'
+      }}
+    />
+  )
+}
+
+export function WhatToDoScreen() {
+  const risk = useMyRisk()
+  if (risk.status === 'mock') return <MockWhatToDo />
+  if (risk.view) return <ApiWhatToDo view={risk.view} />
+  return (
+    <ScreenStatus>
+      {risk.status === 'loading' ? (
+        <LoadingState slow={risk.slow} />
+      ) : (
+        <ErrorState
+          message={risk.error?.message ?? 'Your heat risk is not available right now.'}
+          onRetry={() => void risk.refresh()}
+        />
+      )}
+    </ScreenStatus>
+  )
+}
+
+/** Screen 4: What to do. Values from design-reference/html/04-what-to-do.html. */
+function WhatToDoView({
+  level: riskLevel,
+  headline,
+  when,
+  who,
+  onConfirm,
+}: {
+  level: RiskLevel
+  /** Defaults to our copy for the level. */
+  headline?: string
+  when?: string
+  who: string
+  /** Api mode: saves the acknowledgement. "queued" means it will be sent with signal. */
+  onConfirm?: () => Promise<'sent' | 'queued'>
+}) {
   const { confirmedLevel, confirm } = useActionConfirmation()
   const { speak } = useSpeech()
-  const content = WHAT_TO_DO.byLevel[riskLevel]
+  const base = WHAT_TO_DO.byLevel[riskLevel]
+  const content = { ...base, headline: headline ?? base.headline, when: when ?? base.when }
   const { bg, text } = riskClasses(riskLevel)
   const levelLabel = `Level ${riskLevel} · ${riskName(riskLevel)}`
   const isConfirmed = confirmedLevel === riskLevel
-
-  // "Who" depends on the worker's level compared with their crew's current level.
-  const crewLevel = CREWS.find((crew) => crew.name === WORKER.crew)?.now ?? riskLevel
-  const who =
-    riskLevel > crewLevel
-      ? WHAT_TO_DO.who.above
-      : riskLevel < crewLevel
-        ? WHAT_TO_DO.who.below
-        : WHAT_TO_DO.who.same
+  const [queued, setQueued] = useState(false)
+  const [saving, setSaving] = useState(false)
 
   // The button disappears when pressed, so move focus to the confirmation instead of losing it.
   const confirmedRef = useRef<HTMLDivElement>(null)
@@ -193,13 +260,19 @@ export function WhatToDoScreen() {
             )}
           >
             <CheckIcon size={22} strokeWidth={2.4} />
-            {WHAT_TO_DO.confirmedText}
+            {queued ? `Confirmed. ${LIVE_TEXT.queued}.` : WHAT_TO_DO.confirmedText}
           </div>
         ) : (
           <Button
             size="lg"
             fullWidth
-            onClick={() => {
+            disabled={saving}
+            onClick={async () => {
+              if (onConfirm) {
+                setSaving(true)
+                setQueued((await onConfirm()) === 'queued')
+                setSaving(false)
+              }
               confirm(riskLevel)
               setJustConfirmed(true)
             }}

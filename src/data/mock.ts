@@ -321,6 +321,20 @@ export const SYMPTOM_REPORT: SymptomReportContent = {
   privacy: 'Details stay private; your supervisor only sees that you need help.',
 }
 
+/** Wording for the connected worker screens (api mode). */
+export const LIVE_TEXT = {
+  noFreshData: 'No fresh heat data',
+  queued: 'Will be sent when you have signal',
+  /** Field mode, from the risk saved on the device. */
+  lastKnown: (level: string, time: string) => `Last known level: ${level} at ${time}`,
+  lastUpdate: (time: string, ago: string) => `Last update ${time} · ${ago}`,
+  noSavedUpdate: 'No saved update on this phone',
+  savedFrom: (time: string) => `From ${time}, may be out of date`,
+  alertFailed: 'The alert could not be sent. Call for help with the button above.',
+  reportFailed: 'The report could not be sent. Try again, or use the emergency buttons above.',
+  cupFailed: 'That cup was not saved. Try again.',
+}
+
 /** From design-reference/source/Offline.dc.html. */
 export const FIELD_MODE: FieldModeContent = {
   connection: { title: 'No connection', detail: 'Last update 08:40 · 1 hr 52 min ago' },

@@ -4,7 +4,7 @@
  */
 import { setSiteTimeZone } from '../lib/format'
 import { apiRequest, refreshSession, type RequestOptions } from './client'
-import { ApiError } from './errors'
+import { ApiError, isUnreachable } from './errors'
 import { clearSession, getRefreshToken, setTokens } from './session'
 import type { AuthTokensResponse, MeResponse, ResponseOf } from './types/responses'
 
@@ -161,7 +161,7 @@ export async function restoreSession(options: SignInOptions = {}): Promise<Resto
     return { status: 'signed-in', session: await loadSession(options) }
   } catch (error) {
     // Offline, timed out, or the server failing while it wakes: keep the session.
-    if (error instanceof ApiError && ['network', 'timeout', 'server'].includes(error.kind)) {
+    if (error instanceof ApiError && isUnreachable(error)) {
       return { status: 'unreachable', error }
     }
     if (error instanceof ApiError && error.kind === 'unauthorised') return { status: 'signed-out' }

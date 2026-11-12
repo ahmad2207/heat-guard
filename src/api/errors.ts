@@ -35,6 +35,15 @@ export class ApiError extends Error {
   }
 }
 
+/**
+ * True when the server could not be reached or failed: offline, timed out, or any 5xx (Render
+ * answers 502 or 503 while it wakes up). Worth trying again later; never a refusal.
+ */
+export function isUnreachable(error: unknown): boolean {
+  if (!(error instanceof ApiError)) return false
+  return error.kind === 'network' || error.kind === 'timeout' || error.status >= 500
+}
+
 /** Words shown when the server sends nothing readable. Never includes codes. */
 export const FALLBACK_MESSAGES: Record<ApiErrorKind, string> = {
   network: 'Could not reach the server. Check your connection and try again.',
