@@ -1,15 +1,29 @@
-import { useEffect, useId, useRef, useState, type ReactNode } from 'react'
-import { Link } from 'react-router-dom'
+import { useCallback, useEffect, useId, useRef, useState, type ReactNode } from 'react'
+import { Link, useLocation } from 'react-router-dom'
+import { isMockMode } from '../../api/config'
+import { ApiError, FALLBACK_MESSAGES } from '../../api/errors'
+import type { LoadContext } from '../../api/useApiData'
+import { useApiData } from '../../api/useApiData'
+import {
+  loadHealthProfile,
+  saveHealthProfile,
+  type SavedHealthProfile,
+  type WorkerAccount,
+} from '../../api/workerProfile'
 import { Button } from '../../components/Button'
 import { Card } from '../../components/Card'
 import { CheckTile } from '../../components/CheckTile'
-import { ChevronLeftIcon, LockIcon } from '../../components/icons'
+import { ChevronLeftIcon, LockIcon, WarningIcon } from '../../components/icons'
 import { ListenButton } from '../../components/ListenButton'
+import { ErrorState, LoadingState } from '../../components/LoadStates'
 import { RadioTile } from '../../components/RadioTile'
-import { HEALTH_PROFILE, PRECAUTION_LEVELS, precautionFor, WORKER } from '../../data/mock'
+import { HEALTH_PROFILE, MY_DATA, WORKER } from '../../data/mock'
 import type { ChoiceOption, HealthProfileAnswers } from '../../data/types'
 import { cn } from '../../lib/cn'
 import { useSpeech } from '../../lib/useSpeech'
+import { useWorkerAccount } from './account/workerAccount'
+import { ScreenStatus, WithWorkerAccount } from './account/WithWorkerAccount'
+import { mockPrecautionView, precautionViewFromApi, type PrecautionView } from './precautionView'
 import { useWorkerPreferences } from './workerPreferences'
 
 const focusRing = 'focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-ink'
@@ -139,29 +153,54 @@ function SingleChoice({
   ))
 }
 
+interface BackLink {
+  to: string
+  label: string
+}
+
+const BACK_TO_CHOICES: BackLink = { to: '/worker/welcome', label: 'Back to your choices' }
+const BACK_TO_MY_DATA: BackLink = { to: '/worker/my-data', label: 'Back to my data' }
+
+/** True when the worker arrived from "Agree and continue" on the consent screen. */
+function useFromWelcome(): boolean {
+  const location = useLocation()
+  return (location.state as { fromWelcome?: boolean } | null)?.fromWelcome === true
+}
+
+interface HealthProfileViewProps {
+  profile: HealthProfileAnswers
+  setProfile: (change: (current: HealthProfileAnswers) => HealthProfileAnswers) => void
+  /** True after a successful save, until the answers change again. */
+  sent: boolean
+  onSave: () => void
+  onSkip: () => void
+  saving?: boolean
+  /** Shown above the save button when saving failed. */
+  saveError?: ReactNode
+  sharingHealth: boolean
+  /** null: no precaution card (the worker has no health profile). */
+  precaution: PrecautionView | null
+  workerCode: string
+  back: BackLink
+}
+
 /** Screen 2: health profile. Values from design-reference/html/02-health-profile.html. */
-export function HealthProfileScreen() {
+function HealthProfileView({
+  profile,
+  setProfile,
+  sent,
+  onSave,
+  onSkip,
+  saving = false,
+  saveError = null,
+  sharingHealth,
+  precaution,
+  workerCode,
+  back,
+}: HealthProfileViewProps) {
   const content = HEALTH_PROFILE
   const ageId = useId()
   const { speak } = useSpeech()
-  const {
-    sharing,
-    profile,
-    setProfile,
-    profileSent,
-    sendProfile,
-    skipProfile,
-    onboardingComplete,
-  } = useWorkerPreferences()
-  // During first run the back arrow returns to the consent screen; afterwards to My data.
-  const back = onboardingComplete
-    ? { to: '/worker/my-data', label: 'Back to my data' }
-    : { to: '/worker/welcome', label: 'Back to your choices' }
-  const record = precautionFor(WORKER.id)
-  const precaution = PRECAUTION_LEVELS[record.level]
-  // High-priority uses the design's two lines; other levels show their restriction text.
-  const restrictions =
-    record.level === 'high' ? WORKER.precaution.restrictions : [precaution.restriction]
 
   const set =
     <K extends keyof HealthProfileAnswers>(key: K) =>
@@ -170,10 +209,14 @@ export function HealthProfileScreen() {
 
   // Buttons that disappear when pressed hand focus to what replaces them.
   const sentRef = useRef<HTMLDivElement>(null)
+  const errorRef = useRef<HTMLDivElement>(null)
   const [justSent, setJustSent] = useState(false)
   useEffect(() => {
-    if (justSent && profileSent) sentRef.current?.focus()
-  }, [justSent, profileSent])
+    if (justSent && sent) sentRef.current?.focus()
+  }, [justSent, sent])
+  useEffect(() => {
+    if (saveError) errorRef.current?.focus()
+  }, [saveError])
 
   const listen = speak ? () => speak(`${content.title}. ${content.intro}`) : undefined
 
@@ -195,7 +238,7 @@ export function HealthProfileScreen() {
       </header>
 
       <div className="flex flex-1 flex-col gap-3 px-4 pt-1 pb-4">
-        {!sharing.health && (
+        {!sharingHealth && (
           <p className="m-0 rounded-2xl bg-info-bg px-4 py-3.5 text-[15px] leading-[1.45] text-info-text">
             {content.sharingOffNote.before}
             <Link to="/worker/my-data" className="font-bold text-info-text underline">
@@ -216,7 +259,7 @@ export function HealthProfileScreen() {
         <Question title={content.about.title} group={false}>
           <div className="flex items-center justify-between rounded-xl bg-ground px-3.5 py-3">
             <span className="text-[14px] text-muted">{content.about.workerIdLabel}</span>
-            <span className="font-mono text-[16px] font-bold">{WORKER.id}</span>
+            <span className="font-mono text-[16px] font-bold">{workerCode}</span>
           </div>
           <div className="flex flex-col gap-1.5">
             <label htmlFor={ageId} className="text-[15px] font-bold">
@@ -286,31 +329,38 @@ export function HealthProfileScreen() {
           />
         </Question>
 
-        <Question title={content.precautions.title} intro={content.precautions.intro} group={false}>
-          <div className="flex items-center gap-2.5">
-            <span className="rounded-full bg-ink px-3 py-1.5 text-[14px] font-bold text-surface">
-              {precaution.name}
-            </span>
-          </div>
-          <div className="flex flex-col gap-2 rounded-xl bg-ground px-3.5 py-3">
-            {restrictions.map((item) => (
-              <p key={item} className="m-0 text-[15px] leading-[1.4]">
-                {item}
-              </p>
-            ))}
-            {record.setOn && (
-              <p className="m-0 text-[13px] text-muted">
-                Set {record.setOn}
-                {record.nextReview && ` · next review ${record.nextReview}`}
-              </p>
-            )}
-          </div>
-          {/* "Request a review" is hidden: no one reviews precaution levels yet. */}
-        </Question>
+        {/* No health profile means no precaution card (decision: null is not "Standard"). */}
+        {precaution && (
+          <Question
+            title={content.precautions.title}
+            intro={content.precautions.intro}
+            group={false}
+          >
+            <div className="flex items-center gap-2.5">
+              <span className="rounded-full bg-ink px-3 py-1.5 text-[14px] font-bold text-surface">
+                {precaution.name}
+              </span>
+            </div>
+            <div className="flex flex-col gap-2 rounded-xl bg-ground px-3.5 py-3">
+              {precaution.restrictions.map((item) => (
+                <p key={item} className="m-0 text-[15px] leading-[1.4]">
+                  {item}
+                </p>
+              ))}
+              {precaution.setOn && (
+                <p className="m-0 text-[13px] text-muted">
+                  {MY_DATA.setOn(precaution.setOn)}
+                  {precaution.nextReview && ` · next review ${precaution.nextReview}`}
+                </p>
+              )}
+            </div>
+            {/* "Request a review" is hidden: no one reviews precaution levels yet. */}
+          </Question>
+        )}
       </div>
 
       <div className="flex flex-col gap-2 border-t border-line bg-surface px-4 pt-3 pb-5">
-        {profileSent ? (
+        {sent ? (
           <>
             <div
               ref={sentRef}
@@ -335,19 +385,34 @@ export function HealthProfileScreen() {
           </>
         ) : (
           <>
+            {saveError && (
+              <div
+                ref={errorRef}
+                role="alert"
+                tabIndex={-1}
+                className={cn(
+                  'flex items-start gap-2.5 rounded-xl border-2 border-risk-4 bg-danger-bg px-3.5 py-3 text-[15px] leading-[1.4] font-bold text-danger-text',
+                  focusRing,
+                )}
+              >
+                <WarningIcon size={20} strokeWidth={2.2} className="mt-px shrink-0" />
+                <span>{saveError}</span>
+              </div>
+            )}
             <Button
               size="lg"
               fullWidth
+              disabled={saving}
               onClick={() => {
-                sendProfile()
+                onSave()
                 setJustSent(true)
               }}
             >
-              {content.send}
+              {saving ? content.saving : content.send}
             </Button>
             <Link
               to="/worker"
-              onClick={skipProfile}
+              onClick={onSkip}
               className={cn(
                 'flex h-11 items-center justify-center rounded-xl text-[15px] font-bold text-ink underline',
                 focusRing,
@@ -360,5 +425,130 @@ export function HealthProfileScreen() {
         <p className="m-0 text-center text-[13px] leading-[1.4] text-muted">{content.footnote}</p>
       </div>
     </>
+  )
+}
+
+/** Sample data: answers are kept on the device and the precaution card is W-0412's. */
+function MockHealthProfileScreen() {
+  const fromWelcome = useFromWelcome()
+  const {
+    sharing,
+    profile,
+    setProfile,
+    profileSent,
+    sendProfile,
+    skipProfile,
+    onboardingComplete,
+  } = useWorkerPreferences()
+  // During first run the back arrow returns to the consent screen; afterwards to My data.
+  const back = fromWelcome || !onboardingComplete ? BACK_TO_CHOICES : BACK_TO_MY_DATA
+  return (
+    <HealthProfileView
+      profile={profile}
+      setProfile={setProfile}
+      sent={profileSent}
+      onSave={sendProfile}
+      onSkip={skipProfile}
+      sharingHealth={sharing.health}
+      precaution={mockPrecautionView()}
+      workerCode={WORKER.id}
+      back={back}
+    />
+  )
+}
+
+/** The message for a save the server refused because health sharing is off (409). */
+function ConsentNeeded() {
+  const text = HEALTH_PROFILE.consentNeeded
+  return (
+    <>
+      {text.before}
+      <Link to="/worker/my-data" className="text-danger-text underline">
+        {text.link}
+      </Link>
+      {text.after}
+    </>
+  )
+}
+
+/** Api mode, once the saved answers are loaded: edits stay on screen until Save. */
+function ApiHealthProfileForm({
+  account,
+  initial,
+}: {
+  account: WorkerAccount
+  initial: SavedHealthProfile
+}) {
+  const fromWelcome = useFromWelcome()
+  const { refresh } = useWorkerAccount()
+  const [saved, setSaved] = useState(initial)
+  const [draft, setDraft] = useState(initial.answers)
+  const [sent, setSent] = useState(false)
+  const [saving, setSaving] = useState(false)
+  const [saveError, setSaveError] = useState<ReactNode>(null)
+
+  async function save() {
+    setSaving(true)
+    setSaveError(null)
+    try {
+      const result = await saveHealthProfile(account.workerId, draft, saved.ageWasSaved)
+      setSaved(result)
+      setSent(true)
+      // A save can change the precaution level. Errors here are not the save's errors.
+      refresh().catch(() => {})
+    } catch (error) {
+      if (error instanceof ApiError && error.kind === 'conflict') setSaveError(<ConsentNeeded />)
+      else setSaveError(error instanceof ApiError ? error.message : FALLBACK_MESSAGES.unknown)
+    } finally {
+      setSaving(false)
+    }
+  }
+
+  return (
+    <HealthProfileView
+      profile={draft}
+      setProfile={(change) => {
+        setDraft(change)
+        setSent(false)
+      }}
+      sent={sent}
+      onSave={save}
+      onSkip={() => {}}
+      saving={saving}
+      saveError={saveError}
+      sharingHealth={account.consents.health}
+      precaution={precautionViewFromApi(account.precaution)}
+      workerCode={account.workerCode}
+      back={fromWelcome ? BACK_TO_CHOICES : BACK_TO_MY_DATA}
+    />
+  )
+}
+
+/** Api mode: loads the saved answers (GET /workers/{id}/health-profile) for this worker. */
+function ApiHealthProfile({ account }: { account: WorkerAccount }) {
+  const load = useCallback(
+    (context: LoadContext) => loadHealthProfile(account.workerId, context),
+    [account.workerId],
+  )
+  const data = useApiData(load)
+  if (data.status === 'ready') return <ApiHealthProfileForm account={account} initial={data.data} />
+  if (data.status === 'error') {
+    return (
+      <ScreenStatus>
+        <ErrorState message={data.error.message} onRetry={data.retry} />
+      </ScreenStatus>
+    )
+  }
+  return (
+    <ScreenStatus>
+      <LoadingState slow={data.status === 'loading' && data.slow} />
+    </ScreenStatus>
+  )
+}
+
+export function HealthProfileScreen() {
+  if (isMockMode) return <MockHealthProfileScreen />
+  return (
+    <WithWorkerAccount>{(account) => <ApiHealthProfile account={account} />}</WithWorkerAccount>
   )
 }

@@ -19,11 +19,16 @@ export function downloadMyData(preferences: WorkerPreferences): void {
     healthProfile: preferences.profile,
   }
 
+  saveJsonFile(data, MY_DATA.downloadFileName)
+}
+
+/** Saves data as a JSON file the browser downloads, for example heatguard-my-data.json. */
+export function saveJsonFile(data: unknown, fileName: string): void {
   const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' })
   const url = URL.createObjectURL(blob)
   const link = document.createElement('a')
   link.href = url
-  link.download = MY_DATA.downloadFileName
+  link.download = fileName
   document.body.appendChild(link)
   link.click()
   link.remove()

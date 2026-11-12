@@ -3,6 +3,7 @@ import App from './App.tsx'
 import { SUPERVISOR_HEADER_STATUS } from './data/mock'
 import { HomeRoute, RequireRole } from './features/session/guards'
 import { LoginScreen } from './features/session/LoginScreen'
+import { WorkerAccountProvider } from './features/worker/account/WorkerAccountProvider'
 import { ConsentScreen } from './features/worker/ConsentScreen'
 import { HealthProfileScreen } from './features/worker/HealthProfileScreen'
 import { HomeScreen } from './features/worker/HomeScreen'
@@ -48,7 +49,9 @@ export const router = createBrowserRouter([
     // Api mode: workers only. Report stays reachable without consent (RequireConsent is on Home).
     element: (
       <RequireRole role="worker">
-        <WorkerLayout />
+        <WorkerAccountProvider>
+          <WorkerLayout />
+        </WorkerAccountProvider>
       </RequireRole>
     ),
     children: [

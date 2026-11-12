@@ -23,13 +23,14 @@ export function WorkerPreferencesProvider({ children }: { children: ReactNode })
     savePreferences(preferences)
   }, [preferences, cleared])
 
-  const value = useMemo<WorkerPreferencesValue>(() => {
+  // The actions never change, so components and effects that depend on them (the session and
+  // account providers) do not run again each time a preference changes.
+  const actions = useMemo<Omit<WorkerPreferencesValue, keyof WorkerPreferences>>(() => {
     const update = (change: (current: WorkerPreferences) => WorkerPreferences) => {
       setCleared(false)
       setPreferences(change)
     }
     return {
-      ...preferences,
       setLanguage: (language) => update((p) => ({ ...p, language })),
       setSharing: (id, on) => update((p) => ({ ...p, sharing: { ...p.sharing, [id]: on } })),
       giveConsent: () => update((p) => ({ ...p, consentGiven: true })),
@@ -50,13 +51,24 @@ export function WorkerPreferencesProvider({ children }: { children: ReactNode })
         })),
       loadSampleAnswers: () =>
         update((p) => ({ ...p, profile: HEALTH_PROFILE_SAMPLE, profileSent: false })),
+      applyServer: (values) =>
+        update((p) => ({
+          ...p,
+          ...values,
+          onboardingComplete: p.onboardingComplete || values.consentGiven,
+        })),
       resetOnboarding: () => {
         clearPreferences()
         setCleared(true)
         setPreferences(DEFAULT_PREFERENCES)
       },
     }
-  }, [preferences])
+  }, [])
+
+  const value = useMemo<WorkerPreferencesValue>(
+    () => ({ ...preferences, ...actions }),
+    [preferences, actions],
+  )
 
   return (
     <WorkerPreferencesContext.Provider value={value}>{children}</WorkerPreferencesContext.Provider>

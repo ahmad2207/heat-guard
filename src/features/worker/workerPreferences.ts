@@ -30,6 +30,11 @@ export interface WorkerPreferencesValue extends WorkerPreferences {
   loadSampleAnswers: () => void
   /** Clears the saved consent and profile (dev panel). */
   resetOnboarding: () => void
+  /**
+   * Api mode: copies the server's language, switches and "has chosen" into this store, so Home,
+   * field mode and Report keep working offline. Never health answers.
+   */
+  applyServer: (values: Pick<WorkerPreferences, 'consentGiven' | 'language' | 'sharing'>) => void
 }
 
 export const STORAGE_KEY = 'heatguard.worker.v1'

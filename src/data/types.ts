@@ -297,6 +297,7 @@ export interface OnboardingContent {
   promiseTitle: string
   promise: string
   agree: string
+  saving: string
   privacyLink: string
 }
 
@@ -330,5 +331,7 @@ export interface HealthProfileContent {
   skip: string
   footnote: string
   sentText: string
+  saving: string
+  consentNeeded: { before: string; link: string; after: string }
   goToStatus: string
 }

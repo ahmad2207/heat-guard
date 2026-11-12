@@ -406,6 +406,11 @@ export const MY_DATA = {
   deleteConfirmButton: 'Delete',
   deleteCancel: 'Cancel',
   deleted: 'Your health answers have been deleted.',
+  // Connected app (api mode)
+  saveFailed: 'Your choice was not saved. Check your connection and try again.',
+  accessEmpty: 'No one has looked at your data in the last 30 days.',
+  downloading: 'Preparing your download...',
+  deleting: 'Deleting...',
 } as const
 
 /** Short codes for the language button. Language choice is visual only for now. */
@@ -451,6 +456,7 @@ export const ONBOARDING: OnboardingContent = {
   promise:
     'Your supervisor only sees your risk level and the actions to take. Your health information is never used for discipline, rankings or job decisions. You can change these choices or delete your data at any time.',
   agree: 'Agree and continue',
+  saving: 'Saving...',
   privacyLink: 'Read the full privacy notice',
 }
 
@@ -546,6 +552,13 @@ export const HEALTH_PROFILE: HealthProfileContent = {
   skip: 'Skip for now',
   footnote: 'You can change or delete these answers at any time in My data.',
   sentText: 'Saved. Your answers stay private.',
+  saving: 'Saving...',
+  // Decision: a save without health consent returns 409.
+  consentNeeded: {
+    before: 'Turn on health sharing in ',
+    link: 'My data',
+    after: ' to save your answers.',
+  },
   goToStatus: 'Go to my status',
 }
 

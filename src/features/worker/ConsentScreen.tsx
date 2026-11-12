@@ -1,20 +1,51 @@
-import { useId } from 'react'
+import { useEffect, useId, useRef, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import { isMockMode } from '../../api/config'
+import { ApiError, FALLBACK_MESSAGES } from '../../api/errors'
+import type { WorkerAccount } from '../../api/workerProfile'
 import { Button } from '../../components/Button'
 import { Card } from '../../components/Card'
+import { WarningIcon } from '../../components/icons'
 import { Switch } from '../../components/Switch'
 import { LANGUAGES, ONBOARDING } from '../../data/mock'
-import type { Language } from '../../data/types'
+import type { Language, SharingChoices } from '../../data/types'
 import { cn } from '../../lib/cn'
+import { useWorkerAccount } from './account/workerAccount'
+import { WithWorkerAccount } from './account/WithWorkerAccount'
 import { useWorkerPreferences } from './workerPreferences'
 
 const focusRing = 'focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-ink'
 
+type ConsentSwitches = Pick<SharingChoices, 'health' | 'band' | 'reports'>
+
+/** Where "Agree and continue" leads. The state tells the health profile to go back here. */
+const AFTER_CONSENT = { to: '/worker/health-profile', state: { fromWelcome: true } }
+
+interface ConsentViewProps {
+  language: Language
+  onLanguage: (language: Language) => void
+  switches: ConsentSwitches
+  onSwitch: (id: keyof ConsentSwitches, on: boolean) => void
+  onAgree: () => void
+  busy?: boolean
+  error?: string | null
+}
+
 /** Screen 1: consent and choices. Values from design-reference/html/01-consent.html. */
-export function ConsentScreen() {
-  const navigate = useNavigate()
+function ConsentView({
+  language,
+  onLanguage,
+  switches,
+  onSwitch,
+  onAgree,
+  busy = false,
+  error = null,
+}: ConsentViewProps) {
   const languageId = useId()
-  const { language, setLanguage, sharing, setSharing, giveConsent } = useWorkerPreferences()
+  const errorRef = useRef<HTMLParagraphElement>(null)
+  useEffect(() => {
+    if (error) errorRef.current?.focus()
+  }, [error])
 
   return (
     <>
@@ -37,7 +68,7 @@ export function ConsentScreen() {
         <select
           id={languageId}
           value={language}
-          onChange={(event) => setLanguage(event.target.value as Language)}
+          onChange={(event) => onLanguage(event.target.value as Language)}
           className={cn(
             'h-11 rounded-full border border-field bg-surface px-3 text-[15px] font-bold text-ink',
             focusRing,
@@ -73,8 +104,8 @@ export function ConsentScreen() {
               key={item.id}
               label={item.label}
               description={item.description}
-              checked={sharing[item.id]}
-              onChange={(on) => setSharing(item.id, on)}
+              checked={switches[item.id as keyof ConsentSwitches]}
+              onChange={(on) => onSwitch(item.id as keyof ConsentSwitches, on)}
               divider={index < ONBOARDING.switches.length - 1}
             />
           ))}
@@ -92,15 +123,22 @@ export function ConsentScreen() {
       </div>
 
       <div className="sticky bottom-0 flex flex-col gap-2 border-t border-line bg-surface px-4 pt-3 pb-[max(16px,env(safe-area-inset-bottom))]">
-        <Button
-          size="lg"
-          fullWidth
-          onClick={() => {
-            giveConsent()
-            navigate('/worker/health-profile')
-          }}
-        >
-          {ONBOARDING.agree}
+        {error && (
+          <p
+            ref={errorRef}
+            role="alert"
+            tabIndex={-1}
+            className={cn(
+              'm-0 flex items-start gap-2.5 rounded-xl border-2 border-risk-4 bg-danger-bg px-3.5 py-3 text-[15px] leading-[1.4] font-bold text-danger-text',
+              focusRing,
+            )}
+          >
+            <WarningIcon size={20} strokeWidth={2.2} className="mt-px shrink-0" />
+            {error}
+          </p>
+        )}
+        <Button size="lg" fullWidth onClick={onAgree} disabled={busy}>
+          {busy ? ONBOARDING.saving : ONBOARDING.agree}
         </Button>
         <Link
           to="/worker/privacy"
@@ -114,4 +152,65 @@ export function ConsentScreen() {
       </div>
     </>
   )
+}
+
+/** Sample data: choices are kept on the device. */
+function MockConsentScreen() {
+  const navigate = useNavigate()
+  const { language, setLanguage, sharing, setSharing, giveConsent } = useWorkerPreferences()
+  return (
+    <ConsentView
+      language={language}
+      onLanguage={setLanguage}
+      switches={sharing}
+      onSwitch={setSharing}
+      onAgree={() => {
+        giveConsent()
+        navigate(AFTER_CONSENT.to, { state: AFTER_CONSENT.state })
+      }}
+    />
+  )
+}
+
+/**
+ * Api mode: the choices start from the server and are saved on "Agree and continue": the
+ * language with PATCH /me/preferences, the three switches with PUT /me/consents.
+ */
+function ApiConsentForm({ account }: { account: WorkerAccount }) {
+  const navigate = useNavigate()
+  const { setLanguage, setConsents } = useWorkerAccount()
+  const [language, setDraftLanguage] = useState(account.language)
+  const [switches, setSwitches] = useState<ConsentSwitches>(account.consents)
+  const [busy, setBusy] = useState(false)
+  const [error, setError] = useState<string | null>(null)
+
+  async function agree() {
+    setBusy(true)
+    setError(null)
+    try {
+      if (language !== account.language) await setLanguage(language)
+      await setConsents(switches)
+      navigate(AFTER_CONSENT.to, { state: AFTER_CONSENT.state })
+    } catch (caught) {
+      setError(caught instanceof ApiError ? caught.message : FALLBACK_MESSAGES.unknown)
+      setBusy(false)
+    }
+  }
+
+  return (
+    <ConsentView
+      language={language}
+      onLanguage={setDraftLanguage}
+      switches={switches}
+      onSwitch={(id, on) => setSwitches((current) => ({ ...current, [id]: on }))}
+      onAgree={agree}
+      busy={busy}
+      error={error}
+    />
+  )
+}
+
+export function ConsentScreen() {
+  if (isMockMode) return <MockConsentScreen />
+  return <WithWorkerAccount>{(account) => <ApiConsentForm account={account} />}</WithWorkerAccount>
 }
